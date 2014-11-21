@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CogitoSharp.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Account" Type="System.String" Scope="User">
+      <Value Profile="(Default)">cogito</Value>
+    </Setting>
+    <Setting Name="Character" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Cogito</Value>
+    </Setting>
+    <Setting Name="Host" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">chat.f-list.net</Value>
+    </Setting>
+    <Setting Name="Port" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">9722</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
