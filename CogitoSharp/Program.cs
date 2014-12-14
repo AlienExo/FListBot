@@ -11,12 +11,13 @@ using System.Web;
 
 using WebSocketSharp;
 using Newtonsoft.Json;
-
+using Newtonsoft.Json.Linq;
 /* TODO LIST
  * public event TabControlEventHandler Selected
  * 
  * TODO: I have no idea what I'm doing
  * TODO: DONE 1 Start off by implementing some way of getting your API Key (getKey())
+ * TODO: Split Login and actual interface into two things > this.hide(), open login form, if login succeeds and character is chosen, this.show()
  * TODO: 2* Get the flipping interface to run 'IN PARALLEL' with your other code. queue and events! Or THREADIIIIING
  * TODO: 3 Connect to test server (8722), use Type.InvokeMember and a static class to get delicious command parsing in a loop
  * TODO: 4 Port the rest of the API/Scraping
@@ -41,17 +42,14 @@ namespace CogitoSharp
 
 	/// <summary> May be implemented for proper JSON serialization. Or not, because fuck this.
 	/// </summary>
-	class loginTicket{
 	
-	}
-
 	/// <summary> Manages login and -out as well as Identity Management
 	/// </summary>
 	class Account
 	{
-		private static List<string> Characters = new List<string>(30);
+		private static List<string> Characters = new List<string>();
 		private static string APIkey = "";
-	
+			
 		public static bool login(string account, string password){
 			using (var wb = new WebClient()){
 				var data = new NameValueCollection();
@@ -59,26 +57,25 @@ namespace CogitoSharp
 				data["password"] = password;
 				var byteTicket = wb.UploadValues("http://www.f-list.net/json/getApiTicket.php", "POST", data);
 				string t1 = System.Text.Encoding.ASCII.GetString(byteTicket);
-				//string t2 = t1.Substring(t1.IndexOf("\"ticket\":\"") + "\"ticket\":\"".Length);
-				//ticket = t2.Substring(0, t2.IndexOf("\""));
-			
 				dynamic Response = JsonConvert.DeserializeObject(t1);
-				if (Response["error"].Count > 1){Console.WriteLine(Response["error"]); return false;}
+				if (Response.SelectToken("error").Length > 0) { return false; }
 				else {
+					//TODO: Get characters, set up list, insert.
+					Console.WriteLine(Response.SelectToken("characters"));
+					
 					var logindata = new Dictionary<string, string>();
 					logindata["method"]="ticket";
-					logindata["account"]=Properties.Settings.Default.Account;
+					logindata["account"]=account;
 					logindata["character"] = Properties.Settings.Default.Character;
-					logindata["ticket"] = APIkey;
+					logindata["ticket"] = Response.SelectToken("ticket");
 					logindata["cname"] = "COGITO";
 					logindata["cversion"] = Application.ProductVersion;
-					string openString = JsonConvert.SerializeObject(data);
+					string openString = JsonConvert.SerializeObject(logindata);
 				
 					openString = "IDN "+ openString;
 					Console.WriteLine("Open String: " + openString);
 					Core.websocket.OnOpen += (sender, e) => Core.websocket.Send(openString);
-					Console.WriteLine(Response["characters"].GetType());
-					//Characters.AddRange(Response["characters"]);
+					Characters.AddRange(Response["characters"]);
 					return true;
 				}	
 			}
@@ -103,7 +100,7 @@ namespace CogitoSharp
 		private static Queue<string> OutgoingMessageQueue = new Queue<string>();
 		private static Thread Sender = new Thread(SendMessage);
 		private static volatile bool _sendForever = new bool();
-
+		
 		
 		//public static Thread Receiver = new Thread();
 
@@ -118,9 +115,14 @@ namespace CogitoSharp
             cogitoUI = new CogitoUI();
 			websocket.OnMessage += (sender, e) => Console.WriteLine("Sender: "+sender.ToString() + "Event: "+e.Data.ToString());//TODO: Insert RawMessage-to-Object-onto-Collections.Queue
 			//TODO: IMPLEMENT PROPERLY websocket.OnMessage += OnWebsocketMessage();
+			try{Console.WriteLine(Properties.Settings.Default.userAutoComplete.Count);}
+			catch(System.NullReferenceException){Properties.Settings.Default.userAutoComplete = new AutoCompleteStringCollection();}
 			websocket.Connect();
-			Thread.Sleep(1000);
+			Thread.Sleep(100);
+			Sender.Start();
 			Application.Run(cogitoUI);
+			Sender.Join();
+			Console.WriteLine("");
         }
 
 		private static EventHandler<MessageEventArgs> OnWebsocketMessage()

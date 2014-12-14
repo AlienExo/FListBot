@@ -15,6 +15,8 @@ namespace CogitoSharp
         public CogitoUI()
         {
             InitializeComponent();
+			loginPanel.Visible = true;
+			this.rememberPasswordCheck.Checked = Properties.Settings.Default.savePassword;
 			loginPanel.BringToFront();
         }
 
@@ -22,11 +24,6 @@ namespace CogitoSharp
         {
             Console.WriteLine(textBox1.Text);
             textBox1.Text = "";
-        }
-
-        private void chatTabs_Selected(object sender, EventArgs e) 
-        { 
-            
         }
 
         private void textBox1_GotFocus(object sender, EventArgs e)
@@ -38,48 +35,73 @@ namespace CogitoSharp
 
 		private void loginPanel_VisibleChanged(object sender, EventArgs e)
 		{
-			this.loginButton.Visible = true;
-			this.loginPassword.Visible = true;
-			this.loginUser.Visible = true;
-			this.UsernameLabel.Visible = true;
-			this.PasswordLabel.Visible = true;
-			this.loginUser.Focus();
+			if (loginPanel.Visible == true){
+				this.loginSubmitButton.Visible = true;
+				this.loginPasswordField.Visible = true;
+				this.loginUserField.Visible = true;
+				this.UsernameLabel.Visible = true;
+				this.PasswordLabel.Visible = true;
+				this.ActiveControl = this.loginUserField;
+				this.loginUserField.AutoCompleteCustomSource = Properties.Settings.Default.userAutoComplete;
+
+			}
 		}
 
 		private void loginButton_Click(object sender, EventArgs e)
 		{
-			if (this.rememberPasswordCheck.Checked == true){Properties.Settings.Default.Password = this.loginPassword.Text;}
+			if (this.rememberPasswordCheck.Checked == true){
+				Console.WriteLine("Savings password " + this.loginPasswordField.Text); 
+				Properties.Settings.Default.Password = this.loginPasswordField.Text;
+			}
 			else {Properties.Settings.Default.Password = "";}
-			CogitoSharp.Account.login(this.loginUser.Text, this.loginPassword.Text);
+			Properties.Settings.Default.Account = this.loginUserField.Text;
+			Properties.Settings.Default.Save();
+			if (!CogitoSharp.Account.login(this.loginUserField.Text, this.loginPasswordField.Text)){
+				this.loginStatusLabel.ForeColor = System.Drawing.Color.Red;
+				this.loginStatusLabel.Text = "Could not log in. Please check Account name and password and try again.";
+			}
+			else{
+				if (Properties.Settings.Default.userAutoComplete.Contains(this.loginUserField.Text) == false){
+					Properties.Settings.Default.userAutoComplete.Add(this.loginUserField.Text);}
+				loginPanel.Hide();
+			}
+				
 		}
 
-		private void loginUser_VisibleChanged(object sender, EventArgs e)
+		private void loginUser_Enter(object sender, EventArgs e)
 		{
-			this.Text = Properties.Settings.Default.Account;
+			this.loginUserField.Text = Properties.Settings.Default.Account;
+			this.loginPasswordField.Text = Properties.Settings.Default.Password;
 		}
 
-		private void loginPassword_VisibleChanged(object sender, EventArgs e)
+		private void CogitoUI_Load(object sender, EventArgs e)
 		{
-			this.Text = Properties.Settings.Default.Password;
-		}    
+			this.Text = "Cogito v"+Application.ProductVersion;
+		}
+
+		private void rememberPasswordCheck_CheckedChanged(object sender, EventArgs e)
+		{
+			Properties.Settings.Default.savePassword = this.rememberPasswordCheck.Checked;
+		}
+
     }
 
     public class ChatTab : TabPage
     { 
         
-        private TextBox text = new TextBox();
+        private TextBox ChatTabTextInput = new TextBox();
 
         public ChatTab(string _title)
         {
             base.Name = _title;
             base.Text = _title;
-            this.text.AcceptsReturn = true;
+            this.ChatTabTextInput.AcceptsReturn = true;
             this.SuspendLayout();
-            this.Controls.Add(text);
+            this.Controls.Add(ChatTabTextInput);
             this.ResumeLayout();
-            text.Parent = this;
-            text.Dock = DockStyle.Fill;
-            text.BringToFront();
+            ChatTabTextInput.Parent = this;
+            ChatTabTextInput.Dock = DockStyle.Fill;
+            ChatTabTextInput.BringToFront();
         }
 
     }
