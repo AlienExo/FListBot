@@ -1,0 +1,13 @@
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Debug\CogitoSharp.csprojResolveAssemblyReference.cache
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Debug\CogitoSharp.CogitoUI.resources
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Debug\CogitoSharp.Properties.Resources.resources
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Debug\CogitoSharp.csproj.GenerateResource.Cache
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\bin\Debug\CogitoSharp.exe.config
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\bin\Debug\CogitoSharp.exe
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\bin\Debug\CogitoSharp.pdb
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\bin\Debug\Newtonsoft.Json.dll
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\bin\Debug\websocket-sharp.dll
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\bin\Debug\Newtonsoft.Json.xml
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Debug\CogitoSharp.exe
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Debug\CogitoSharp.pdb
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\bin\Debug\CogitoSharp.XML

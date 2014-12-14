@@ -15,7 +15,7 @@ namespace CogitoSharp
         public CogitoUI()
         {
             InitializeComponent();
-            chatTabs.BringToFront();
+			loginPanel.BringToFront();
         }
 
         private void sendButton_Click(object sender, EventArgs e)
@@ -36,7 +36,32 @@ namespace CogitoSharp
             //TODO: set sendButton to get whichever tab is in focus/front and therefore where to send what's entered
         }
 
-        
+		private void loginPanel_VisibleChanged(object sender, EventArgs e)
+		{
+			this.loginButton.Visible = true;
+			this.loginPassword.Visible = true;
+			this.loginUser.Visible = true;
+			this.UsernameLabel.Visible = true;
+			this.PasswordLabel.Visible = true;
+			this.loginUser.Focus();
+		}
+
+		private void loginButton_Click(object sender, EventArgs e)
+		{
+			if (this.rememberPasswordCheck.Checked == true){Properties.Settings.Default.Password = this.loginPassword.Text;}
+			else {Properties.Settings.Default.Password = "";}
+			CogitoSharp.Account.login(this.loginUser.Text, this.loginPassword.Text);
+		}
+
+		private void loginUser_VisibleChanged(object sender, EventArgs e)
+		{
+			this.Text = Properties.Settings.Default.Account;
+		}
+
+		private void loginPassword_VisibleChanged(object sender, EventArgs e)
+		{
+			this.Text = Properties.Settings.Default.Password;
+		}    
     }
 
     public class ChatTab : TabPage

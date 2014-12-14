@@ -14,5 +14,11 @@
     <Setting Name="Port" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">9722</Value>
     </Setting>
+    <Setting Name="Password" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="savePassword" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
