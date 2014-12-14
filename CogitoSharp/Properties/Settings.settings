@@ -20,5 +20,8 @@
     <Setting Name="savePassword" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="userAutoComplete" Type="System.Windows.Forms.AutoCompleteStringCollection" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

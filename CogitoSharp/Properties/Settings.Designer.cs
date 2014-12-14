@@ -88,5 +88,16 @@ namespace CogitoSharp.Properties {
                 this["savePassword"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Windows.Forms.AutoCompleteStringCollection userAutoComplete {
+            get {
+                return ((global::System.Windows.Forms.AutoCompleteStringCollection)(this["userAutoComplete"]));
+            }
+            set {
+                this["userAutoComplete"] = value;
+            }
+        }
     }
 }
