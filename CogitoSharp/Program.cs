@@ -15,18 +15,29 @@ using Newtonsoft.Json.Linq;
 /* TODO LIST
  * public event TabControlEventHandler Selected
  * 
- * TODO: I have no idea what I'm doing
- * TODO: DONE 1 Start off by implementing some way of getting your API Key (getKey())
- * TODO: Split Login and actual interface into two things > this.hide(), open login form, if login succeeds and character is chosen, this.show()
- * TODO: 2* Get the flipping interface to run 'IN PARALLEL' with your other code. queue and events! Or THREADIIIIING
- * TODO: 3 Connect to test server (8722), use Type.InvokeMember and a static class to get delicious command parsing in a loop
- * TODO: 4 Port the rest of the API/Scraping
- * TODO: 5 Implement logic so the UI Components resize when the window does. 1/4 for the user list, all down the side. Three lines of text for the entry point, to the bottom. Rest TabPage.
- * TODO: Status bar at the top of the program for multi-character chats
+ * [|||||-----] TODO: I have no idea what I'm doing 
+ * [||||||||||] TODO: DONE 1 Start off by implementing some way of getting your API Key (getKey())
+ * [||||||||--] TODO: Split Login and actual interface into two things > this.hide(), open login form, if login succeeds and character is chosen, this.show()
+ * 
+ * 
+ * [----------] TODO: 2* Get the flipping interface to run 'IN PARALLEL' with your other code. queue and events! Or THREADIIIIING
+ * [----------] TODO: 3 Connect to test server (8722), use Type.InvokeMember and a static class to get delicious command parsing in a loop/event drived
+ * [----------] TODO: Consider proper delegates for this thing
+ * [----------] TODO: 4 Port the rest of the API/Scraping
+ * [----------] TODO: 5 Implement logic so the UI Components resize when the window does. 1/4 for the user list, all down the side. Three lines of text for the entry point, to the bottom. Rest TabPage.
+ * [----------] TODO: Status bar at the top of the program for multi-character chats
+ * [----------] TODO: Tiny profile view of people you're talking to, on the side. web browser or scraping. 
+ *		shows age, gender, name, avatar
+ *		small info area with quickmatch - fave matche, no match, your faves in their no, your no in their fav
+ *		Customizable filters - value (e.g. Age) from combobox, operator from a combobox, then a relevant value in the next box
+ *		detach? new window?
+ *		Custom highlight triggers (array string[])
+ * TODO: Log formatting and output. As .txt or .html, activate/deacticate images (checkbox)
  * TODO: Tree Diagram of friends	*----*
  *									|------*
  *									
  * TODO: A Autocorrection as BLOSUM Like matrix of likelihood of typos, e.g. high for z and y, low for t and [Space] etc.
+ * Settings panel on login form to set host and port
  * 
  * 
 */
@@ -45,40 +56,53 @@ namespace CogitoSharp
 	
 	/// <summary> Manages login and -out as well as Identity Management
 	/// </summary>
+	/// 
+
 	class Account
 	{
-		private static List<string> Characters = new List<string>();
-		private static string APIkey = "";
+		protected internal static string account;
+		protected internal static int accountID;
+		protected internal static List<string> Characters = new List<string>();
+		protected internal static string APIkey = "";
 			
-		public static bool login(string account, string password){
+		protected internal static bool login(string _account, string _password){
 			using (var wb = new WebClient()){
 				var data = new NameValueCollection();
-				data["account"] = account;
-				data["password"] = password;
+				data["account"] = _account;
+				data["password"] = _password;
 				var byteTicket = wb.UploadValues("http://www.f-list.net/json/getApiTicket.php", "POST", data);
 				string t1 = System.Text.Encoding.ASCII.GetString(byteTicket);
 				dynamic Response = JsonConvert.DeserializeObject(t1);
-				if (Response.SelectToken("error").Length > 0) { return false; }
+				if (Response.SelectToken("error").ToString().Length > 0) { return false; }
 				else {
 					//TODO: Get characters, set up list, insert.
-					Console.WriteLine(Response.SelectToken("characters"));
-					
-					var logindata = new Dictionary<string, string>();
-					logindata["method"]="ticket";
-					logindata["account"]=account;
-					logindata["character"] = Properties.Settings.Default.Character;
-					logindata["ticket"] = Response.SelectToken("ticket");
-					logindata["cname"] = "COGITO";
-					logindata["cversion"] = Application.ProductVersion;
-					string openString = JsonConvert.SerializeObject(logindata);
-				
-					openString = "IDN "+ openString;
-					Console.WriteLine("Open String: " + openString);
-					Core.websocket.OnOpen += (sender, e) => Core.websocket.Send(openString);
-					Characters.AddRange(Response["characters"]);
+					APIkey = Response.SelectToken("ticket");
+					string characters = Response.SelectToken("characters").ToString();
+					Characters.AddRange(characters.Split(','));
+					#if DEBUG
+					Console.WriteLine(Characters);
+					#endif
 					return true;
 				}	
 			}
+		}
+
+		protected internal static void characterSelect(string character){
+			if(APIkey.Length<=0){throw new ArgumentException("No valid login ticket/API Key is present.");}
+			var logindata = new Dictionary<string, string>();
+			logindata["method"] = "ticket";
+			logindata["account"] = account;
+			logindata["character"] = character;
+			logindata["ticket"] = APIkey;
+			logindata["cname"] = "COGITO";
+			logindata["cversion"] = Application.ProductVersion;
+			
+			string openString = JsonConvert.SerializeObject(logindata);
+			openString = "IDN " + openString;
+			#if DEBUG
+			Console.WriteLine("Open String: " + openString);
+			#endif
+			Core.websocket.OnOpen += (sender, e) => Core.websocket.Send(openString);
 		}
 	}
 
@@ -90,7 +114,7 @@ namespace CogitoSharp
 		#if DEBUG
         internal static WebSocket websocket = new WebSocket("ws://chat.f-list.net:9722"); //8722 Dev, 9722 Real but dev server is down \o/
 		#else
-        protected internal static WebSocket websocket = new WebSocket(String.Format("ws://{0}:{1}", Properties.Settings.Default.Host, Properties.Settings.Default.Port));
+        internal static WebSocket websocket = new WebSocket(String.Format("ws://{0}:{1}", Properties.Settings.Default.Host, Properties.Settings.Default.Port));
 		#endif
 
 		internal static List<User> users = new List<User>();
@@ -110,6 +134,8 @@ namespace CogitoSharp
 		/// The main entry point for the application.
 		/// </summary>
         static void Main(){
+			//dampenedSpringDelta();
+			
 			Application.SetCompatibleTextRenderingDefault(false);
             Application.EnableVisualStyles();
             cogitoUI = new CogitoUI();
@@ -119,10 +145,9 @@ namespace CogitoSharp
 			catch(System.NullReferenceException){Properties.Settings.Default.userAutoComplete = new AutoCompleteStringCollection();}
 			websocket.Connect();
 			Thread.Sleep(100);
-			Sender.Start();
+			//Sender.Start();
 			Application.Run(cogitoUI);
-			Sender.Join();
-			Console.WriteLine("");
+			//Sender.Join();
         }
 
 		private static EventHandler<MessageEventArgs> OnWebsocketMessage()
@@ -130,8 +155,7 @@ namespace CogitoSharp
 			throw new NotImplementedException();
 		}
 		
-		/// <summary>
-		/// Fetches the corresponding User instance from the program's List of users
+		/// <summary> Fetches the corresponding User instance from the program's List of users
 		/// </summary>
 		/// <param name="user">Username (string) to look for</param>
 		/// <returns></returns>
@@ -144,8 +168,7 @@ namespace CogitoSharp
 			}
 		}
 		
-		/// <summary>
-		/// Overloaded in order to immediately return User instances, as may happen.
+		/// <summary> Overloaded in order to immediately return User instances, as may happen.
 		/// </summary>
 		/// <param name="user">User instance.</param>
 		/// <returns></returns>
@@ -174,9 +197,41 @@ namespace CogitoSharp
 		//msgobj.opcode not in ["PRI", "MSG"]
 		}
 
-		/// <summary>
-		/// Gets the API Ticket needed for login, using Account and Password, and prepares the openString to be submitted on webSocket opening to authenticate to the server
+		/// <summary> Gets the API Ticket needed for login, using Account and Password, and prepares the openString to be submitted on webSocket opening to authenticate to the server
 		/// </summary>
+		/// 
+
+		public static float[] dampenedSpringDelta(int numResults=25, float amplitude = 1f, float damping = 0.2f, float tension = 0.7f)
+		{
+			//dampened spring oscillation is preferable to straight-up sin wave.
+			//newVelocity = oldVelocity * (1 - damping);             // 0:no damping; 1:full damping
+			//newVelocity -= (oldPosition - restValue) * springTension;   // The force to pull it back to the resting point
+			//newPosition = oldPosition + newVelocity;
+			//if (input[x]) y = input[x];
+			//	velo *= 1-damp.value;
+			//	velo -= y*k.value;
+			//	y += velo;
+			//	ctx.lineTo(x, mid - y*amp.value);
+
+			//which value is a full period? approx. 50
+			float position = 0f;
+			float velocity = 0f;
+			float[] deviations = new float[numResults];
+			for (int i = 0; i < numResults; i++)
+			{
+				//insert amplitude somehow.
+				velocity = velocity * (1f - damping);
+				velocity -= (position - damping) * tension;
+				position += velocity;
+				deviations[i] = position;
+			}
+			float average = deviations.Average();
+			for (int i = 0; i < numResults; i++){
+				deviations[i] = deviations[i] - average;
+				Console.WriteLine(i.ToString() + "\t" + deviations[i].ToString());	
+			}
+			return deviations;
+		}
     }
         
     public class Channel : IComparable{
