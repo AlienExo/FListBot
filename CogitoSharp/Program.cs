@@ -19,7 +19,7 @@ using Newtonsoft.Json.Linq;
  * [||||||||||] TODO: DONE 1 Start off by implementing some way of getting your API Key (getKey())
  * [||||||||--] TODO: Split Login and actual interface into two things > this.hide(), open login form, if login succeeds and character is chosen, this.show()
  * 
- * 
+ * The advanced login options should probably be processed befoooooore opening the ws://
  * [----------] TODO: 2* Get the flipping interface to run 'IN PARALLEL' with your other code. queue and events! Or THREADIIIIING
  * [----------] TODO: 3 Connect to test server (8722), use Type.InvokeMember and a static class to get delicious command parsing in a loop/event drived
  * [----------] TODO: Consider proper delegates for this thing
@@ -56,47 +56,81 @@ namespace CogitoSharp
 	
 	/// <summary> Manages login and -out as well as Identity Management
 	/// </summary>
-	/// 
+	///
+
+	public interface ILoginKey{
+		string error { get; set; }
+		string ticket { get; set; }
+	}
+
+	public class LoginKey : ILoginKey{
+		public int account_id { get; set; }
+		public string default_character { get; set; }
+		public List<string> characters { get; set; }
+		public string error { get; set; }
+		public List<Dictionary<string, string>> bookmarks { get; set; }
+		public List<Dictionary<string, string>> friends { get; set; }
+		public string ticket { get; set; }
+	}
+
+	public class LoginKeyConverter : Newtonsoft.Json.Converters.CustomCreationConverter<ILoginKey>{
+		public override ILoginKey Create(Type objectType){
+			return new LoginKey();
+		}
+	}
 
 	class Account
 	{
 		protected internal static string account;
-		protected internal static int accountID;
-		protected internal static List<string> Characters = new List<string>();
-		protected internal static string APIkey = "";
+		protected internal static LoginKey loginkey = null;
+		protected internal static List<string> bookmarks = new List<string>();
 			
-		protected internal static bool login(string _account, string _password){
+		protected internal static bool login(string _account, string _password, out string error){
+			#if DEBUG
+			error = "DEBUG MODE";
+			loginkey = new LoginKey();
+			loginkey.account_id = 000001;
+			bookmarks.Add("DEBUG OTHER CHARACTER");
+			loginkey.characters = new List<string>();
+			loginkey.characters.Add("DEBUG USER CHARACTER");
+			loginkey.default_character = "DEBUG DEFAULT CHARACTER";
+			loginkey.ticket = "t_DEBUGTICKERXXXXXXXX0000000001";
+			return true;
+			#endif
 			using (var wb = new WebClient()){
 				var data = new NameValueCollection();
 				data["account"] = _account;
 				data["password"] = _password;
-				var byteTicket = wb.UploadValues("http://www.f-list.net/json/getApiTicket.php", "POST", data);
+				var byteTicket = wb.UploadValues("https://www.f-list.net/json/getApiTicket.php", "POST", data);
 				string t1 = System.Text.Encoding.ASCII.GetString(byteTicket);
-				dynamic Response = JsonConvert.DeserializeObject(t1);
-				if (Response.SelectToken("error").ToString().Length > 0) { return false; }
+				loginkey = JsonConvert.DeserializeObject<LoginKey>(t1, new LoginKeyConverter());
+				if (loginkey.error.Length > 0) {
+					error = loginkey.error;
+					return false;}
 				else {
-					//TODO: Get characters, set up list, insert.
-					APIkey = Response.SelectToken("ticket");
-					string characters = Response.SelectToken("characters").ToString();
-					Characters.AddRange(characters.Split(','));
-					#if DEBUG
-					Console.WriteLine(Characters);
-					#endif
+					Account.account = _account;
+					error = "";
+					foreach (Dictionary<string, string> d in loginkey.bookmarks){
+						foreach (KeyValuePair<string, string> kv in d){Account.bookmarks.Add(kv.Value);}
+					}
+					Console.WriteLine(bookmarks);
+					bookmarks.Sort();
+					Console.WriteLine(bookmarks);
+					loginkey.bookmarks.Clear();
 					return true;
 				}	
 			}
 		}
 
 		protected internal static void characterSelect(string character){
-			if(APIkey.Length<=0){throw new ArgumentException("No valid login ticket/API Key is present.");}
+			if(loginkey.ticket.Length<=0){throw new ArgumentException("No valid login ticket/API Key is present.");}
 			var logindata = new Dictionary<string, string>();
 			logindata["method"] = "ticket";
-			logindata["account"] = account;
+			logindata["account"] = Account.account;
 			logindata["character"] = character;
-			logindata["ticket"] = APIkey;
+			logindata["ticket"] = Account.loginkey.ticket;
 			logindata["cname"] = "COGITO";
 			logindata["cversion"] = Application.ProductVersion;
-			
 			string openString = JsonConvert.SerializeObject(logindata);
 			openString = "IDN " + openString;
 			#if DEBUG
@@ -112,7 +146,7 @@ namespace CogitoSharp
 		internal static CogitoUI cogitoUI = null;
 
 		#if DEBUG
-        internal static WebSocket websocket = new WebSocket("ws://chat.f-list.net:9722"); //8722 Dev, 9722 Real but dev server is down \o/
+        internal static WebSocket websocket = new WebSocket("ws://chat.f-list.net:8722"); //8722 Dev, 9722 Real but dev server is down \o/
 		#else
         internal static WebSocket websocket = new WebSocket(String.Format("ws://{0}:{1}", Properties.Settings.Default.Host, Properties.Settings.Default.Port));
 		#endif
@@ -134,21 +168,23 @@ namespace CogitoSharp
 		/// The main entry point for the application.
 		/// </summary>
         static void Main(){
-			//dampenedSpringDelta();
-			
 			Application.SetCompatibleTextRenderingDefault(false);
-            Application.EnableVisualStyles();
-            cogitoUI = new CogitoUI();
-			websocket.OnMessage += (sender, e) => Console.WriteLine("Sender: "+sender.ToString() + "Event: "+e.Data.ToString());//TODO: Insert RawMessage-to-Object-onto-Collections.Queue
+			Application.EnableVisualStyles();
+			cogitoUI = new CogitoUI();
+			websocket.OnMessage += (sender, e) => Console.WriteLine("Sender: " + sender.ToString() + "Event: " + e.Data.ToString());//TODO: Insert RawMessage-to-Object-onto-Collections.Queue
 			//TODO: IMPLEMENT PROPERLY websocket.OnMessage += OnWebsocketMessage();
-			try{Console.WriteLine(Properties.Settings.Default.userAutoComplete.Count);}
-			catch(System.NullReferenceException){Properties.Settings.Default.userAutoComplete = new AutoCompleteStringCollection();}
-			websocket.Connect();
-			Thread.Sleep(100);
+			//websocket.OnMessage += OnWebsocketMessage();
+			try { Console.WriteLine(Properties.Settings.Default.userAutoComplete.Count); }
+			catch (System.NullReferenceException) { Properties.Settings.Default.userAutoComplete = new AutoCompleteStringCollection(); }
 			//Sender.Start();
 			Application.Run(cogitoUI);
 			//Sender.Join();
         }
+
+		private static void OnWebsocketClose()
+		{
+			websocket.Send("");
+		}
 
 		private static EventHandler<MessageEventArgs> OnWebsocketMessage()
 		{
@@ -185,54 +221,23 @@ namespace CogitoSharp
 			}
 		}
 
-		static private void digestRawMessage(string rawmessage){			
-		}
-
-		static void ProcessMessageOntoQueue(EventHandler<MessageEventArgs> e){
-		}
-
-		static void ProcessMessageFromQueue(FListMessageEventArgs msgobj){
-		//TODO: get message from queue, Type.InvokeMember on namespace/class FLISTPROCESSING
-		//TODO: print how?
-		//msgobj.opcode not in ["PRI", "MSG"]
-		}
-
-		/// <summary> Gets the API Ticket needed for login, using Account and Password, and prepares the openString to be submitted on webSocket opening to authenticate to the server
-		/// </summary>
-		/// 
-
-		public static float[] dampenedSpringDelta(int numResults=25, float amplitude = 1f, float damping = 0.2f, float tension = 0.7f)
+		static private void digestRawMessage(string rawmessage)
 		{
-			//dampened spring oscillation is preferable to straight-up sin wave.
-			//newVelocity = oldVelocity * (1 - damping);             // 0:no damping; 1:full damping
-			//newVelocity -= (oldPosition - restValue) * springTension;   // The force to pull it back to the resting point
-			//newPosition = oldPosition + newVelocity;
-			//if (input[x]) y = input[x];
-			//	velo *= 1-damp.value;
-			//	velo -= y*k.value;
-			//	y += velo;
-			//	ctx.lineTo(x, mid - y*amp.value);
-
-			//which value is a full period? approx. 50
-			float position = 0f;
-			float velocity = 0f;
-			float[] deviations = new float[numResults];
-			for (int i = 0; i < numResults; i++)
-			{
-				//insert amplitude somehow.
-				velocity = velocity * (1f - damping);
-				velocity -= (position - damping) * tension;
-				position += velocity;
-				deviations[i] = position;
-			}
-			float average = deviations.Average();
-			for (int i = 0; i < numResults; i++){
-				deviations[i] = deviations[i] - average;
-				Console.WriteLine(i.ToString() + "\t" + deviations[i].ToString());	
-			}
-			return deviations;
+			throw new NotImplementedException("NOPE");			
 		}
-    }
+
+		static void ProcessMessageOntoQueue(EventHandler<MessageEventArgs> e)
+		{
+			throw new NotImplementedException("NOPE");
+		}
+
+		static void ProcessMessageFromQueue(FListMessageEventArgs msgobj)
+		{
+			//TODO: get message from queue, Type.InvokeMember on namespace/class FLISTPROCESSING
+			//TODO: print how?
+			//msgobj.opcode not in ["PRI", "MSG"]
+		}
+	}
         
     public class Channel : IComparable{
 		public readonly int CID;
@@ -257,7 +262,7 @@ namespace CogitoSharp
             this.key = _name;
             this.name = _name;
             this.chanTab = new ChatTab(this.name);
-            Core.cogitoUI.chatTabs.TabPages.Add(this.chanTab);
+			CogitoUI.chatUI.chatTabs.TabPages.Add(this.chanTab);
 			Core.channels.Add(this);
 			this.CID=Core.channels.Count();
         }
@@ -266,13 +271,13 @@ namespace CogitoSharp
             this.key = _key;
             this.name = _name;
             this.chanTab = new ChatTab(this.name);
-            Core.cogitoUI.chatTabs.TabPages.Add(this.chanTab);
+            CogitoUI.chatUI.chatTabs.TabPages.Add(this.chanTab);
 			Core.channels.Add(this);
 			this.CID = Core.channels.Count;
         }
 
         ~Channel(){
-            Core.cogitoUI.chatTabs.TabPages.Remove(this.chanTab);
+            CogitoUI.chatUI.chatTabs.TabPages.Remove(this.chanTab);
         }
 
         public override string ToString(){
@@ -403,9 +408,41 @@ namespace CogitoSharp
 	/// Contains all methods that process FList server/client commands
 	/// </summary>
 	public sealed class FListProcessor{
-		public static void BRO(){}
-		public static void LIS(){}
+		/*
+		public static void ACB(){}
+		public static void ADL(){}
+		public static void AOP(){}
+		public static void AWC(){}
+		public static void (){}
+		public static void (){}
+		public static void (){}
+		public static void (){}
+		public static void (){}
+		public static void (){}
+		public static void (){}
+		public static void (){}
+		public static void (){}
+		public static void (){}
+		public static void (){}
+		public static void (){}
+		public static void (){}
+		public static void (){}
+		public static void (){}
+		public static void (){}
+		public static void (){}
+		public static void (){}
+		public static void (){}
+		public static void (){}
+		public static void (){}
+		public static void (){}
+		public static void (){}
+		public static void (){}
+		public static void (){}
+		public static void (){}
 
+		public static void (){}
+		public static void LIS(){}
+		*/
 	}	
 	/*
 	ACB This command requires chat op or higher. Request a character's account be banned from the server.<< ACB { "character": string }

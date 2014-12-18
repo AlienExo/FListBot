@@ -69,6 +69,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChatUI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChatUI.Designer.cs">
+      <DependentUpon>ChatUI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utils.cs" />
     <Compile Include="CogitoUI.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -84,6 +91,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
+    <EmbeddedResource Include="ChatUI.resx">
+      <DependentUpon>ChatUI.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CogitoUI.resx">
       <DependentUpon>CogitoUI.cs</DependentUpon>
     </EmbeddedResource>
@@ -100,6 +110,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\Account.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

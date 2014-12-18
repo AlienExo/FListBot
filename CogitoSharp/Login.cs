@@ -10,11 +10,11 @@ using System.Windows.Forms;
 
 namespace CogitoSharp
 {
-	public partial class loginForm : Form
+	public partial class LoginForm : Form
 	{
 		protected internal bool AdvancedLoginOptionsShown;
 
-		public loginForm()
+		public LoginForm()
 		{
 			InitializeComponent();
 			this.rememberPasswordCheck.Checked = Properties.Settings.Default.savePassword;
@@ -22,93 +22,82 @@ namespace CogitoSharp
 			this.loginUserField.AutoCompleteCustomSource = Properties.Settings.Default.userAutoComplete;
 		}
 
-		private void rememberPasswordCheck_CheckedChanged(object sender, EventArgs e)
+		private void characterSelectButton_Click(object sender, EventArgs e)
 		{
-			Properties.Settings.Default.savePassword = this.rememberPasswordCheck.Checked;
-		}
-
-		private void charSelectBox_Enter(object sender, EventArgs e)
-		{
-			this.charSelectBox.DataSource = Account.Characters;
-		}
-
-		private void charSelectButton_Click(object sender, EventArgs e)
-		{
-			Account.characterSelect(this.charSelectBox.SelectedText);
+			Account.characterSelect(this.characterSelectBox.SelectedText);
 			this.Hide();
-			Core.cogitoUI.Show();
-			Core.cogitoUI.ShowInTaskbar = true;
-		}
-
-		private void charSelectPanel_VisibleChanged(object sender, EventArgs e)
-		{
-			if (this.charSelectPanel.Visible == true){
-				this.charSelectButton.Visible = true;
-				this.charSelectBox.Visible = true;
-			}
+			Console.WriteLine("Now attempting to resume main UI");
+			CogitoUI.chatUI.Show();
 		}
 
 		private void loginSubmitButton_Click(object sender, EventArgs e)
 		{
-			if (this.rememberPasswordCheck.Checked == true)
+			if(this.AdvancedLoginOptionsShown == true){showAdvancedLoginOptions();}
+			if (!CogitoSharp.Core.websocket.IsAlive)
 			{
-				Console.WriteLine("Savings password " + this.loginPasswordField.Text);
-				Properties.Settings.Default.Password = this.loginPasswordField.Text;
+				CogitoSharp.Core.websocket.Connect();
+				System.Threading.Thread.Sleep(100);
 			}
+			this.loginErrorLabel.Text = "";
+			this.loginSubmitButton.Text = "Login...";
+			this.loginSubmitButton.Enabled = false;
+			if (this.rememberPasswordCheck.Checked == true){Properties.Settings.Default.Password = this.loginPasswordField.Text;}
 			else { Properties.Settings.Default.Password = ""; }
 			Properties.Settings.Default.Account = this.loginUserField.Text;
+			Properties.Settings.Default.savePassword = this.rememberPasswordCheck.Checked;
 			Properties.Settings.Default.Save();
-			if (!CogitoSharp.Account.login(this.loginUserField.Text, this.loginPasswordField.Text))
+			string loginError = "";
+			if (!CogitoSharp.Account.login(this.loginUserField.Text, this.loginPasswordField.Text, out loginError))
 			{
 				//shake animation
-				int maxDeviation = 20;
-
-				//for (float i = 0; i<1; i+=0.1f){
-				//	int deltaX = this.loginPasswordField.Location.X + (int)deviation * maxDeviation;
-				//	Console.WriteLine(this.loginPasswordField.Location);
-				//	this.loginPasswordField.Location = new Point(deltaX, this.loginPasswordField.Location.Y);
-				//	Console.WriteLine(this.loginPasswordField.Location);
-				//	this.loginPasswordField.Refresh();
-				//}
-
-				this.loginStatusLabel.ForeColor = System.Drawing.Color.Red;
-				this.loginStatusLabel.Text = "Could not log in. Please check Account name and password and try again.";
-				this.loginStatusLabel.BringToFront();
-			}
-			else
-			{
-				if (Properties.Settings.Default.userAutoComplete.Contains(this.loginUserField.Text) == false)
+				this.loginErrorLabel.Text = loginError;
+				int initialPasswordXLocation = this.loginElements.Location.X;
+				int initialPasswordYLocation = this.loginElements.Location.Y;
+				float[] shakevalues = Utils.Math.dampenedSpringDelta(initialPasswordXLocation, 10f);
+				foreach (float x in shakevalues)
 				{
-					Properties.Settings.Default.userAutoComplete.Add(this.loginUserField.Text);
+					this.loginElements.Location = new Point((int)x, initialPasswordYLocation);
+					this.loginElements.Refresh();
+					System.Threading.Thread.Sleep(20);
 				}
+				this.loginSubmitButton.Enabled = true;
+				this.loginSubmitButton.Text = "Login";
+			}
+			else{
+				this.loginSubmitButton.Enabled = true;
+				if (Properties.Settings.Default.userAutoComplete.Contains(this.loginUserField.Text) == false){Properties.Settings.Default.userAutoComplete.Add(this.loginUserField.Text);}
 				this.loginElements.Hide();
-				this.charSelectPanel.Visible = true;
-				this.charSelectPanel.BringToFront();
-
+				this.characterSelectBox.Enabled = true;
 			}
 		}
 
 		private void loginForm_Load(object sender, EventArgs e)
 		{
-			this.ActiveControl = this.loginUserField;
 			this.loginUserField.Text = Properties.Settings.Default.Account;
 			this.loginPasswordField.Text = Properties.Settings.Default.Password;
+			this.ActiveControl = this.loginUserField;
 		}
 
-		private void loginForm_FormClosed(object sender, FormClosedEventArgs e)
-		{
-			//this.Parent.
-		}
-
-		private void showAdvancedLoginButton_Click(object sender, EventArgs e)
-		{
+		private void showAdvancedLoginOptions(){
 			Point _pictureLocation = this.CogitoLogoBox.Location;
 			for(int i = 0; i<this.CogitoLogoBox.Width; i++){
 				if (!AdvancedLoginOptionsShown){this.CogitoLogoBox.Location= new Point(_pictureLocation.X + i, _pictureLocation.Y);}
 				else {this.CogitoLogoBox.Location= new Point(_pictureLocation.X - i, _pictureLocation.Y);}
 				this.CogitoLogoBox.Refresh();
 			}
+		}
+
+		private void showAdvancedLoginButton_Click(object sender, EventArgs e)
+		{
+			showAdvancedLoginOptions();
 			AdvancedLoginOptionsShown = !AdvancedLoginOptionsShown;
 		}
+
+		private void characterSelectBox_EnabledChanged(object sender, EventArgs e)
+		{
+			this.characterSelectBox.DataSource = Account.loginkey.characters;
+			this.characterSelectBox.SelectedIndex = 0;
+		}
+
 	}
 }

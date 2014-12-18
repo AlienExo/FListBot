@@ -12,53 +12,33 @@ namespace CogitoSharp
 {
     public partial class CogitoUI : Form
     {
-        public CogitoUI()
+		public static LoginForm loginForm = new LoginForm();
+		public static ChatUI chatUI = new ChatUI();
+
+		public CogitoUI()
         {
             InitializeComponent();
 			this.IsMdiContainer = true;
 		}
 		
-        private void sendButton_Click(object sender, EventArgs e)
-        {
-            Console.WriteLine(textBox1.Text);
-            textBox1.Text = "";
-        }
-
-        private void textBox1_GotFocus(object sender, EventArgs e)
-        {
-            Console.WriteLine(sender.ToString());
-            this.AcceptButton = sendButton;
-            //TODO: set sendButton to get whichever tab is in focus/front and therefore where to send what's entered
-        }
-
-		private void CogitoUI_Load(object sender, EventArgs e)
+       	private void CogitoUI_Load(object sender, EventArgs e)
 		{
-			//this.Visible = false;
-
+			loginForm.MdiParent = this;
+			chatUI.MdiParent = this;
 			this.Text = "Cogito v"+Application.ProductVersion;
-			//this.Hide();
-			loginForm LoginForm = new loginForm();
-			LoginForm.MdiParent = this;
-			LoginForm.Show();
+			chatUI.Hide();
+			loginForm.Show();
+		}
+
+		private void CogitoUI_ResizeEnd(object sender, EventArgs e)
+		{
+			
+		}
+
+		private void CogitoUI_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			Console.WriteLine("Closing connection...");
+			Core.websocket.Close();
 		}
 	}
-
-	public class ChatTab : TabPage
-    { 
-		private TextBox ChatTabTextInput = new TextBox();
-
-        public ChatTab(string _title)
-        {
-            base.Name = _title;
-            base.Text = _title;
-            this.ChatTabTextInput.AcceptsReturn = true;
-            this.SuspendLayout();
-            this.Controls.Add(ChatTabTextInput);
-            this.ResumeLayout();
-            ChatTabTextInput.Parent = this;
-            ChatTabTextInput.Dock = DockStyle.Fill;
-            ChatTabTextInput.BringToFront();
-        }
-
-    }
 }
