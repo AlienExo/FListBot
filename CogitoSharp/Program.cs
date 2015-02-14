@@ -1,4 +1,5 @@
-﻿using System;
+﻿#region Library Imports
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -12,10 +13,15 @@ using System.Web;
 using WebSocketSharp;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+#endregion
+
+#region To-do list
 /* TODO LIST
  * public event TabControlEventHandler Selected
  * 
- * [|||||-----] TODO: I have no idea what I'm doing 
+ * To try: Send raw AOP w/o op status. Send login for a different character w/ valid ticket for another
+ * 
+ * [|||||||---] TODO: I have no idea what I'm doing 
  * [||||||||||] TODO: DONE 1 Start off by implementing some way of getting your API Key (getKey())
  * [||||||||--] TODO: Split Login and actual interface into two things > this.hide(), open login form, if login succeeds and character is chosen, this.show()
  * 
@@ -27,20 +33,21 @@ using Newtonsoft.Json.Linq;
  * [----------] TODO: 5 Implement logic so the UI Components resize when the window does. 1/4 for the user list, all down the side. Three lines of text for the entry point, to the bottom. Rest TabPage.
  * [----------] TODO: Status bar at the top of the program for multi-character chats
  * [----------] TODO: Tiny profile view of people you're talking to, on the side. web browser or scraping. 
- *		shows age, gender, name, avatar
- *		small info area with quickmatch - fave matche, no match, your faves in their no, your no in their fav
- *		Customizable filters - value (e.g. Age) from combobox, operator from a combobox, then a relevant value in the next box
- *		detach? new window?
- *		Custom highlight triggers (array string[])
- * TODO: Log formatting and output. As .txt or .html, activate/deacticate images (checkbox)
- * TODO: Tree Diagram of friends	*----*
- *									|------*
+ * [----------]	shows age, gender, name, avatar
+ * [----------]		small info area with quickmatch - fave matche, no match, your faves in their no, your no in their fav
+ * [----------]		Customizable filters - value (e.g. Age) from combobox, operator from a combobox, then a relevant value in the next box
+ * [----------]		detach? new window?
+ * [----------]		Custom highlight triggers (array string[])
+ * [----------] TODO: Log formatting and output. As .txt or .html, activate/deacticate images (checkbox)
+ * [----------] TODO: Tree Diagram of friends	*----*
+ *												|------*
  *									
  * TODO: A Autocorrection as BLOSUM Like matrix of likelihood of typos, e.g. high for z and y, low for t and [Space] etc.
- * Settings panel on login form to set host and port
+ * [----------] Settings panel on login form to set host and port
  * 
  * 
 */
+#endregion
 
 namespace CogitoSharp
 {
@@ -53,23 +60,25 @@ namespace CogitoSharp
 
 	/// <summary> May be implemented for proper JSON serialization. Or not, because fuck this.
 	/// </summary>
-	
-	/// <summary> Manages login and -out as well as Identity Management
-	/// </summary>
-	///
-
 	public interface ILoginKey{
 		string error { get; set; }
 		string ticket { get; set; }
 	}
 
 	public class LoginKey : ILoginKey{
+		/// <summary>Server-side account number</summary>
 		public int account_id { get; set; }
+		/// <summary>character set as default on the server</summary>
 		public string default_character { get; set; }
+		/// <summary>All characters on the account. Limited to 30 for normal users.</summary>
 		public List<string> characters { get; set; }
+		/// <summary>Login error message (if any)</summary>
 		public string error { get; set; }
+		/// <summary>Characters bookmarked</summary>
 		public List<Dictionary<string, string>> bookmarks { get; set; }
+		/// <summary>List of characters befriended, and whom by</summary>
 		public List<Dictionary<string, string>> friends { get; set; }
+		/// <summary>The API Ticket used to access the system</summary>
 		public string ticket { get; set; }
 	}
 
@@ -86,13 +95,14 @@ namespace CogitoSharp
 		protected internal static List<string> bookmarks = new List<string>();
 			
 		protected internal static bool login(string _account, string _password, out string error){
-			#if DEBUG
+			#if NOCONNECT
 			error = "DEBUG MODE";
 			loginkey = new LoginKey();
 			loginkey.account_id = 000001;
-			bookmarks.Add("DEBUG OTHER CHARACTER");
+			bookmarks.Add("DEBUG BOOKMARK CHARACTER");
 			loginkey.characters = new List<string>();
 			loginkey.characters.Add("DEBUG USER CHARACTER");
+			loginkey.characters.Add("DEBUG DEFAULT CHARACTER");
 			loginkey.default_character = "DEBUG DEFAULT CHARACTER";
 			loginkey.ticket = "t_DEBUGTICKERXXXXXXXX0000000001";
 			return true;
@@ -113,9 +123,7 @@ namespace CogitoSharp
 					foreach (Dictionary<string, string> d in loginkey.bookmarks){
 						foreach (KeyValuePair<string, string> kv in d){Account.bookmarks.Add(kv.Value);}
 					}
-					Console.WriteLine(bookmarks);
-					bookmarks.Sort();
-					Console.WriteLine(bookmarks);
+					Account.bookmarks.Sort();
 					loginkey.bookmarks.Clear();
 					return true;
 				}	
@@ -137,6 +145,7 @@ namespace CogitoSharp
 			Console.WriteLine("Open String: " + openString);
 			#endif
 			Core.websocket.OnOpen += (sender, e) => Core.websocket.Send(openString);
+			Core.websocket.OnOpen += (sender, e) => Console.WriteLine("OPENED WEBSOCKET");
 		}
 	}
 
@@ -151,18 +160,21 @@ namespace CogitoSharp
         internal static WebSocket websocket = new WebSocket(String.Format("ws://{0}:{1}", Properties.Settings.Default.Host, Properties.Settings.Default.Port));
 		#endif
 
-		internal static List<User> users = new List<User>();
-        internal static List<Channel> channels = new List<Channel>();
+		internal static volatile List<User> users = new List<User>();
+        internal static volatile List<Channel> channels = new List<Channel>();
+		internal static List<User> globalOps = new List<User>();
 		
 		private static Queue<FListMessageEventArgs> IncomingMessageQueue = new Queue<FListMessageEventArgs>();
 		private static Queue<string> OutgoingMessageQueue = new Queue<string>();
-		private static Thread Sender = new Thread(SendMessage);
-		private static volatile bool _sendForever = new bool();
+		private static volatile bool _sendForever = true;
 		
-		
-		//public static Thread Receiver = new Thread();
+		private static void SendMessage(Object senderbool)
+		{
+			if (OutgoingMessageQueue.Count > 0){websocket.Send(OutgoingMessageQueue.Dequeue());}
+		}
 
-		private static void SendMessage(){while(_sendForever){websocket.Send(OutgoingMessageQueue.Dequeue());}}
+		private static TimerCallback sendTimerCallback = SendMessage;
+		internal static System.Threading.Timer Sender = new System.Threading.Timer(sendTimerCallback, _sendForever, 0, 500); 
 
 		/// <summary>
 		/// The main entry point for the application.
@@ -171,7 +183,7 @@ namespace CogitoSharp
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.EnableVisualStyles();
 			cogitoUI = new CogitoUI();
-			websocket.OnMessage += (sender, e) => Console.WriteLine("Sender: " + sender.ToString() + "Event: " + e.Data.ToString());//TODO: Insert RawMessage-to-Object-onto-Collections.Queue
+			//websocket.OnMessage += (sender, e) => Console.WriteLine("Sender: " + sender.ToString() + "Event: " + e.Data.ToString());//TODO: Insert RawMessage-to-Object-onto-Collections.Queue
 			//TODO: IMPLEMENT PROPERLY websocket.OnMessage += OnWebsocketMessage();
 			//websocket.OnMessage += OnWebsocketMessage();
 			try { Console.WriteLine(Properties.Settings.Default.userAutoComplete.Count); }
@@ -193,8 +205,8 @@ namespace CogitoSharp
 		
 		/// <summary> Fetches the corresponding User instance from the program's List of users
 		/// </summary>
-		/// <param name="user">Username (string) to look for</param>
-		/// <returns></returns>
+		/// <param name="username">Username (string) to look for</param>
+		/// <returns>User instance</returns>
 		public static User getUser(string username){
 			User _user = Core.users.Find(x => x.Name == username);
 			if (_user != null) {return _user;}
@@ -207,11 +219,20 @@ namespace CogitoSharp
 		/// <summary> Overloaded in order to immediately return User instances, as may happen.
 		/// </summary>
 		/// <param name="user">User instance.</param>
-		/// <returns></returns>
+		/// <returns>User instance</returns>
 		public static User getUser(User user){return user;}
-		
+
+		/// <summary> Overloaded in order to immediately return Channel instances, as may happen.
+		/// </summary>
+		/// <param name="channel">Channel instance.</param>
+		/// <returns>channel instance</returns>
 		public static Channel getChannel(Channel channel) { return channel; }
 
+		/// <summary>
+		/// Fetches the corresponding channel instance from the List of all channels registered in CogitoSharp.Core
+		/// </summary>
+		/// <param name="channel"></param>
+		/// <returns>Channel Instance</returns>
 		public static Channel getChannel(string channel){
 			Channel _channel = Core.channels.Find(x => x.key == channel);
 			if (_channel != null) { return _channel; }
@@ -221,10 +242,7 @@ namespace CogitoSharp
 			}
 		}
 
-		static private void digestRawMessage(string rawmessage)
-		{
-			throw new NotImplementedException("NOPE");			
-		}
+		private delegate void digestRawMessage(string rawmessage);
 
 		static void ProcessMessageOntoQueue(EventHandler<MessageEventArgs> e)
 		{
@@ -356,24 +374,7 @@ namespace CogitoSharp
 
 	//TODO: Oh god why this is horrible code
     public class FListMessageEventArgs : EventArgs{
-        public string opcode { get; set; }
-        public Dictionary<string, string> args { get; set; }
-		Source? source = null;
-		public FListMessageEventArgs(EventArgs e){
-			string s = e.ToString();
-			#if DEBUG
-				Console.WriteLine(s);
-			#endif
-			string opcode = s.Substring(0, 3);
-			Dictionary<string, string> Message = JsonConvert.DeserializeObject<Dictionary<string, string>>(s.Substring(3));
-			if (Message.ContainsKey("Channel"))
-				{
-					source = new Source(Core.getUser(Message["User"]), Core.getChannel(Message["Channel"]));
-				}
-
-			else{}
-			
-			}
+       
     }
 
 	///<summary>
@@ -389,60 +390,198 @@ namespace CogitoSharp
 		}
 	};
 
-	/*
     class Message{
-        public string[] args;
-        public string prms;
-		public string opcopde;
-		public Source source;
-		
-        Message()
-        {
+		public string opcode { get; set; }
+        public Dictionary<string, string> args { get; set; }
+		Source? source = null;
+		public Message(string rawmessage){
+			#if DEBUG
+				Console.WriteLine(rawmessage);
+			#endif
+			string opcode = rawmessage.Substring(0, 3);
+			Dictionary<string, string> Message = JsonConvert.DeserializeObject<Dictionary<string, string>>(rawmessage.Substring(3));
+			if (Message.ContainsKey("Channel"))
+				{
+					source = new Source(Core.getUser(Message["User"]), Core.getChannel(Message["Channel"]));
+				}
 
-        }
+			else{}
+			
+			}
 
     }
-	*/
 
 	/// <summary>
 	/// Contains all methods that process FList server/client commands
 	/// </summary>
-	public sealed class FListProcessor{
-		/*
-		public static void ACB(){}
-		public static void ADL(){}
-		public static void AOP(){}
-		public static void AWC(){}
-		public static void (){}
-		public static void (){}
-		public static void (){}
-		public static void (){}
-		public static void (){}
-		public static void (){}
-		public static void (){}
-		public static void (){}
-		public static void (){}
-		public static void (){}
-		public static void (){}
-		public static void (){}
-		public static void (){}
-		public static void (){}
-		public static void (){}
-		public static void (){}
-		public static void (){}
-		public static void (){}
-		public static void (){}
-		public static void (){}
-		public static void (){}
-		public static void (){}
-		public static void (){}
-		public static void (){}
-		public static void (){}
-		public static void (){}
+	internal sealed class FListProcessor{
+		/// <summary> ACB This command requires chat op or higher. Request a character's account be banned from the server. </summary>
+		public static void ACB(Message message){}
 
-		public static void (){}
-		public static void LIS(){}
-		*/
+		/// <summary> AOP The given character has been promoted to chatop. >> AOP { "character": string } / Promotes user to ChatOP</summary>
+		internal static void ADL(Message message){}
+
+		/// <summary> </summary>
+		internal static void AOP(Message message){}
+
+		/// <summary> </summary>
+		internal static void AWC(Message message){}
+
+		/// <summary> </summary>
+		internal static void BRO(Message message){}
+
+		/// <summary> </summary>
+		internal static void CBL(Message message){}
+
+		/// <summary> </summary>
+		internal static void CBU(Message message){}
+
+		/// <summary> </summary>
+		internal static void CCR(Message message){}
+
+		/// <summary> </summary>
+		internal static void CDS(Message message){}
+
+		/// <summary> </summary>
+		internal static void CHA(Message message){}
+
+		/// <summary> </summary>
+		internal static void CIU(Message message){}
+
+		/// <summary> </summary>
+		internal static void CKU(Message message){}
+
+		/// <summary> </summary>
+		internal static void COA(Message message){}
+
+		/// <summary> </summary>
+		internal static void COL(Message message){}
+
+		/// <summary> </summary>
+		internal static void CON(Message message){}
+
+		/// <summary> </summary>
+		internal static void COR(Message message){}
+
+		/// <summary> </summary>
+		internal static void CRC(Message message){}
+
+		/// <summary> </summary>
+		internal static void CSO(Message message){}
+
+		/// <summary> </summary>
+		internal static void CTU(Message message){}
+
+		/// <summary> </summary>
+		internal static void CUB(Message message){}
+
+		/// <summary> </summary>
+		internal static void DOP(Message message){}
+
+		/// <summary> </summary>
+		internal static void ERR(Message message){}
+
+		/// <summary> </summary>
+		internal static void FKS(Message message){}
+
+		/// <summary> </summary>
+		internal static void FLN(Message message){}
+
+		/// <summary> </summary>
+		internal static void FRL(Message message){}
+
+		/// <summary> </summary>
+		internal static void HLO(Message message){}
+
+		/// <summary> </summary>
+		internal static void ICH(Message message){}
+
+		/// <summary> </summary>
+		internal static void IGN(Message message){}
+
+		/// <summary> </summary>
+		internal static void JCH(Message message){}
+
+		/// <summary> </summary>
+		internal static void KID(Message message){}
+
+		/// <summary> </summary>
+		internal static void KIK(Message message){}
+
+		/// <summary> </summary>
+		internal static void KIN(Message message){}
+
+		/// <summary> </summary>
+		internal static void LCH(Message message){}
+
+		/// <summary> </summary>
+		internal static void LIS(Message message){}
+
+		/// <summary> </summary>
+		internal static void LRP(Message message){}
+
+		/// <summary> </summary>
+		internal static void MSG(Message message){}
+
+		/// <summary> </summary>
+		internal static void NLN(Message message){}
+
+		/// <summary> </summary>
+		internal static void ORS(Message message){}
+
+		/// <summary> </summary>
+		internal static void PIN(Message message){Core.websocket.Send("PIN");}
+
+		/// <summary> </summary>
+		internal static void PRD(Message message){}
+
+		/// <summary> </summary>
+		internal static void PRI(Message message){}
+
+		/// <summary> </summary>
+		internal static void PRO(Message message){}
+
+		/// <summary> </summary>
+		internal static void RLD(Message message){}
+
+		/// <summary> </summary>
+		internal static void RLL(Message message){}
+
+		/// <summary> </summary>
+		internal static void RMO(Message message){}
+
+		/// <summary> </summary>
+		internal static void RST(Message message){}
+
+		/// <summary> </summary>
+		internal static void RTB(Message message){}
+
+		/// <summary> </summary>
+		internal static void RWD(Message message){}
+
+		/// <summary> </summary>
+		internal static void SFC(Message message){}
+
+		/// <summary> </summary>
+		internal static void STA(Message message){}
+
+		/// <summary> </summary>
+		internal static void SYS(Message message){}
+
+		/// <summary> </summary>
+		internal static void TMO(Message message){}
+
+		/// <summary> </summary>
+		internal static void TPN(Message message){}
+
+		/// <summary> </summary>
+		internal static void UBN(Message message){}
+
+		/// <summary> </summary>
+		internal static void UPT(Message message){}
+
+		/// <summary> </summary>
+		internal static void VAR(Message message){}
 	}	
 	/*
 	ACB This command requires chat op or higher. Request a character's account be banned from the server.<< ACB { "character": string }

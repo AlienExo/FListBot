@@ -38,7 +38,7 @@ namespace CogitoSharp
 		private void CogitoUI_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			Console.WriteLine("Closing connection...");
-			Core.websocket.Close();
+			if (!Core.websocket.IsAlive){Core.websocket.Close();}
 		}
 	}
 }

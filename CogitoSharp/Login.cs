@@ -17,27 +17,21 @@ namespace CogitoSharp
 		public LoginForm()
 		{
 			InitializeComponent();
-			this.rememberPasswordCheck.Checked = Properties.Settings.Default.savePassword;
 			loginElements.BringToFront();
 			this.loginUserField.AutoCompleteCustomSource = Properties.Settings.Default.userAutoComplete;
 		}
 
 		private void characterSelectButton_Click(object sender, EventArgs e)
 		{
-			Account.characterSelect(this.characterSelectBox.SelectedText);
+			Account.characterSelect((string)this.characterSelectBox.SelectedItem);
 			this.Hide();
-			Console.WriteLine("Now attempting to resume main UI");
+			Console.WriteLine(String.Format("WebSocket is alive: {0}", CogitoSharp.Core.websocket.IsAlive));
 			CogitoUI.chatUI.Show();
 		}
 
 		private void loginSubmitButton_Click(object sender, EventArgs e)
 		{
 			if(this.AdvancedLoginOptionsShown == true){showAdvancedLoginOptions();}
-			if (!CogitoSharp.Core.websocket.IsAlive)
-			{
-				CogitoSharp.Core.websocket.Connect();
-				System.Threading.Thread.Sleep(100);
-			}
 			this.loginErrorLabel.Text = "";
 			this.loginSubmitButton.Text = "Login...";
 			this.loginSubmitButton.Enabled = false;
@@ -75,6 +69,8 @@ namespace CogitoSharp
 		{
 			this.loginUserField.Text = Properties.Settings.Default.Account;
 			this.loginPasswordField.Text = Properties.Settings.Default.Password;
+			this.rememberPasswordCheck.Checked = Properties.Settings.Default.savePassword;
+			this.portSelectionBox.Text = Properties.Settings.Default.Port.ToString();
 			this.ActiveControl = this.loginUserField;
 		}
 
@@ -99,5 +95,13 @@ namespace CogitoSharp
 			this.characterSelectBox.SelectedIndex = 0;
 		}
 
+		private void AdvancedLoginOptionsApplyButton_Click(object sender, EventArgs e)
+		{
+			Properties.Settings.Default.Port = int.Parse(this.portSelectionBox.Text);
+			if (this.WSButton.Checked == true){Core.websocket = new WebSocketSharp.WebSocket(String.Format("ws://{0}:{1}", Properties.Settings.Default.Host, Properties.Settings.Default.Port));}
+			else if (this.WSSButton.Checked == true){Core.websocket = new WebSocketSharp.WebSocket(String.Format("ws://{0}:{1}", Properties.Settings.Default.Host, Properties.Settings.Default.Port));}
+			this.showAdvancedLoginButton_Click(sender, e);
+			Console.WriteLine(String.Format("\tForm Value: {0} Type: {1}\n\tSettings value: {2} Type: {3}", this.portSelectionBox.Text, this.portSelectionBox.Text.GetType(), Properties.Settings.Default.Port, Properties.Settings.Default.Port.GetType()));
+		}
 	}
 }

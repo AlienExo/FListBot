@@ -373,7 +373,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;CogitoLogoBox.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;showAdvancedLoginButton.Name" xml:space="preserve">
     <value>showAdvancedLoginButton</value>
@@ -493,7 +493,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;loginElements.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>1</value>
   </data>
   <data name="showAdvancedLoginButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -708,6 +708,54 @@
   <data name="&gt;&gt;loginUserField.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
+  <data name="&gt;&gt;characterSelectButton.Name" xml:space="preserve">
+    <value>characterSelectButton</value>
+  </data>
+  <data name="&gt;&gt;characterSelectButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;characterSelectButton.Parent" xml:space="preserve">
+    <value>characterSelectionGroup</value>
+  </data>
+  <data name="&gt;&gt;characterSelectButton.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;characterSelectBox.Name" xml:space="preserve">
+    <value>characterSelectBox</value>
+  </data>
+  <data name="&gt;&gt;characterSelectBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;characterSelectBox.Parent" xml:space="preserve">
+    <value>characterSelectionGroup</value>
+  </data>
+  <data name="&gt;&gt;characterSelectBox.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="characterSelectionGroup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1, 63</value>
+  </data>
+  <data name="characterSelectionGroup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>250, 124</value>
+  </data>
+  <data name="characterSelectionGroup.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="characterSelectionGroup.Text" xml:space="preserve">
+    <value>Character Selection</value>
+  </data>
+  <data name="&gt;&gt;characterSelectionGroup.Name" xml:space="preserve">
+    <value>characterSelectionGroup</value>
+  </data>
+  <data name="&gt;&gt;characterSelectionGroup.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;characterSelectionGroup.Parent" xml:space="preserve">
+    <value>characterSelectPanel</value>
+  </data>
+  <data name="&gt;&gt;characterSelectionGroup.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="characterSelectButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -759,29 +807,134 @@
   <data name="&gt;&gt;characterSelectBox.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="characterSelectionGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 63</value>
+  <data name="portSelectionBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>37, 65</value>
   </data>
-  <data name="characterSelectionGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>250, 124</value>
+  <data name="portSelectionBox.Mask" xml:space="preserve">
+    <value>99990</value>
   </data>
-  <data name="characterSelectionGroup.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+  <data name="portSelectionBox.PromptChar" type="System.Char, mscorlib" xml:space="preserve">
+    <value> </value>
   </data>
-  <data name="characterSelectionGroup.Text" xml:space="preserve">
-    <value>Character Selection</value>
+  <data name="portSelectionBox.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms">
+    <value>No</value>
   </data>
-  <data name="&gt;&gt;characterSelectionGroup.Name" xml:space="preserve">
-    <value>characterSelectionGroup</value>
+  <data name="portSelectionBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>38, 20</value>
   </data>
-  <data name="&gt;&gt;characterSelectionGroup.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="portSelectionBox.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
   </data>
-  <data name="&gt;&gt;characterSelectionGroup.Parent" xml:space="preserve">
-    <value>characterSelectPanel</value>
+  <data name="&gt;&gt;portSelectionBox.Name" xml:space="preserve">
+    <value>portSelectionBox</value>
   </data>
-  <data name="&gt;&gt;characterSelectionGroup.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;portSelectionBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MaskedTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;portSelectionBox.Parent" xml:space="preserve">
+    <value>protocolSelectionBox</value>
+  </data>
+  <data name="&gt;&gt;portSelectionBox.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="portLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="portLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="portLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 69</value>
+  </data>
+  <data name="portLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>26, 13</value>
+  </data>
+  <data name="portLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="portLabel.Text" xml:space="preserve">
+    <value>Port</value>
+  </data>
+  <data name="&gt;&gt;portLabel.Name" xml:space="preserve">
+    <value>portLabel</value>
+  </data>
+  <data name="&gt;&gt;portLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;portLabel.Parent" xml:space="preserve">
+    <value>protocolSelectionBox</value>
+  </data>
+  <data name="&gt;&gt;portLabel.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="WSSButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="WSSButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 44</value>
+  </data>
+  <data name="WSSButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>106, 17</value>
+  </data>
+  <data name="WSSButton.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="WSSButton.Text" xml:space="preserve">
+    <value>wss:// (Secure)</value>
+  </data>
+  <data name="&gt;&gt;WSSButton.Name" xml:space="preserve">
+    <value>WSSButton</value>
+  </data>
+  <data name="&gt;&gt;WSSButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;WSSButton.Parent" xml:space="preserve">
+    <value>protocolSelectionBox</value>
+  </data>
+  <data name="&gt;&gt;WSSButton.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="WSButton.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="WSButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="WSButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 20</value>
+  </data>
+  <data name="WSButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>93, 17</value>
+  </data>
+  <data name="WSButton.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="WSButton.Text" xml:space="preserve">
+    <value>ws:// (Normal)</value>
+  </data>
+  <data name="&gt;&gt;WSButton.Name" xml:space="preserve">
+    <value>WSButton</value>
+  </data>
+  <data name="&gt;&gt;WSButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;WSButton.Parent" xml:space="preserve">
+    <value>protocolSelectionBox</value>
+  </data>
+  <data name="&gt;&gt;WSButton.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="protocolSelectionBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 75</value>
+  </data>
+  <data name="protocolSelectionBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>111, 108</value>
+  </data>
+  <data name="protocolSelectionBox.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="protocolSelectionBox.Text" xml:space="preserve">
+    <value>Protocol</value>
   </data>
   <data name="&gt;&gt;protocolSelectionBox.Name" xml:space="preserve">
     <value>protocolSelectionBox</value>
@@ -794,6 +947,21 @@
   </data>
   <data name="&gt;&gt;protocolSelectionBox.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="AdvancedLoginOptionsApplyButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="AdvancedLoginOptionsApplyButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>13, 189</value>
+  </data>
+  <data name="AdvancedLoginOptionsApplyButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="AdvancedLoginOptionsApplyButton.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="AdvancedLoginOptionsApplyButton.Text" xml:space="preserve">
+    <value>Apply</value>
   </data>
   <data name="&gt;&gt;AdvancedLoginOptionsApplyButton.Name" xml:space="preserve">
     <value>AdvancedLoginOptionsApplyButton</value>
@@ -826,139 +994,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;advancedLoginOptionsPanel.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;WSSButton.Name" xml:space="preserve">
-    <value>WSSButton</value>
-  </data>
-  <data name="&gt;&gt;WSSButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;WSSButton.Parent" xml:space="preserve">
-    <value>protocolSelectionBox</value>
-  </data>
-  <data name="&gt;&gt;WSSButton.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;WSButton.Name" xml:space="preserve">
-    <value>WSButton</value>
-  </data>
-  <data name="&gt;&gt;WSButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;WSButton.Parent" xml:space="preserve">
-    <value>protocolSelectionBox</value>
-  </data>
-  <data name="&gt;&gt;WSButton.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="protocolSelectionBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 32</value>
-  </data>
-  <data name="protocolSelectionBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 78</value>
-  </data>
-  <data name="protocolSelectionBox.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="protocolSelectionBox.Text" xml:space="preserve">
-    <value>Protocol</value>
-  </data>
-  <data name="&gt;&gt;protocolSelectionBox.Name" xml:space="preserve">
-    <value>protocolSelectionBox</value>
-  </data>
-  <data name="&gt;&gt;protocolSelectionBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;protocolSelectionBox.Parent" xml:space="preserve">
-    <value>advancedLoginOptionsPanel</value>
-  </data>
-  <data name="&gt;&gt;protocolSelectionBox.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="WSSButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="WSSButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 44</value>
-  </data>
-  <data name="WSSButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>106, 17</value>
-  </data>
-  <data name="WSSButton.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="WSSButton.Text" xml:space="preserve">
-    <value>wss:// (Secure)</value>
-  </data>
-  <data name="&gt;&gt;WSSButton.Name" xml:space="preserve">
-    <value>WSSButton</value>
-  </data>
-  <data name="&gt;&gt;WSSButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;WSSButton.Parent" xml:space="preserve">
-    <value>protocolSelectionBox</value>
-  </data>
-  <data name="&gt;&gt;WSSButton.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="WSButton.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="WSButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="WSButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 20</value>
-  </data>
-  <data name="WSButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>93, 17</value>
-  </data>
-  <data name="WSButton.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="WSButton.Text" xml:space="preserve">
-    <value>ws:// (Normal)</value>
-  </data>
-  <data name="&gt;&gt;WSButton.Name" xml:space="preserve">
-    <value>WSButton</value>
-  </data>
-  <data name="&gt;&gt;WSButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;WSButton.Parent" xml:space="preserve">
-    <value>protocolSelectionBox</value>
-  </data>
-  <data name="&gt;&gt;WSButton.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="AdvancedLoginOptionsApplyButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="AdvancedLoginOptionsApplyButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 189</value>
-  </data>
-  <data name="AdvancedLoginOptionsApplyButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
-  </data>
-  <data name="AdvancedLoginOptionsApplyButton.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="AdvancedLoginOptionsApplyButton.Text" xml:space="preserve">
-    <value>button1</value>
-  </data>
-  <data name="&gt;&gt;AdvancedLoginOptionsApplyButton.Name" xml:space="preserve">
-    <value>AdvancedLoginOptionsApplyButton</value>
-  </data>
-  <data name="&gt;&gt;AdvancedLoginOptionsApplyButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;AdvancedLoginOptionsApplyButton.Parent" xml:space="preserve">
-    <value>advancedLoginOptionsPanel</value>
-  </data>
-  <data name="&gt;&gt;AdvancedLoginOptionsApplyButton.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="characterSelectPanel.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 0</value>
@@ -979,7 +1015,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;characterSelectPanel.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>0</value>
   </data>
   <metadata name="accountBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
@@ -2682,6 +2718,9 @@
         f///////////////4AAAB/////////////////zwB7////////8=
 </value>
   </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterScreen</value>
   </data>
@@ -2695,7 +2734,7 @@
     <value>System.Windows.Forms.BindingSource, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>loginForm</value>
+    <value>LoginForm</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

@@ -32,9 +32,9 @@
 			this.CoreUITable = new System.Windows.Forms.TableLayoutPanel();
 			this.ChatLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
 			this.sendButton = new System.Windows.Forms.Button();
-			this.chatTabs = new System.Windows.Forms.TabControl();
+			this.chatTabs = new CogitoSharp.ChatTabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
-			this.textBox1 = new System.Windows.Forms.TextBox();
+			this.mainTextBox = new System.Windows.Forms.TextBox();
 			this.userListBox = new System.Windows.Forms.ListBox();
 			this.infoBarPanel = new System.Windows.Forms.Panel();
 			this.currenctCharAvatar = new System.Windows.Forms.PictureBox();
@@ -68,7 +68,7 @@
 			this.ChatLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
 			this.ChatLayoutPanel.Controls.Add(this.sendButton, 1, 1);
 			this.ChatLayoutPanel.Controls.Add(this.chatTabs, 0, 0);
-			this.ChatLayoutPanel.Controls.Add(this.textBox1, 0, 1);
+			this.ChatLayoutPanel.Controls.Add(this.mainTextBox, 0, 1);
 			this.ChatLayoutPanel.Controls.Add(this.userListBox, 1, 0);
 			this.ChatLayoutPanel.Location = new System.Drawing.Point(3, 65);
 			this.ChatLayoutPanel.Name = "ChatLayoutPanel";
@@ -96,7 +96,9 @@
 			this.chatTabs.Name = "chatTabs";
 			this.chatTabs.SelectedIndex = 0;
 			this.chatTabs.Size = new System.Drawing.Size(516, 272);
+			this.chatTabs.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
 			this.chatTabs.TabIndex = 0;
+			this.chatTabs.DoubleClick += new System.EventHandler(this.chatTabs_DoubleClick);
 			// 
 			// tabPage1
 			// 
@@ -108,13 +110,13 @@
 			this.tabPage1.Text = "Console";
 			this.tabPage1.UseVisualStyleBackColor = true;
 			// 
-			// textBox1
+			// mainTextBox
 			// 
-			this.textBox1.Location = new System.Drawing.Point(3, 281);
-			this.textBox1.Multiline = true;
-			this.textBox1.Name = "textBox1";
-			this.textBox1.Size = new System.Drawing.Size(516, 64);
-			this.textBox1.TabIndex = 2;
+			this.mainTextBox.Location = new System.Drawing.Point(3, 281);
+			this.mainTextBox.Multiline = true;
+			this.mainTextBox.Name = "mainTextBox";
+			this.mainTextBox.Size = new System.Drawing.Size(516, 64);
+			this.mainTextBox.TabIndex = 2;
 			// 
 			// userListBox
 			// 
@@ -152,6 +154,7 @@
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "ChatUI";
 			this.Text = "ChatUI";
+			this.Load += new System.EventHandler(this.ChatUI_Load);
 			this.CoreUITable.ResumeLayout(false);
 			this.ChatLayoutPanel.ResumeLayout(false);
 			this.ChatLayoutPanel.PerformLayout();
@@ -167,11 +170,11 @@
 		private System.Windows.Forms.TableLayoutPanel CoreUITable;
 		private System.Windows.Forms.TableLayoutPanel ChatLayoutPanel;
 		protected internal System.Windows.Forms.Button sendButton;
-		public System.Windows.Forms.TabControl chatTabs;
 		private System.Windows.Forms.TabPage tabPage1;
-		protected internal System.Windows.Forms.TextBox textBox1;
+		protected internal System.Windows.Forms.TextBox mainTextBox;
 		protected internal System.Windows.Forms.ListBox userListBox;
 		private System.Windows.Forms.Panel infoBarPanel;
 		private System.Windows.Forms.PictureBox currenctCharAvatar;
+		protected internal ChatTabControl chatTabs;
 	}
 }

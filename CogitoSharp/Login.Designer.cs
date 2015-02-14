@@ -45,6 +45,8 @@
 			this.characterSelectBox = new System.Windows.Forms.ComboBox();
 			this.advancedLoginOptionsPanel = new System.Windows.Forms.Panel();
 			this.protocolSelectionBox = new System.Windows.Forms.GroupBox();
+			this.portSelectionBox = new System.Windows.Forms.MaskedTextBox();
+			this.portLabel = new System.Windows.Forms.Label();
 			this.WSSButton = new System.Windows.Forms.RadioButton();
 			this.WSButton = new System.Windows.Forms.RadioButton();
 			this.AdvancedLoginOptionsApplyButton = new System.Windows.Forms.Button();
@@ -158,22 +160,34 @@
 			// 
 			// protocolSelectionBox
 			// 
+			this.protocolSelectionBox.Controls.Add(this.portSelectionBox);
+			this.protocolSelectionBox.Controls.Add(this.portLabel);
 			this.protocolSelectionBox.Controls.Add(this.WSSButton);
 			this.protocolSelectionBox.Controls.Add(this.WSButton);
 			resources.ApplyResources(this.protocolSelectionBox, "protocolSelectionBox");
 			this.protocolSelectionBox.Name = "protocolSelectionBox";
 			this.protocolSelectionBox.TabStop = false;
 			// 
+			// portSelectionBox
+			// 
+			resources.ApplyResources(this.portSelectionBox, "portSelectionBox");
+			this.portSelectionBox.Name = "portSelectionBox";
+			// 
+			// portLabel
+			// 
+			resources.ApplyResources(this.portLabel, "portLabel");
+			this.portLabel.Name = "portLabel";
+			// 
 			// WSSButton
 			// 
 			resources.ApplyResources(this.WSSButton, "WSSButton");
 			this.WSSButton.Name = "WSSButton";
-			this.WSSButton.TabStop = true;
 			this.WSSButton.UseVisualStyleBackColor = true;
 			// 
 			// WSButton
 			// 
 			resources.ApplyResources(this.WSButton, "WSButton");
+			this.WSButton.Checked = true;
 			this.WSButton.Name = "WSButton";
 			this.WSButton.TabStop = true;
 			this.WSButton.UseVisualStyleBackColor = true;
@@ -183,6 +197,7 @@
 			resources.ApplyResources(this.AdvancedLoginOptionsApplyButton, "AdvancedLoginOptionsApplyButton");
 			this.AdvancedLoginOptionsApplyButton.Name = "AdvancedLoginOptionsApplyButton";
 			this.AdvancedLoginOptionsApplyButton.UseVisualStyleBackColor = true;
+			this.AdvancedLoginOptionsApplyButton.Click += new System.EventHandler(this.AdvancedLoginOptionsApplyButton_Click);
 			// 
 			// characterSelectPanel
 			// 
@@ -194,18 +209,18 @@
 			// 
 			this.accountBindingSource.DataSource = typeof(CogitoSharp.Account);
 			// 
-			// loginForm
+			// LoginForm
 			// 
 			this.AcceptButton = this.loginSubmitButton;
 			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this.CogitoLogoBox);
-			this.Controls.Add(this.advancedLoginOptionsPanel);
 			this.Controls.Add(this.characterSelectPanel);
 			this.Controls.Add(this.loginElements);
+			this.Controls.Add(this.CogitoLogoBox);
+			this.Controls.Add(this.advancedLoginOptionsPanel);
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
-			this.Name = "loginForm";
+			this.Name = "LoginForm";
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
 			this.Load += new System.EventHandler(this.loginForm_Load);
 			((System.ComponentModel.ISupportInitialize)(this.CogitoLogoBox)).EndInit();
@@ -243,5 +258,7 @@
 		private System.Windows.Forms.GroupBox protocolSelectionBox;
 		private System.Windows.Forms.BindingSource accountBindingSource;
 		private System.Windows.Forms.Panel characterSelectPanel;
+		private System.Windows.Forms.Label portLabel;
+		private System.Windows.Forms.MaskedTextBox portSelectionBox;
 	}
 }
