@@ -12,8 +12,11 @@ namespace CogitoSharp
 {
     public partial class CogitoUI : Form
     {
-		public static LoginForm loginForm = new LoginForm();
-		public static ChatUI chatUI = new ChatUI();
+		internal static LoginForm loginForm = new LoginForm();
+		internal static ChatUI chatUI = new ChatUI();
+		#if DEBUG
+		internal static ChatTab DEBUGTAB = new ChatTab("DEBUG TAB");
+		#endif
 
 		public CogitoUI()
         {
@@ -30,15 +33,11 @@ namespace CogitoSharp
 			loginForm.Show();
 		}
 
-		private void CogitoUI_ResizeEnd(object sender, EventArgs e)
-		{
-			
-		}
-
 		private void CogitoUI_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			Console.WriteLine("Closing connection...");
-			if (!Core.websocket.IsAlive){Core.websocket.Close();}
+			Console.WriteLine("Program is shutting down. Closing connection...");
+			if (Core.websocket.IsAlive){Core.websocket.Close();}
 		}
+
 	}
 }

@@ -33,7 +33,7 @@ namespace Utils
 		}
 
 		protected internal static string numberToSentence<T>(ref T number) where T : IFormattable {
-			throw new NotImplementedException("NO");
+			throw new NotImplementedException("Function has not been implemented");
 		}
 	}
 

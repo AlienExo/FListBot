@@ -25,13 +25,17 @@ namespace CogitoSharp
 		{
 			Account.characterSelect((string)this.characterSelectBox.SelectedItem);
 			this.Hide();
-			Console.WriteLine(String.Format("WebSocket is alive: {0}", CogitoSharp.Core.websocket.IsAlive));
+			#if DEBUG
+				CogitoSharp.Debug.CogitoConsole console = new Debug.CogitoConsole();
+				console.Show();
+				CogitoSharp.Core.websocket.OnMessage += (snder, evnt) => console.console.AppendText(evnt.Data);
+			#endif
 			CogitoUI.chatUI.Show();
 		}
 
 		private void loginSubmitButton_Click(object sender, EventArgs e)
 		{
-			if(this.AdvancedLoginOptionsShown == true){showAdvancedLoginOptions();}
+			if(this.AdvancedLoginOptionsShown){showAdvancedLoginOptions();}
 			this.loginErrorLabel.Text = "";
 			this.loginSubmitButton.Text = "Login...";
 			this.loginSubmitButton.Enabled = false;

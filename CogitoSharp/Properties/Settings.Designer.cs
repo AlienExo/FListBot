@@ -63,6 +63,9 @@ namespace CogitoSharp.Properties {
             get {
                 return ((int)(this["Port"]));
             }
+			set{
+				this["Port"] = value;
+			}
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
