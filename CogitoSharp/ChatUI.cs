@@ -58,16 +58,26 @@ namespace CogitoSharp
 
 	public class ChatTab : TabPage{
 		private TextBox ChatTabTextInput = new TextBox();
+		internal TextBox ChannelMessages = new TextBox();
+		private bool flashing = false;
+
+		private void Flash(){
+		
+		}
 
 		public ChatTab(string _title){
 			base.Name = _title;
 			base.Text = _title;
 			this.ChatTabTextInput.AcceptsReturn = true;
+			this.ChannelMessages.ReadOnly = true;
+			this.ChannelMessages.Multiline = true;
 			this.SuspendLayout();
 			this.Controls.Add(ChatTabTextInput);
 			this.ResumeLayout();
+			ChannelMessages.Parent = this;
+			ChannelMessages.Dock = DockStyle.Top;
 			ChatTabTextInput.Parent = this;
-			ChatTabTextInput.Dock = DockStyle.Fill;
+			ChatTabTextInput.Dock = DockStyle.Bottom;
 			ChatTabTextInput.BringToFront();
 		}
 

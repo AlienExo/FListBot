@@ -1,0 +1,448 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CogitoSharp</name>
+    </assembly>
+    <members>
+        <member name="T:CogitoSharp.Channel">
+            <summary>Channel class, for both public and private channels</summary>
+        </member>
+        <member name="F:CogitoSharp.Channel.Count">
+            <summary>Channel ID Number</summary>
+        </member>
+        <member name="F:CogitoSharp.Channel.name">
+            <summary>Channel name, in human-readable format</summary>
+        </member>
+        <member name="F:CogitoSharp.Channel.users">
+            <summary>Array of all Users in the channel</summary>
+        </member>
+        <member name="F:CogitoSharp.Channel.chanTab">
+            <summary>Associated TabPage for this channel</summary>
+        </member>
+        <member name="F:CogitoSharp.Channel.minAge">
+            <summary>Minimum age to be in this channel. If set to a value greater than 0, the bot will attempt to kick everyone below this age.</summary>
+        </member>
+        <member name="M:CogitoSharp.Channel.Dispose">
+            <summary>
+            
+            </summary>
+            
+        </member>
+        <member name="M:CogitoSharp.Channel.#ctor(System.String)">
+            <summary>
+            Constructor, used with Public (e.g. name-only) channels
+            </summary>
+            <param name="_name">The channel's name</param>
+        </member>
+        <member name="M:CogitoSharp.Channel.#ctor(System.String,System.String)">
+            <summary>
+            Constructor for private channel, used on Invite or after ORS
+            </summary>
+            <param name="_key">The channel's UUID, used to join it</param>
+            <param name="_name">The channel's name</param>
+        </member>
+        <member name="M:CogitoSharp.Channel.Finalize">
+            <summary>Generic destrutor, closes associated TabPage</summary>
+        </member>
+        <member name="P:CogitoSharp.Channel.key">
+            <summary>Keys are the UUID for private channels; channel title for normal. Always use .key for channel-specific commands.</summary>
+        </member>
+        <member name="T:CogitoSharp.FListProcessor">
+            <summary>
+            Contains all methods that process FList server/client commands
+            </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.ACB(CogitoSharp.IO.SystemCommand)">
+            <summary> ACB This command requires chat op or higher. Request a character's account be banned from the server. </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.ADL(CogitoSharp.IO.SystemCommand)">
+            <summary>  Sends the client the current list of chatops. >> ADL { "ops": [string] }</summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.AOP(CogitoSharp.IO.SystemCommand)">
+            <summary>  The given character has been promoted to chatop. >> AOP { "character": string }</summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:CogitoSharp.FListProcessor.AWC(CogitoSharp.IO.SystemCommand)" -->
+        <member name="M:CogitoSharp.FListProcessor.BRO(CogitoSharp.IO.SystemCommand)">
+            <summary> Incoming admin broadcast. >> BRO { "message": string } </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:CogitoSharp.FListProcessor.CBL(CogitoSharp.IO.SystemCommand)" -->
+        <!-- Badly formed XML comment ignored for member "M:CogitoSharp.FListProcessor.CBU(CogitoSharp.IO.SystemCommand)" -->
+        <!-- Badly formed XML comment ignored for member "M:CogitoSharp.FListProcessor.CCR(CogitoSharp.IO.SystemCommand)" -->
+        <member name="M:CogitoSharp.FListProcessor.CDS(CogitoSharp.IO.SystemCommand)">
+            <summary>  Alerts the client that that the channel's description has changed. This is sent whenever a client sends a JCH to the server. >> CDS { "channel": string, "description": string } </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.CHA(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.CIU(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.CKU(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.COA(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.COL(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.CON(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.COR(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.CRC(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.CSO(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.CTU(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.CUB(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.DOP(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.ERR(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.FKS(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.FLN(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.FRL(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.HLO(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.ICH(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.IGN(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.JCH(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.KID(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.KIK(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.KIN(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.LCH(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.LIS(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.LRP(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.MSG(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.NLN(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.ORS(CogitoSharp.IO.SystemCommand)">
+            <summary> Digests an Open pRivate roomS message, extracting the keys necessary for access (keys are unique, names can be duplicate) and updating the Channel instances</summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.PIN(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.PRD(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.PRI(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.PRO(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.RLD(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.RLL(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.RMO(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.RST(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.RTB(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.RWD(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.SFC(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.STA(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.SYS(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.TMO(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.TPN(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.UBN(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.UPT(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.VAR(CogitoSharp.IO.SystemCommand)">
+            <summary> </summary>
+        </member>
+        <member name="F:CogitoSharp.FriendsList.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:CogitoSharp.FriendsList.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:CogitoSharp.FriendsList.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:CogitoSharp.IO.SystemCommand.send">
+            <summary>
+            Sends the message by adding it to the OutgoingMessageQueue
+            </summary>
+        </member>
+        <member name="M:CogitoSharp.IO.SystemCommand.ToString">
+            <summary>
+            Implementation for fserv - turns data into OPCODE and JSON
+            </summary>
+            <returns>A string OPCODE {JSONKEY: "value"}</returns>
+        </member>
+        <member name="M:CogitoSharp.IO.Message.send">
+            <summary>
+            Sends the message by adding it to the OutgoingMessageQueue
+            </summary>
+        </member>
+        <member name="M:CogitoSharp.IO.Message.reply(System.String)">
+            <summary>
+            Replies to the message by posting to the same user/channel where the Message originated
+            </summary>
+            <param name="replyText">Text to reply with.</param>
+        </member>
+        <member name="M:CogitoSharp.IO.Logging.LogFile.#ctor(System.String,System.String,System.Int64)">
+            <summary>
+            Creates a FileStream for writing to the logfile, and periodically (default: 10 sec.) flushes the buffer to preserve that data in event of failure. 
+            Keeping the file open rathern than open -> append -> close aparently improves performance
+            </summary>
+            <param name="DestinationFile">The Filename of the file to be logged to. Folder is automatically added.</param>
+            /// <param name="subfolder">The folder below the root logging folder, if any, this log should be put into. Default is none.</param>
+            /// <param name="writeInterval">The interval, in milliseconds, between calling Flush().</param>
+        </member>
+        <member name="F:CogitoSharp.Gimmicks.RPAdDeployer.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:CogitoSharp.Gimmicks.RPAdDeployer.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:CogitoSharp.Gimmicks.RPAdDeployer.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:CogitoSharp.Gimmicks.CASIE.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:CogitoSharp.Gimmicks.CASIE.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:CogitoSharp.Gimmicks.CASIE.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:CogitoSharp.ChatUI.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:CogitoSharp.ChatUI.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:CogitoSharp.ChatUI.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:CogitoSharp.Debug.CogitoConsole.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:CogitoSharp.Debug.CogitoConsole.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:CogitoSharp.Debug.CogitoConsole.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:CogitoSharp.User">
+            <summary>User (synonymous with Character)</summary>
+        </member>
+        <member name="F:CogitoSharp.CogitoUI.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:CogitoSharp.CogitoUI.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:CogitoSharp.CogitoUI.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:CogitoSharp.LoginForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:CogitoSharp.LoginForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:CogitoSharp.LoginForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:CogitoSharp.ICogitoPlugin">
+            <summary> 
+            Interface for all Plugins. Defining method triggers, commands, loop triggers and exit cleanup.
+            </summary>
+        </member>
+        <member name="T:CogitoSharp.ILoginKey">
+            <summary>May be implemented for proper JSON serialization.</summary>
+        </member>
+        <member name="P:CogitoSharp.LoginKey.account_id">
+            <summary>Server-side account number</summary>
+        </member>
+        <member name="P:CogitoSharp.LoginKey.default_character">
+            <summary>character set as default on the server</summary>
+        </member>
+        <member name="P:CogitoSharp.LoginKey.characters">
+            <summary>All characters on the account. Limited to 30 for normal users.</summary>
+        </member>
+        <member name="P:CogitoSharp.LoginKey.error">
+            <summary>Login error message (if any)</summary>
+        </member>
+        <member name="P:CogitoSharp.LoginKey.bookmarks">
+            <summary>Characters bookmarked</summary>
+        </member>
+        <member name="P:CogitoSharp.LoginKey.friends">
+            <summary>List of characters befriended, and whom by</summary>
+        </member>
+        <member name="P:CogitoSharp.LoginKey.ticket">
+            <summary>The API Ticket used to access the system</summary>
+        </member>
+        <member name="T:CogitoSharp.LoginKeyConverter">
+            <summary>Stub class for JSON Deserialization</summary>
+        </member>
+        <member name="T:CogitoSharp.Core">
+            <summary>Websocket handling, server connection, threading, all that goodness</summary>
+        </member>
+        <member name="M:CogitoSharp.Core.Main">
+            <summary>The main entry point for the application.</summary>
+        </member>
+        <member name="M:CogitoSharp.Core.getUser(System.String)">
+            <summary> Fetches the corresponding User instance from the program's List of users
+            </summary>
+            <param name="username">Username (string) to look for</param>
+            <returns>User instance</returns>
+        </member>
+        <member name="M:CogitoSharp.Core.getUser(CogitoSharp.User)">
+            <summary> Overloaded in order to immediately return User instances, as may happen...?
+            </summary>
+            <param name="user">User instance.</param>
+            <returns>User instance</returns>
+        </member>
+        <member name="M:CogitoSharp.Core.getChannel(CogitoSharp.Channel)">
+            <summary> Overloaded in order to immediately return Channel instances, as may happen...?
+            </summary>
+            <param name="channel">Channel instance.</param>
+            <returns>channel instance</returns>
+        </member>
+        <member name="M:CogitoSharp.Core.getChannel(System.String)">
+            <summary>
+            Fetches the corresponding channel instance from the List of all channels registered in CogitoSharp.Core
+            </summary>
+            <param name="channel"></param>
+            <returns>Channel Instance</returns>
+        </member>
+        <member name="T:CogitoSharp.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:CogitoSharp.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:CogitoSharp.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+    </members>
+</doc>

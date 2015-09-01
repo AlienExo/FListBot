@@ -116,6 +116,8 @@ namespace CogitoSharp
 		public List<Dictionary<string, string>> friends { get; set; }
 		/// <summary>The API Ticket used to access the system</summary>
 		public string ticket { get; set; }
+
+		public DateTime ticketTaken = DateTime.UtcNow;
 	}
 
 	/// <summary>Stub class for JSON Deserialization</summary>
@@ -128,53 +130,59 @@ namespace CogitoSharp
 	class Account
 	{
 		protected internal static string account;
-		protected internal static LoginKey loginkey = null;
+		protected internal static LoginKey LoginKey = null;
 		protected internal static List<string> bookmarks = new List<string>();
-		protected internal static User SYSTEMUSER = new User("<System>");
-		protected internal static Channel SYSTEMCHANNEL = new Channel("<System>");
-		protected internal static bool login(string _account, string _password, out string error){
-			#if NOCONNECT
-			error = "DEBUG MODE";
-			loginkey = new LoginKey();
-			loginkey.account_id = 000001;
-			bookmarks.Add("DEBUG BOOKMARK CHARACTER");
-			loginkey.characters = new List<string>();
-			loginkey.characters.Add("DEBUG USER CHARACTER");
-			loginkey.characters.Add("DEBUG DEFAULT CHARACTER");
-			loginkey.default_character = "DEBUG DEFAULT CHARACTER";
-			loginkey.ticket = "t_DEBUGTICKERXXXXXXXX0000000001";
-			return true;
-			#endif
-			using (var wb = new WebClient()){
+
+		protected internal static void getTicket(string _account, string _password)
+		{
+			using (var wb = new WebClient())
+			{
 				var data = new NameValueCollection();
 				data["account"] = _account;
 				data["password"] = _password;
 				var byteTicket = wb.UploadValues("https://www.f-list.net/json/getApiTicket.php", "POST", data);
 				string t1 = System.Text.Encoding.ASCII.GetString(byteTicket);
-				loginkey = JsonConvert.DeserializeObject<LoginKey>(t1, new LoginKeyConverter());
+				Account.LoginKey = JsonConvert.DeserializeObject<LoginKey>(t1, new LoginKeyConverter());
+				Account.LoginKey.ticketTaken = DateTime.UtcNow;
 			}
-			if (loginkey.error.Length > 0) {
-				error = loginkey.error;
+		}
+
+		protected internal static bool login(string _account, string _password, out string error){
+			#if NOCONNECT
+			error = "DEBUG MODE";
+			LoginKey = new LoginKey();
+			LoginKey.account_id = 000001;
+			bookmarks.Add("DEBUG BOOKMARK CHARACTER");
+			LoginKey.characters = new List<string>();
+			LoginKey.characters.Add("DEBUG USER CHARACTER");
+			LoginKey.characters.Add("DEBUG DEFAULT CHARACTER");
+			LoginKey.default_character = "DEBUG DEFAULT CHARACTER";
+			LoginKey.ticket = "t_DEBUGTICKERXXXXXXXX0000000001";
+			return true;
+			#endif
+			getTicket(_account, _password);
+			if (LoginKey.error.Length > 0) {
+				error = LoginKey.error;
 				return false;}
 			else {
 				Account.account = _account;
 				error = "";
-				foreach (Dictionary<string, string> d in loginkey.bookmarks){
+				foreach (Dictionary<string, string> d in LoginKey.bookmarks){
 					foreach (KeyValuePair<string, string> kv in d){Account.bookmarks.Add(kv.Value);}
 				}
 				Account.bookmarks.Sort();
-				loginkey.bookmarks.Clear();
+				LoginKey.bookmarks.Clear();
 				return true;
 			}
 		}
 
 		protected internal static void characterSelect(string character){
-			if(loginkey.ticket.Length<=0){throw new ArgumentException("No valid login ticket/API Key is present.");}
+			if(LoginKey.ticket.Length<=0){throw new ArgumentException("No valid login ticket/API Key is present.");}
 			var logindata = new Dictionary<string, string>();
 			logindata["method"] = "ticket";
 			logindata["account"] = Account.account;
 			logindata["character"] = character;
-			logindata["ticket"] = Account.loginkey.ticket;
+			logindata["ticket"] = Account.LoginKey.ticket;
 			logindata["cname"] = "COGITO";
 			logindata["cversion"] = Application.ProductVersion;
 			string openString = JsonConvert.SerializeObject(logindata);
@@ -183,7 +191,8 @@ namespace CogitoSharp
 			Console.WriteLine("Open String: " + openString);
 			#endif
 			Core.websocket.OnOpen += (sender, e) => Core.websocket.Send(openString);
-			Core.websocket.OnOpen += (sender, e) => Console.WriteLine("OPENED WEBSOCKET");
+			Core.websocket.OnOpen += (sender, e) => Console.WriteLine("Opened Websocket.");
+			Core.websocket.OnOpen += (sender, e) => Core.websocket.Send("ORS");
 		}
 	}
 
@@ -194,8 +203,8 @@ namespace CogitoSharp
 		#else
 			internal static WebSocket websocket = new WebSocket(String.Format("ws://{0}:{1}", Properties.Settings.Default.Host, Properties.Settings.Default.Port));
 		#endif
-		internal static volatile List<User> users = new List<User>();
-        internal static volatile List<Channel> channels = new List<Channel>();
+		internal static volatile HashSet<User> users = new HashSet<User>();
+        internal static volatile HashSet<Channel> channels = new HashSet<Channel>();
 		internal static List<User> globalOps = new List<User>();
 		
 		private static Queue<CogitoSharp.IO.Message> IncomingMessageQueue = new Queue<CogitoSharp.IO.Message>();
@@ -206,6 +215,9 @@ namespace CogitoSharp
 
 		private static TimerCallback sendTimerCallback = SendMessageFromQueue;
 		internal static System.Threading.Timer EternalSender = new System.Threading.Timer(sendTimerCallback, _sendForever, System.Threading.Timeout.Infinite, 3000);
+
+		internal static IO.Logging.LogFile SystemLog = new IO.Logging.LogFile("System Log");
+		internal static IO.Logging.LogFile ErrorLog = new IO.Logging.LogFile("Error Log");
 
 		internal static CogitoUI cogitoUI = null;
 		internal static SpeechSynthesizer SYBIL = new SpeechSynthesizer();
@@ -231,7 +243,10 @@ namespace CogitoSharp
 		internal static void OnWebsocketMessage(Object sender, WebSocketSharp.MessageEventArgs e){
 			SystemCommand c = new SystemCommand(e.Data);
 			try{ typeof(FListProcessor).GetMethod(c.opcode, BindingFlags.NonPublic | BindingFlags.Static).Invoke(c, new Object[] {c}); }
-			catch (Exception FuckUp) { Console.WriteLine(String.Format("\t/!\\METHOD INVOCATION {0} FAILED: {1} - {2}", FuckUp.TargetSite, FuckUp.Message, FuckUp.InnerException)); }
+			catch (Exception FuckUp) { 
+				//Console.WriteLine(String.Format("\t/!\\METHOD INVOCATION {0} FAILED: {1} - {2}", FuckUp.TargetSite, FuckUp.Message, FuckUp.InnerException)); 
+				SystemLog.Log(String.Format("Invocation of Method '{0}' failed:\n\t{1}\n\t{2}", FuckUp.TargetSite, FuckUp.Message, FuckUp.InnerException));
+				}
 		}
 		
 		/// <summary> Fetches the corresponding User instance from the program's List of users
@@ -239,8 +254,7 @@ namespace CogitoSharp
 		/// <param name="username">Username (string) to look for</param>
 		/// <returns>User instance</returns>
 		public static User getUser(string username){
-			User _user = Core.users.Find(x => x.Name == username);
-			return _user ?? new User(username);
+			return Core.users.Count(x => x.Name == username) > 0 ? Core.users.First<User>(n => n.Name == username) : new User(username);
 		}
 		
 		/// <summary> Overloaded in order to immediately return User instances, as may happen...?
@@ -261,8 +275,7 @@ namespace CogitoSharp
 		/// <param name="channel"></param>
 		/// <returns>Channel Instance</returns>
 		public static Channel getChannel(string channel){
-			Channel _channel = Core.channels.Find(x => x.key == channel);
-			return _channel ?? new Channel(channel);
+			return Core.channels.Count(x => x.key == channel) > 0 ? Core.channels.First<Channel>(n => n.key == channel) : new Channel(channel);
 		}
 
 		static void ProcessMessageFromQueue(CogitoSharp.IO.Message msgobj)

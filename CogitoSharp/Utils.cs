@@ -2,19 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Utils
+namespace CogitoSharp.Utils
 {
 	class Math
 	{
-		protected internal static float[] dampenedSpringDelta(int start = 0, float amplitude = 1f, float damping = 0.2f, float tension = 0.7f)
+		protected internal static float[] dampenedSpringDelta(int start = 0, float amplitude = 1f, float damping = 0.2f, float tension = 0.7f, int precision = 50)
 		{
 			//dampened spring oscillation is preferable to straight-up sin wave.
 			float position = -1f;
 			float velocity = 0.5f;
-			float[] deviations = new float[50];
-			for (int i = 0; i < 50; i++)
+			float[] deviations = new float[precision];
+			for (int i = 0; i < precision; i++)
 			{
 				//insert amplitude somehow.
 				velocity = velocity * (1f - damping);
@@ -23,7 +24,7 @@ namespace Utils
 				deviations[i] = position;
 			}
 			float average = deviations.Average();
-			for (int i = 0; i < 50; i++)
+			for (int i = 0; i < precision; i++)
 			{
 				float res = deviations[i] - average;
 				res *= amplitude;
@@ -37,4 +38,8 @@ namespace Utils
 		}
 	}
 
+	class RegularExpressions{
+		internal static Regex ProfileHTMLTags = new Regex(@"<span class=.*>(.*):</span>(.*)");
+		internal static Regex AgeSearch = new Regex(@"\d{1, 9}");
+	}
 }

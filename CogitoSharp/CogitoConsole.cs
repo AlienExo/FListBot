@@ -43,7 +43,7 @@ namespace CogitoSharp.Debug
 		{
 			if (e.KeyChar == (char)Keys.Enter){
 				this.console.AppendText(this.input.Text);
-				Core.SYBIL.Speak(this.input.Text.Substring(2));
+
 				this.input.Text = "> ";
 				//todo console parser/logic -> direct interface user <-> bot
 			}

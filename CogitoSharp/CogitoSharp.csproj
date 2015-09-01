@@ -26,6 +26,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -33,10 +34,11 @@
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;KEYTEST;CHANNELTEST;USERTEST</DefineConstants>
+    <DefineConstants>DEBUG;KEYTEST;CHANNELTEST;USERTEST</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\CogitoSharp.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -46,35 +48,87 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NoConnect|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\NoConnect\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;KEYTEST;CHANNELTEST;USERTEST</DefineConstants>
+    <DocumentationFile>bin\Debug\CogitoSharp.XML</DocumentationFile>
+    <Optimize>true</Optimize>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HtmlAgilityPack, Version=1.4.9.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Speech" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.XML" />
     <Reference Include="websocket-sharp">
       <HintPath>..\packages\WebSocketSharp\websocket-sharp.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Channel.cs" />
+    <Compile Include="Config.cs" />
+    <Compile Include="FListProcessor.cs" />
+    <Compile Include="FriendsList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FriendsList.Designer.cs">
+      <DependentUpon>FriendsList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IO.cs" />
+    <Compile Include="RPAdDeployer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RPAdDeployer.Designer.cs">
+      <DependentUpon>RPAdDeployer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CASIE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CASIE.Designer.cs">
+      <DependentUpon>CASIE.cs</DependentUpon>
+    </Compile>
     <Compile Include="ChatUI.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ChatUI.Designer.cs">
       <DependentUpon>ChatUI.cs</DependentUpon>
     </Compile>
+    <Compile Include="CogitoConsole.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CogitoConsole.Designer.cs">
+      <DependentUpon>CogitoConsole.cs</DependentUpon>
+    </Compile>
+    <Compile Include="User.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="CogitoUI.cs">
       <SubType>Form</SubType>
@@ -91,8 +145,20 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
+    <EmbeddedResource Include="FriendsList.resx">
+      <DependentUpon>FriendsList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RPAdDeployer.resx">
+      <DependentUpon>RPAdDeployer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CASIE.resx">
+      <DependentUpon>CASIE.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ChatUI.resx">
       <DependentUpon>ChatUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CogitoConsole.resx">
+      <DependentUpon>CogitoConsole.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CogitoUI.resx">
       <DependentUpon>CogitoUI.cs</DependentUpon>
@@ -108,11 +174,12 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\Account.datasource" />
     <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Compile Include="Properties\Settings.Designer.cs">

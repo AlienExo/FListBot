@@ -14,14 +14,17 @@ namespace CogitoSharp
     {
 		internal static LoginForm loginForm = new LoginForm();
 		internal static ChatUI chatUI = new ChatUI();
-		#if DEBUG
-		internal static ChatTab DEBUGTAB = new ChatTab("DEBUG TAB");
-		#endif
+		internal static User SYSTEMUSER = new User("<System>");
+		internal static Channel SYSTEMCHANNEL = new Channel("<System>");
+		internal static CogitoSharp.Debug.CogitoConsole console = null;
 
 		public CogitoUI()
         {
             InitializeComponent();
 			this.IsMdiContainer = true;
+			#if DEBUG
+				CogitoUI.console = new CogitoSharp.Debug.CogitoConsole();
+			#endif
 		}
 		
        	private void CogitoUI_Load(object sender, EventArgs e)

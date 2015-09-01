@@ -11,9 +11,6 @@
     <Setting Name="Host" Type="System.String" Scope="Application">
       <Value Profile="(Default)">chat.f-list.net</Value>
     </Setting>
-    <Setting Name="Port" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">9722</Value>
-    </Setting>
     <Setting Name="Password" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
@@ -21,6 +18,12 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="userAutoComplete" Type="System.Windows.Forms.AutoCompleteStringCollection" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Port" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">9722</Value>
+    </Setting>
+    <Setting Name="LogPath" Type="System.String" Scope="Application">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

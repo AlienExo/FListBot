@@ -7,8 +7,16 @@ using System.ComponentModel;
 using System.IO;
 using System.Net;
 using System.Net.Cache;
+using System.Text.RegularExpressions;
+using System.Web;
 using System.Windows.Media.Imaging;
 using System.Windows.Markup;
+using System.Reflection;
+using System.Runtime.InteropServices.Expando;
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using HtmlAgilityPack;
 
 namespace CogitoSharp
 {
@@ -18,23 +26,38 @@ namespace CogitoSharp
 	/// <summary>User (synonymous with Character)</summary>
 	public class User : IComparable
 	{
-		private readonly int UID = ++User.Count;
 		private static int Count;
+		private readonly int UID = ++User.Count;
+		private object UserLock;
+
 		public readonly string Name = null;
-		public readonly int Age = 0;
-		private readonly Genders Gender = Genders.None;
+		private int age = 0;
+		public int Age {
+			get{
+				if (this.age == 0){
+					GetProfileInfo();
+				}
+				return this.age;
+			}
+		}
+
+		public int Weight;
+
+		internal Genders Gender = Genders.None;
 		internal Status status = Status.online;
+		internal string Orientation;
 		public Dictionary<string, object> Stats;
 		public Dictionary<string, List<string>> Kinks;
 		internal bool isInteresting;
 		internal BitmapImage Avatar;
 
-		public User(string nName) { this.Name = nName; }
+		public User(string nName) { this.Name = nName; Core.users.Add(this); }
 
 		public User(string nName, int nAge)
 		{
 			this.Name = nName;
-			this.Age = nAge;
+			this.age = nAge;
+			Core.users.Add(this);
 		}
 
 		public override string ToString() { return this.Name; }
@@ -66,11 +89,9 @@ namespace CogitoSharp
 			else { throw new ArgumentException("Object cannot be made into User. Cannot CompareTo()."); }
 		}
 
-		public void GetAvatar()
-		{
+		public void GetAvatar(){
 			if (Name == null)
 				return;
-
 			var worker = new BackgroundWorker();
 			worker.DoWork += (s, e) =>
 			{
@@ -116,6 +137,51 @@ namespace CogitoSharp
 					Avatar = bitmapImage;
 
 				worker.Dispose();
+			};
+
+			worker.RunWorkerAsync(Config.URLConstants.CharacterAvatar + Name.ToLower() + ".png");
+		}
+
+		public void GetProfileInfo(){
+			var worker = new BackgroundWorker();
+			worker.DoWork += (s, e) =>
+			{
+				Dictionary<string, object> ProfileData = new Dictionary<string, object>();
+
+				WebRequest wr = WebRequest.Create(CogitoSharp.Config.URLConstants.CharacterInfo);
+				WebHeaderCollection RequestData = new WebHeaderCollection();
+				RequestData["name"] = this.Name.ToLower();
+				if ((TimeSpan)(DateTime.UtcNow - CogitoSharp.Account.LoginKey.ticketTaken) > CogitoSharp.Config.AppSettings.ticketLifetime) {  }
+				RequestData["ticket"] = CogitoSharp.Account.LoginKey.ticket;
+				RequestData["account"] = CogitoSharp.Account.LoginKey.account_id.ToString();
+				RequestData["warning"] = "1";
+				wr.Headers = RequestData;
+				Dictionary<string, object> Response = JsonConvert.DeserializeObject<Dictionary<string, object>>(wr.GetResponse().ToString());			
+				if (Response["error"].ToString().Length > 0) {
+					using (WebClient wc = new WebClient()){
+						wc.Headers.Add("warning,1");
+						HtmlDocument Profile = new HtmlDocument();
+						Profile.LoadHtml(wc.DownloadString(CogitoSharp.Config.URLConstants.ProfileRoot + HttpUtility.HtmlEncode(this.Name)));
+						foreach(HtmlNode ProfileItem in Profile.DocumentNode.SelectNodes("div[@class='infodatabox']")){
+							Match dataToken = CogitoSharp.Utils.RegularExpressions.ProfileHTMLTags.Match(ProfileItem.ToString());
+							Console.WriteLine(dataToken.ToString());
+							ProfileData[dataToken.Groups[0].ToString()] = dataToken.Groups[1]; 
+						}
+					}
+				}
+				e.Result = ProfileData;
+			};
+
+			worker.RunWorkerCompleted += (s, e) =>
+			{
+				lock (UserLock){
+					var Results = e.Result as Dictionary<string, object>;
+					if (Results.ContainsKey("age")){ this.age = int.Parse(Utils.RegularExpressions.AgeSearch.Match(Results["age"].ToString()).Groups[0].ToString()); }
+					if (Results.ContainsKey("weight")){ this.Weight = int.Parse(Utils.RegularExpressions.AgeSearch.Match(Results["age"].ToString()).Groups[0].ToString()); }
+					if (Results.ContainsKey("gender")){ this.Gender = (Genders)Enum.Parse(typeof(Genders), Results["gender"].ToString()); }
+					//TODO etc etc
+					worker.Dispose();
+				}
 			};
 
 			worker.RunWorkerAsync(Config.URLConstants.CharacterAvatar + Name.ToLower() + ".png");

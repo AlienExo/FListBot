@@ -10,9 +10,10 @@ using System.Windows.Forms;
 
 namespace CogitoSharp
 {
-	public partial class LoginForm : Form
+	internal partial class LoginForm : Form
 	{
 		protected internal bool AdvancedLoginOptionsShown;
+		
 
 		public LoginForm()
 		{
@@ -26,9 +27,8 @@ namespace CogitoSharp
 			Account.characterSelect((string)this.characterSelectBox.SelectedItem);
 			this.Hide();
 			#if DEBUG
-				CogitoSharp.Debug.CogitoConsole console = new Debug.CogitoConsole();
-				console.Show();
-				CogitoSharp.Core.websocket.OnMessage += (snder, evnt) => console.console.AppendText(evnt.Data);
+				CogitoUI.console.Show();
+				CogitoSharp.Core.websocket.OnMessage += (snder, evnt) => CogitoUI.console.console.AppendText(evnt.Data);
 			#endif
 			CogitoUI.chatUI.Show();
 		}
@@ -95,7 +95,7 @@ namespace CogitoSharp
 
 		private void characterSelectBox_EnabledChanged(object sender, EventArgs e)
 		{
-			this.characterSelectBox.DataSource = Account.loginkey.characters;
+			this.characterSelectBox.DataSource = Account.LoginKey.characters;
 			this.characterSelectBox.SelectedIndex = 0;
 		}
 
@@ -103,9 +103,10 @@ namespace CogitoSharp
 		{
 			Properties.Settings.Default.Port = int.Parse(this.portSelectionBox.Text);
 			if (this.WSButton.Checked == true){Core.websocket = new WebSocketSharp.WebSocket(String.Format("ws://{0}:{1}", Properties.Settings.Default.Host, Properties.Settings.Default.Port));}
-			else if (this.WSSButton.Checked == true){Core.websocket = new WebSocketSharp.WebSocket(String.Format("ws://{0}:{1}", Properties.Settings.Default.Host, Properties.Settings.Default.Port));}
+			else if (this.WSSButton.Checked == true){Core.websocket = new WebSocketSharp.WebSocket(String.Format("wss://{0}:{1}", Properties.Settings.Default.Host, Properties.Settings.Default.Port));}
 			this.showAdvancedLoginButton_Click(sender, e);
 			Console.WriteLine(String.Format("\tForm Value: {0} Type: {1}\n\tSettings value: {2} Type: {3}", this.portSelectionBox.Text, this.portSelectionBox.Text.GetType(), Properties.Settings.Default.Port, Properties.Settings.Default.Port.GetType()));
+			Properties.Settings.Default.Save();
 		}
 	}
 }

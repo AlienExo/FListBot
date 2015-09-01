@@ -8,25 +8,25 @@ using System.Windows.Forms;
 namespace CogitoSharp
 {
 	/// <summary>Channel class, for both public and private channels</summary>
-	public class Channel : IComparable, IDisposable
+	internal class Channel : IComparable, IDisposable
 	{
 		/// <summary>Channel ID Number</summary>
-		static int Count;
+		private static int Count;
 		private readonly int CID = ++Channel.Count;
 		/// <summary>Keys are the UUID for private channels; channel title for normal. Always use .key for channel-specific commands.</summary>
-		public string key
+		internal string key
 		{
 			get { return this.key ?? this.name; }
 			set { }
 		}
 		/// <summary>Channel name, in human-readable format</summary>
-		public string name;
+		internal string name;
 		/// <summary>Array of all Users in the channel</summary>
 		private User[] users;
 		/// <summary>Associated TabPage for this channel</summary>
-		private TabPage chanTab;
+		internal TabPage chanTab;
 		/// <summary>Minimum age to be in this channel. If set to a value greater than 0, the bot will attempt to kick everyone below this age.</summary>
-		private Int16 minAge = 0;
+		internal Int16 minAge = 0;
 		private bool disposed = false;
 		/// <summary>
 		/// 
@@ -36,12 +36,13 @@ namespace CogitoSharp
 			CogitoUI.chatUI.chatTabs.TabPages.Remove(this.chanTab);
 		}
 
-		public bool Join()
-		{
+		public bool Join(){
 			throw new NotImplementedException();
 		}
 
-		public void Leave() { throw new NotImplementedException(); }
+		public void Leave() { 
+			throw new NotImplementedException(); 
+		}
 
 		/// <summary>
 		/// Constructor, used with Public (e.g. name-only) channels
@@ -49,7 +50,7 @@ namespace CogitoSharp
 		/// <param name="_name">The channel's name</param>
 		public Channel(string _name)
 		{
-			this.key = _name;
+			this.key = null;
 			this.name = _name;
 			this.chanTab = new ChatTab(this.name);
 			CogitoUI.chatUI.chatTabs.TabPages.Add(this.chanTab);
@@ -77,13 +78,11 @@ namespace CogitoSharp
 			Dispose();
 		}
 
-		public override string ToString()
-		{
+		public override string ToString(){
 			return this.name;
 		}
 
-		public override bool Equals(object obj)
-		{
+		public override bool Equals(object obj){
 			if (obj == null) { return false; }
 			Channel c = obj as Channel;
 			if (this.key == c.key) { return true; }
@@ -91,24 +90,25 @@ namespace CogitoSharp
 			else { return false; }
 		}
 
-		public override int GetHashCode()
-		{
+		public override int GetHashCode(){
 			return this.CID;
 		}
 
-		public bool Equals(Channel channel)
-		{
+		public bool Equals(Channel channel){
 			if (this.name == channel.name) { return true; }
 			else { return false; }
 		}
 
-		public int CompareTo(object obj)
-		{
+		public int CompareTo(object obj){
 			if (obj == null) { return 1; }
 			Channel c = obj as Channel;
 			if (c != null) { return this.key.CompareTo(c.key); }
 			else { throw new ArgumentException("Object cannot be made into Channel. Cannot CompareTo()."); }
 
+		}
+
+		public void addMessage(string Message){
+			//this.chanTab.
 		}
 	}
 }

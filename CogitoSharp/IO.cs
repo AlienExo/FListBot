@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Timers;
 using Newtonsoft.Json;
 
 using CogitoSharp;
@@ -48,17 +49,20 @@ namespace CogitoSharp.IO
 	class Message : SystemCommand
 	{
 		//TODO Finish Parsing
-		internal User user = null;
-		internal Channel channel = null;
+		internal User sourceUser = null;
+		internal Channel sourceChannel = null;
 		internal string message;
-		internal string[] args { get { return this.message.Split(' '); } }
+		internal string[] args { 
+			get { return this.message.Split(' '); } 
+			set	{ this.args = value; this.message = string.Join(" ", this.args); }
+			}
 
 		public Message(SystemCommand s)
 			: base()
 		{
 			this.opcode = s.opcode;
-			this.user = this.data.ContainsKey("character") ? Core.getUser((string)this.data["character"]) : Account.SYSTEMUSER;
-			this.channel = this.data.ContainsKey("channel") ? Core.getChannel((string)this.data["channel"]) : Account.SYSTEMCHANNEL;
+			this.sourceUser = this.data.ContainsKey("character") ? Core.getUser((string)this.data["character"]) : CogitoUI.SYSTEMUSER;
+			this.sourceChannel = this.data.ContainsKey("channel") ? Core.getChannel((string)this.data["channel"]) : CogitoUI.SYSTEMCHANNEL;
 			this.message = this.data["message"].ToString();
 		}
 
@@ -71,9 +75,9 @@ namespace CogitoSharp.IO
 		{
 			if (this.opcode == null)
 			{
-				this.opcode = this.user == null ? "MSG" : "PRI"; //sets Opcode to MSG (send to entire channel) if no user is specified, else to PRI (only to user)
-				if (this.user != null) { this.data.Add("recipient", this.user.Name); }
-				else { this.data.Add("channel", this.channel.key); }
+				this.opcode = this.sourceUser == null ? "MSG" : "PRI"; //sets Opcode to MSG (send to entire channel) if no user is specified, else to PRI (only to user)
+				if (this.sourceUser != null) { this.data.Add("recipient", this.sourceUser.Name); }
+				else { this.data.Add("channel", this.sourceChannel.key); }
 			};
 			base.send();
 		}
@@ -94,6 +98,43 @@ namespace CogitoSharp.IO
 			Console.WriteLine("Created Message Output String:\n\t" + MessageAsString);
 #endif
 			return MessageAsString;
+		}
+	}
+
+	internal class Logging{
+		internal class LogFile{
+			private System.Timers.Timer flushTimer = new System.Timers.Timer();
+			private FileStream logFileStream = null;
+			private StreamWriter logger = null;
+			
+			public void Log(string s){ logger.Write(String.Format("<{0}> -- {1}", DateTime.Now.ToString("yyyy-mm-dd hh:mm:ss"), s)); }
+
+			/// <summary>
+			/// Creates a FileStream for writing to the logfile, and periodically (default: 10 sec.) flushes the buffer to preserve that data in event of failure. 
+			/// Keeping the file open rathern than open -> append -> close aparently improves performance
+			/// </summary>
+			/// <param name="DestinationFile">The Filename of the file to be logged to. Folder is automatically added.</param>
+			/// /// <param name="subfolder">The folder below the root logging folder, if any, this log should be put into. Default is none.</param>
+			/// /// <param name="writeInterval">The interval, in milliseconds, between calling Flush().</param>
+			public LogFile(string DestinationFile, string subfolder = "", long writeInterval = Config.AppSettings.loggingInteval){
+				try{
+					//TODO check if path
+					DestinationFile = Path.Combine(new string[] {CogitoSharp.Config.AppSettings.LoggingPath, "/logs/", DestinationFile});
+					logFileStream = File.Open(DestinationFile, FileMode.Append, FileAccess.Write);
+					logger = new StreamWriter(this.logFileStream);
+					flushTimer.Interval = writeInterval;
+					flushTimer.Elapsed += flushTimer_Elapsed;
+					flushTimer.Start();
+				}
+
+				catch{
+					//todo implement
+				}
+			}
+
+			void flushTimer_Elapsed(object sender, ElapsedEventArgs e){
+				this.logFileStream.Flush();
+			}
 		}
 	}
 }
