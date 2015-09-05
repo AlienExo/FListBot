@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Speech.Synthesis;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -75,6 +76,8 @@ using CogitoSharp.IO;
  * [----------]		Custom highlight triggers (array string[])
  * [----------] TODO: Log formatting and output. As .txt or .html, activate/deacticate images (checkbox)
  * [----------] TODO: Friends list: "Friends with <Your Character>".
+ *
+ * [----------] TODO: Login stagger / reconnect on shit connection
  *									
  * TODO: A Autocorrection as BLOSUM Like matrix of likelihood of typos, e.g. high for z and y, low for t and [Space] etc.
  * [||||||||||] DONE: Settings panel on login form to set host and port
@@ -87,20 +90,15 @@ using CogitoSharp.IO;
 
 namespace CogitoSharp
 {
-	/// <summary> 
-	/// Interface for all Plugins. Defining method triggers, commands, loop triggers and exit cleanup.
-	/// </summary>
-	interface ICogitoPlugin
-	{
-	//TODO: PluginInterface. Featuring... er. Name of the plugin, command to be bound/delegate to be gotten. constructor and destructor? Or loop and exit.
-	}
-
 	/// <summary>May be implemented for proper JSON serialization.</summary>
 	public interface ILoginKey{
+		/// <summary> Error message, if authentication failed</summary>
 		string error { get; set; }
+		/// <summary> The string which allows access to the fserv systems; returned on successful authentication with account and password</summary>
 		string ticket { get; set; }
 	}
 
+	/// <summary> Collection of all values and variables needed to establish a connection to an fchat server </summary>
 	public class LoginKey : ILoginKey{
 		/// <summary>Server-side account number</summary>
 		public int account_id { get; set; }
@@ -117,6 +115,7 @@ namespace CogitoSharp
 		/// <summary>The API Ticket used to access the system</summary>
 		public string ticket { get; set; }
 
+		/// <summary> The DateTime when this ticket was obtained; used to avoid </summary>
 		public DateTime ticketTaken = DateTime.UtcNow;
 	}
 
@@ -127,19 +126,17 @@ namespace CogitoSharp
 		}
 	}
 
-	class Account
-	{
+	class Account{
 		protected internal static string account;
 		protected internal static LoginKey LoginKey = null;
 		protected internal static List<string> bookmarks = new List<string>();
 
-		protected internal static void getTicket(string _account, string _password)
-		{
-			using (var wb = new WebClient())
-			{
+		protected internal static void getTicket(string _account, string _password){
+			using (var wb = new WebClient()){
 				var data = new NameValueCollection();
+				Core.SystemLog.Log("Logging in with account " + _account);
 				data["account"] = _account;
-				data["password"] = _password;
+				data["password"] = _password.ToString();
 				var byteTicket = wb.UploadValues("https://www.f-list.net/json/getApiTicket.php", "POST", data);
 				string t1 = System.Text.Encoding.ASCII.GetString(byteTicket);
 				Account.LoginKey = JsonConvert.DeserializeObject<LoginKey>(t1, new LoginKeyConverter());
@@ -148,23 +145,12 @@ namespace CogitoSharp
 		}
 
 		protected internal static bool login(string _account, string _password, out string error){
-			#if NOCONNECT
-			error = "DEBUG MODE";
-			LoginKey = new LoginKey();
-			LoginKey.account_id = 000001;
-			bookmarks.Add("DEBUG BOOKMARK CHARACTER");
-			LoginKey.characters = new List<string>();
-			LoginKey.characters.Add("DEBUG USER CHARACTER");
-			LoginKey.characters.Add("DEBUG DEFAULT CHARACTER");
-			LoginKey.default_character = "DEBUG DEFAULT CHARACTER";
-			LoginKey.ticket = "t_DEBUGTICKERXXXXXXXX0000000001";
-			return true;
-			#endif
 			getTicket(_account, _password);
 			if (LoginKey.error.Length > 0) {
 				error = LoginKey.error;
 				return false;}
 			else {
+				Core.SystemLog.Log("Successfully obtained login ticket " + Account.LoginKey.ticket);
 				Account.account = _account;
 				error = "";
 				foreach (Dictionary<string, string> d in LoginKey.bookmarks){
@@ -192,7 +178,9 @@ namespace CogitoSharp
 			#endif
 			Core.websocket.OnOpen += (sender, e) => Core.websocket.Send(openString);
 			Core.websocket.OnOpen += (sender, e) => Console.WriteLine("Opened Websocket.");
+			Core.websocket.OnOpen += (sender, e) => Thread.Sleep(2000); 
 			Core.websocket.OnOpen += (sender, e) => Core.websocket.Send("ORS");
+			Core.SystemLog.Log("Selected character " + character);
 		}
 	}
 
@@ -211,7 +199,7 @@ namespace CogitoSharp
 		internal static Queue<SystemCommand> OutgoingMessageQueue = new Queue<SystemCommand>();
 		private static volatile bool _sendForever = true;
 		
-		private static void SendMessageFromQueue(Object senderbool){ if (OutgoingMessageQueue.Count > 0){websocket.Send(OutgoingMessageQueue.Dequeue().ToString());} }
+		private static void SendMessageFromQueue(Object senderbool){ if (OutgoingMessageQueue.Count > 0){websocket.Send(OutgoingMessageQueue.Dequeue().ToServerString());} }
 
 		private static TimerCallback sendTimerCallback = SendMessageFromQueue;
 		internal static System.Threading.Timer EternalSender = new System.Threading.Timer(sendTimerCallback, _sendForever, System.Threading.Timeout.Infinite, 3000);
@@ -221,32 +209,41 @@ namespace CogitoSharp
 
 		internal static CogitoUI cogitoUI = null;
 		internal static SpeechSynthesizer SYBIL = new SpeechSynthesizer();
+
+		internal static User OwnUser = null;
+
 		//internal static ThreadStart EternalSendMethod = SendMessage;
 		//internal static Thread EternalSender = new Thread();
 
 		/// <summary>The main entry point for the application.</summary>
-        static void Main(){ 
+		[STAThread]
+        static void Main(){
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 			cogitoUI = new CogitoUI();
+			SystemLog.Log("Start up: CogitoSharp v." + Application.ProductVersion);
+			SystemLog.Log("Loading Plugins...");
+			try{ Plugins.loadPlugins(); }
+			catch (Exception e) { 
+				Console.WriteLine(e.InnerException.ToString());
+				SystemLog.Log(e.InnerException.ToString());
+				throw; 
+			}
 			SYBIL.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
 			SYBIL.Rate = 7;
-			try { Console.WriteLine(Properties.Settings.Default.userAutoComplete.Count); }
-			catch (System.NullReferenceException) { Properties.Settings.Default.userAutoComplete = new AutoCompleteStringCollection(); }
+			//TODO Load User database
 			Application.Run(cogitoUI);
         }
 
 		private static void OnWebsocketClose(){
+			SystemLog.Log("Closing connection...");
 			//websocket.Send("");
 		}
 
 		internal static void OnWebsocketMessage(Object sender, WebSocketSharp.MessageEventArgs e){
 			SystemCommand c = new SystemCommand(e.Data);
 			try{ typeof(FListProcessor).GetMethod(c.opcode, BindingFlags.NonPublic | BindingFlags.Static).Invoke(c, new Object[] {c}); }
-			catch (Exception FuckUp) { 
-				//Console.WriteLine(String.Format("\t/!\\METHOD INVOCATION {0} FAILED: {1} - {2}", FuckUp.TargetSite, FuckUp.Message, FuckUp.InnerException)); 
-				SystemLog.Log(String.Format("Invocation of Method '{0}' failed:\n\t{1}\n\t{2}", FuckUp.TargetSite, FuckUp.Message, FuckUp.InnerException));
-				}
+			catch (Exception FuckUp) { ErrorLog.Log(String.Format("Invocation of Method {0} failed:\n\t{1}\n\t{2}", c.opcode, FuckUp.Message, FuckUp.InnerException)); }
 		}
 		
 		/// <summary> Fetches the corresponding User instance from the program's List of users
@@ -257,17 +254,17 @@ namespace CogitoSharp
 			return Core.users.Count(x => x.Name == username) > 0 ? Core.users.First<User>(n => n.Name == username) : new User(username);
 		}
 		
-		/// <summary> Overloaded in order to immediately return User instances, as may happen...?
-		/// </summary>
-		/// <param name="user">User instance.</param>
-		/// <returns>User instance</returns>
-		public static User getUser(User user) { return user; }
+		///// <summary> Overloaded in order to immediately return User instances, as may happen...?
+		///// </summary>
+		///// <param name="user">User instance.</param>
+		///// <returns>User instance</returns>
+		//public static User getUser(User user) { return user; }
 
-		/// <summary> Overloaded in order to immediately return Channel instances, as may happen...?
-		/// </summary>
-		/// <param name="channel">Channel instance.</param>
-		/// <returns>channel instance</returns>
-		public static Channel getChannel(Channel channel) { return channel; }
+		///// <summary> Overloaded in order to immediately return Channel instances, as may happen...?
+		///// </summary>
+		///// <param name="channel">Channel instance.</param>
+		///// <returns>channel instance</returns>
+		//public static Channel getChannel(Channel channel) { return channel; }
 
 		/// <summary>
 		/// Fetches the corresponding channel instance from the List of all channels registered in CogitoSharp.Core
@@ -276,14 +273,6 @@ namespace CogitoSharp
 		/// <returns>Channel Instance</returns>
 		public static Channel getChannel(string channel){
 			return Core.channels.Count(x => x.key == channel) > 0 ? Core.channels.First<Channel>(n => n.key == channel) : new Channel(channel);
-		}
-
-		static void ProcessMessageFromQueue(CogitoSharp.IO.Message msgobj)
-		{
-			//TODO: get message from queue, Type.InvokeMethod on namespace/class FLISTPROCESSING
-			//TODO: print how? -> Get right UI element
-			//TODO: set sendloop to 
-			//msgobj.opcode not in ["PRI", "MSG"]
 		}
 	}
 }

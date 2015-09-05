@@ -53,18 +53,6 @@
   <PropertyGroup>
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'NoConnect|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\NoConnect\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;KEYTEST;CHANNELTEST;USERTEST</DefineConstants>
-    <DocumentationFile>bin\Debug\CogitoSharp.XML</DocumentationFile>
-    <Optimize>true</Optimize>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <Prefer32Bit>true</Prefer32Bit>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="HtmlAgilityPack, Version=1.4.9.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
@@ -76,6 +64,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Speech" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows" />
@@ -97,13 +86,8 @@
     <Compile Include="Channel.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="FListProcessor.cs" />
-    <Compile Include="FriendsList.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FriendsList.Designer.cs">
-      <DependentUpon>FriendsList.cs</DependentUpon>
-    </Compile>
     <Compile Include="IO.cs" />
+    <Compile Include="Plugin.cs" />
     <Compile Include="RPAdDeployer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -128,6 +112,12 @@
     <Compile Include="CogitoConsole.Designer.cs">
       <DependentUpon>CogitoConsole.cs</DependentUpon>
     </Compile>
+    <Compile Include="Scanner.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Scanner.Designer.cs">
+      <DependentUpon>Scanner.cs</DependentUpon>
+    </Compile>
     <Compile Include="User.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="CogitoUI.cs">
@@ -145,9 +135,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
-    <EmbeddedResource Include="FriendsList.resx">
-      <DependentUpon>FriendsList.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="RPAdDeployer.resx">
       <DependentUpon>RPAdDeployer.cs</DependentUpon>
     </EmbeddedResource>
@@ -176,6 +163,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Scanner.resx">
+      <DependentUpon>Scanner.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\Account.datasource" />
     <None Include="Properties\Settings.settings">

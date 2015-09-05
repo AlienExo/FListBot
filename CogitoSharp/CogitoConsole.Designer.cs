@@ -79,7 +79,7 @@
 			this.input.Name = "input";
 			this.input.Size = new System.Drawing.Size(489, 20);
 			this.input.TabIndex = 3;
-			this.input.Text = ">";
+			this.input.Text = "> ";
 			this.input.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.input_KeyPress);
 			// 
 			// CogitoConsole

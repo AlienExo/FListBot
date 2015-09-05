@@ -45,6 +45,7 @@ namespace CogitoSharp.Debug
 				this.console.AppendText(this.input.Text);
 
 				this.input.Text = "> ";
+				this.input.Select(this.console.Text.Length, 0);
 				//todo console parser/logic -> direct interface user <-> bot
 			}
 			

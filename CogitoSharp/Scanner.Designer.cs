@@ -1,6 +1,6 @@
 ﻿namespace CogitoSharp
 {
-	partial class FriendsList
+	partial class Scanner
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -30,13 +30,13 @@
 		{
 			this.SuspendLayout();
 			// 
-			// FriendsList
+			// Scanner
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(184, 362);
-			this.Name = "FriendsList";
-			this.Text = "Friend List";
+			this.ClientSize = new System.Drawing.Size(384, 412);
+			this.Name = "Scanner";
+			this.Text = "Scanner";
 			this.ResumeLayout(false);
 
 		}

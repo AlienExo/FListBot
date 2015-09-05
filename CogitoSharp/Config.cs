@@ -32,10 +32,17 @@ namespace CogitoSharp.Config
 	}
 
 	internal static class AppSettings{
-		internal static TimeSpan ticketLifetime = new TimeSpan(5, 0, 0);
 		internal static TimeSpan reconnectionStagger = new TimeSpan(0, 0, 10);
-		internal static string LoggingPath = Properties.Settings.Default.LogPath != "" ? Properties.Settings.Default.LogPath : new Uri(System.Reflection.Assembly.GetExecutingAssembly().CodeBase).LocalPath;
-		internal const long loggingInteval = 10000;
+		internal static TimeSpan ticketLifetime = new TimeSpan(5, 0, 0);
+		internal static TimeSpan userProfileRefreshPeriod = new TimeSpan(7, 0, 0, 0);
+		internal const long loggingInterval = 10000;
+		internal static string AppPath = AppDomain.CurrentDomain.BaseDirectory;
+		internal static string LoggingPath = Properties.Settings.Default.LogPath != "" ? Properties.Settings.Default.LogPath : AppDomain.CurrentDomain.BaseDirectory;
+		internal static string PluginsPath = AppPath + @"plugins\";
+		internal static string DataPath = AppPath + @"data\";
+		internal static string AvatarPath = DataPath + @"avatars\";
+		internal const string UserFileName = "Account.dat";
+
 	}
 
 	internal static class AITriggers{

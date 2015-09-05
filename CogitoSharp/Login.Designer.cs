@@ -116,6 +116,8 @@
 			resources.ApplyResources(this.loginPasswordField, "loginPasswordField");
 			this.loginPasswordField.Name = "loginPasswordField";
 			this.loginPasswordField.UseSystemPasswordChar = true;
+			this.loginPasswordField.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.loginPasswordField_KeyPress);
+//			this.loginPasswordField.KeyUp += new System.Windows.Forms.KeyEventHandler(this.loginPasswordField_KeyUp);
 			// 
 			// loginSubmitButton
 			// 
@@ -214,10 +216,10 @@
 			this.AcceptButton = this.loginSubmitButton;
 			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Controls.Add(this.characterSelectPanel);
 			this.Controls.Add(this.loginElements);
 			this.Controls.Add(this.CogitoLogoBox);
 			this.Controls.Add(this.advancedLoginOptionsPanel);
+			this.Controls.Add(this.characterSelectPanel);
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "LoginForm";

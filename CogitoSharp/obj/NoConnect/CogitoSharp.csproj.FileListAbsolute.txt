@@ -1,0 +1,16 @@
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\bin\NoConnect\CogitoSharp.exe.config
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\bin\NoConnect\CogitoSharp.exe
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\bin\NoConnect\CogitoSharp.pdb
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\bin\NoConnect\CogitoSharp.XML
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\bin\NoConnect\Newtonsoft.Json.dll
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\bin\NoConnect\websocket-sharp.dll
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\bin\NoConnect\Newtonsoft.Json.xml
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\NoConnect\CogitoSharp.csprojResolveAssemblyReference.cache
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\NoConnect\CogitoSharp.ChatUI.resources
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\NoConnect\CogitoSharp.CogitoConsole.resources
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\NoConnect\CogitoSharp.CogitoUI.resources
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\NoConnect\CogitoSharp.LoginForm.resources
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\NoConnect\CogitoSharp.Properties.Resources.resources
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\NoConnect\CogitoSharp.csproj.GenerateResource.Cache
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\NoConnect\CogitoSharp.exe
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\NoConnect\CogitoSharp.pdb

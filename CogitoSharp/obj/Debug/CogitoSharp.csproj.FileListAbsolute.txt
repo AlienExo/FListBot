@@ -1,4 +1,3 @@
-C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Debug\CogitoSharp.csprojResolveAssemblyReference.cache
 C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Debug\CogitoSharp.CogitoUI.resources
 C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Debug\CogitoSharp.Properties.Resources.resources
 C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Debug\CogitoSharp.csproj.GenerateResource.Cache
@@ -11,3 +10,13 @@ C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\bin\Debug\Newtonsoft.
 C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Debug\CogitoSharp.exe
 C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Debug\CogitoSharp.pdb
 C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\bin\Debug\CogitoSharp.XML
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Debug\CogitoSharp.ChatUI.resources
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Debug\CogitoSharp.LoginForm.resources
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\bin\Debug\HtmlAgilityPack.dll
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\bin\Debug\HtmlAgilityPack.pdb
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\bin\Debug\HtmlAgilityPack.xml
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Debug\CogitoSharp.Gimmicks.RPAdDeployer.resources
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Debug\CogitoSharp.Gimmicks.CASIE.resources
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Debug\CogitoSharp.csprojResolveAssemblyReference.cache
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Debug\CogitoSharp.Debug.ConsoleTextBox.resources
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Debug\CogitoSharp.Scanner.resources

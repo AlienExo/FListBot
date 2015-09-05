@@ -13,6 +13,8 @@ namespace CogitoSharp
 		/// <summary>Channel ID Number</summary>
 		private static int Count;
 		private readonly int CID = ++Channel.Count;
+		private bool disposed = false;
+		
 		/// <summary>Keys are the UUID for private channels; channel title for normal. Always use .key for channel-specific commands.</summary>
 		internal string key
 		{
@@ -22,26 +24,44 @@ namespace CogitoSharp
 		/// <summary>Channel name, in human-readable format</summary>
 		internal string name;
 		/// <summary>Array of all Users in the channel</summary>
-		private User[] users;
+		private User[] Userlist;
 		/// <summary>Associated TabPage for this channel</summary>
 		internal TabPage chanTab;
 		/// <summary>Minimum age to be in this channel. If set to a value greater than 0, the bot will attempt to kick everyone below this age.</summary>
 		internal Int16 minAge = 0;
-		private bool disposed = false;
+
+		internal string lastSearchFragment = "";
+
+		internal List<User> Mods = new List<User>();
+		internal List<User> Users = new List<User>();
+
+		private CogitoSharp.IO.Logging.LogFile ChannelLog = null;
+
 		/// <summary>
-		/// 
+		/// Implementation of IDispose - removes tab page and disposes of Log to ensure buffer is flushed
 		/// </summary>
-		/// 
 		public void Dispose(){
-			CogitoUI.chatUI.chatTabs.TabPages.Remove(this.chanTab);
+			if (!disposed){
+				CogitoUI.chatUI.chatTabs.TabPages.Remove(this.chanTab);
+				this.ChannelLog.Dispose();
+				this.chanTab.Dispose();
+			}
+			this.disposed = true;
+			
 		}
 
-		public bool Join(){
-			throw new NotImplementedException();
+		public void Join(){
+			IO.SystemCommand c = new IO.SystemCommand();
+			c.opcode = "JCH";
+			c.data["channel"] = this.key;
+			c.send();
 		}
 
-		public void Leave() { 
-			throw new NotImplementedException(); 
+		public void Leave() {
+			IO.SystemCommand c = new IO.SystemCommand();
+			c.opcode = "LCH";
+			c.data["channel"] = this.key;
+			c.send();
 		}
 
 		/// <summary>
@@ -52,7 +72,8 @@ namespace CogitoSharp
 		{
 			this.key = null;
 			this.name = _name;
-			this.chanTab = new ChatTab(this.name);
+			this.chanTab = new ChatTab(this);
+			this.ChannelLog = new IO.Logging.LogFile(this.name);
 			CogitoUI.chatUI.chatTabs.TabPages.Add(this.chanTab);
 			Core.channels.Add(this);
 		}
@@ -66,10 +87,16 @@ namespace CogitoSharp
 		{
 			this.key = _key;
 			this.name = _name;
-			this.chanTab = new ChatTab(this.name);
+			this.ChannelLog = new IO.Logging.LogFile(this.name);
+			this.chanTab = new ChatTab(this);
 			CogitoUI.chatUI.chatTabs.TabPages.Add(this.chanTab);
 			Core.channels.Add(this);
 			this.CID = Core.channels.Count;
+		}
+
+		internal void MessageReceived(CogitoSharp.IO.Message m){
+			//TODO: Flash tab
+			this.ChannelLog.Log(m.ToString());
 		}
 
 		/// <summary>Generic destrutor, closes associated TabPage</summary>
@@ -90,9 +117,7 @@ namespace CogitoSharp
 			else { return false; }
 		}
 
-		public override int GetHashCode(){
-			return this.CID;
-		}
+		public override int GetHashCode(){ return this.CID; }
 
 		public bool Equals(Channel channel){
 			if (this.name == channel.name) { return true; }
@@ -107,8 +132,10 @@ namespace CogitoSharp
 
 		}
 
-		public void addMessage(string Message){
+		internal void newMessage(IO.Message m){
 			//this.chanTab.
 		}
+
+		public void Log(string s){ this.ChannelLog.Log(s); }
 	}
 }

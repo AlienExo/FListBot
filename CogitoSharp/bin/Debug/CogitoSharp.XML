@@ -13,7 +13,7 @@
         <member name="F:CogitoSharp.Channel.name">
             <summary>Channel name, in human-readable format</summary>
         </member>
-        <member name="F:CogitoSharp.Channel.users">
+        <member name="F:CogitoSharp.Channel.Userlist">
             <summary>Array of all Users in the channel</summary>
         </member>
         <member name="F:CogitoSharp.Channel.chanTab">
@@ -24,9 +24,8 @@
         </member>
         <member name="M:CogitoSharp.Channel.Dispose">
             <summary>
-            
+            Implementation of IDispose - removes tab page and disposes of Log to ensure buffer is flushed
             </summary>
-            
         </member>
         <member name="M:CogitoSharp.Channel.#ctor(System.String)">
             <summary>
@@ -53,192 +52,276 @@
             </summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.ACB(CogitoSharp.IO.SystemCommand)">
-            <summary> ACB This command requires chat op or higher. Request a character's account be banned from the server. </summary>
+            <summary>This command requires chat op or higher. Request a character's account be banned from the server.
+            Send  As: ACB { "character": string }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.ADL(CogitoSharp.IO.SystemCommand)">
-            <summary>  Sends the client the current list of chatops. >> ADL { "ops": [string] }</summary>
+            <summary>Sends the client the current list of chatops.
+            Received: ADL { "ops": [string] }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.AOP(CogitoSharp.IO.SystemCommand)">
-            <summary>  The given character has been promoted to chatop. >> AOP { "character": string }</summary>
+            <summary>The given character has been promoted to chatop. 
+            Received: AOP { "character": string }
+            Send  As: AOP { "character": string }</summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:CogitoSharp.FListProcessor.AWC(CogitoSharp.IO.SystemCommand)" -->
+        <member name="M:CogitoSharp.FListProcessor.AWC(CogitoSharp.IO.SystemCommand)">
+            <summary>This command requires chat op or higher. Requests a list of currently connected alts for a characters account. 
+            Send  As: AWC { "character": string }</summary>
+        </member>
         <member name="M:CogitoSharp.FListProcessor.BRO(CogitoSharp.IO.SystemCommand)">
-            <summary> Incoming admin broadcast. >> BRO { "message": string } </summary>
+            <summary>Incoming admin broadcast. 
+            Received: BRO { "message": string }
+            Send  As: BRO { "message": string } (as if) </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:CogitoSharp.FListProcessor.CBL(CogitoSharp.IO.SystemCommand)" -->
-        <!-- Badly formed XML comment ignored for member "M:CogitoSharp.FListProcessor.CBU(CogitoSharp.IO.SystemCommand)" -->
-        <!-- Badly formed XML comment ignored for member "M:CogitoSharp.FListProcessor.CCR(CogitoSharp.IO.SystemCommand)" -->
+        <member name="M:CogitoSharp.FListProcessor.CBL(CogitoSharp.IO.SystemCommand)">
+            <summary>This command requires channel op or higher. Request the channel banlist.
+            Send  As: CBL { "channel": string } </summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.CBU(CogitoSharp.IO.SystemCommand)">
+            <summary> This command requires channel op or higher. Bans a character from a channel. 
+            Send  As: CBU {"character": string, "channel": string}
+            Received: CBU {"operator":string,"channel":string,"character":string}</summary>
+        </member>
+        <member name="M:CogitoSharp.FListProcessor.CCR(CogitoSharp.IO.SystemCommand)">
+            <summary>  Create a private, invite-only channel. 
+            Send  As: CCR { "channel": string } </summary>
+        </member>
         <member name="M:CogitoSharp.FListProcessor.CDS(CogitoSharp.IO.SystemCommand)">
-            <summary>  Alerts the client that that the channel's description has changed. This is sent whenever a client sends a JCH to the server. >> CDS { "channel": string, "description": string } </summary>
+            <summary>Alerts the client that that the channel's description has changed. This is sent whenever a client sends a JCH to the server. 
+            Received: CDS { "channel": string, "description": string }
+            Send  As: CDS { "channel": string, "description": string }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.CHA(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> Sends the client a list of all public channels.
+            Send  As: CHA
+            Received: CHA { "channels": [object] } </summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.CIU(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary>  Invites a user to a channel. Sending requires channel op or higher.
+            Send  As: CIU { "channel": string, "character": string }
+            Received: CIU { "sender":string,"title":string,"name":string } </summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.CKU(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> This command requires channel op or higher. Kicks a user from a channel. 
+            Received: CKU {"operator":string,"channel":string,"character":string}
+            Send  As: CKU { "channel": string, "character": string }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.COA(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> This command requires channel op or higher. Promotes a user to channel operator.
+            Received: COA {"character":string, "channel":string}
+            Send  As: COA { "channel": string, "character": string }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.COL(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> Gives a list of channel ops. Sent in response to JCH.
+            Received: COL { "channel": string, "oplist": [string] }
+            Send  As: COL { "channel": string }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.CON(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> After connecting and identifying you will receive a CON command, giving the number of connected users to the network.
+            Received: CON { "count": int }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.COR(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> This command requires channel op or higher. Demotes a channel operator (channel moderator) to a normal user.
+            Send  As: COR { "channel": string, "character": string }
+            Received: COR {"character":"character_name", "channel":"channel_name"}</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.CRC(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> This command is admin only. Creates an official channel.
+            Send  As: CRC { "channel": string }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.CSO(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> This command requires channel op or higher. Set a new channel owner.
+            Received: CSO {"character":"string","channel":"string"}
+            Send  As: CSO {"character":"string","channel":"string"}</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.CTU(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> This command requires channel op or higher. Temporarily bans a user from the channel for 1-90 minutes. A channel timeout.
+            Send  As: CTU { "channel":string, "character":string, "length":int }
+            Received: CTU {"operator":"string","channel":"string","length":int,"character":"string"}</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.CUB(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> This command requires channel op or higher. Unbans a user from a channel.
+            Send  As: CUB { channel: "channel", character: "character" }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.DOP(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> This command is admin only. Demotes a chatop (global moderator).
+            Received: DOP { "character": character }
+            Send  As: DOP { "character": string }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.ERR(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> Indicates that the given error has occurred.
+            Received: ERR {"message": "string", "number": int}</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.FKS(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> Search for characters fitting the user's selections. Kinks is required, all other parameters are optional.
+            Send  As: FKS { "kinks": [int], "genders": [enum], "orientations": [enum], "languages": [enum], "furryprefs": [enum], "roles": [enum] }
+            Received: FKS { "characters": [object], "kinks": [object] }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.FLN(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> Sent by the server to inform the client a given character went offline.
+            Received: FLN { "character": string }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.FRL(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> Initial friends list.
+            Received: FRL { "characters": [string] }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.HLO(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> Server hello command. Tells which server version is running and who wrote it.
+            Received: HLO { "message": string }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.ICH(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> Initial channel data. Received in response to JCH, along with CDS.
+            Received: ICH { "users": [object], "channel": string, "title": string, "mode": enum }
+            ICH {"users": [{"identity": "Shadlor"}], "channel": "Frontpage", mode: "chat"}</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.IGN(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> A multi-faceted command to handle actions related to the ignore list. 
+            The server does not actually handle much of the ignore process, as it is the client's responsibility to block out messages it recieves from the server if that character is on the user's ignore list.
+            Received: IGN { "action": string, "characters": [string] | "character":object }
+            TODO: ???
+            </summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.JCH(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary>Indicates the given user has joined the given channel. This may also be the client's character.
+            Received: JCH { "channel": string, "character": object, "title": string }
+            Send  As: JCH { "channel": string } </summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.KID(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> Kinks data in response to a KIN client command.
+            Received: KID { "type": enum, "message": string, "key": [int], "value": [int] }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.KIK(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> This command requires chat op or higher. Request a character be kicked from the server.
+            Send  As: KIK { "character": string }
+            </summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.KIN(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> Request a list of a user's kinks.
+            Send  As: KIN { "character": string }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.LCH(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> An indicator that the given character has left the channel. This may also be the client's character.
+            Received: LCH { "channel": string, "character": character }
+            Send  As: LCH { "channel": string }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.LIS(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> Sends an array of *all* the online characters and their gender, status, and status message.
+            Received: LIS { characters: [object] }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.LRP(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> A roleplay ad is received from a user in a channel.
+            Received: LRP { "channel": "", "message": "", "character": ""}</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.MSG(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> Sending/Receiving Messages in a channel
+            Received: MSG { "character": string, "message": string, "channel": string }
+            Send  As: MSG { "channel": string, "message": string }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.NLN(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> A user connected.
+            Received: NLN { "identity": string, "gender": enum, "status": enum }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.ORS(CogitoSharp.IO.SystemCommand)">
-            <summary> Digests an Open pRivate roomS message, extracting the keys necessary for access (keys are unique, names can be duplicate) and updating the Channel instances</summary>
+            <summary> Gives a list of open private rooms.
+            Received: ORS { "channels": [object] } 
+            e.g. "channels": [{"name":"ADH-300f8f419e0c4814c6a8","characters":0,"title":"Ariel's Fun Club"}] etc. etc.
+            Send  As: ORS</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.PIN(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> Ping command from the server, requiring a response, to keep the connection alive.
+            Received: PIN
+            Send  As: PIN </summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.PRD(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> Profile data commands sent in response to a PRO client command. 
+            Received: PRD { "type": enum, "message": string, "key": string, "value": string }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.PRI(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> Private Messaging
+            Received: PRI { "character": string, "message": string }
+            Send  As: PRI { "recipient": string, "message": string }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.PRO(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> Requests some of the profile tags on a character, such as Top/Bottom position and Language Preference.
+            Send  As: PRO { "character": string }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.RLD(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> This command requires chat op or higher. Reload certain server config files
+            Send  As: RLD { "save": string }
+            </summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.RLL(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> Roll dice or spin the bottle.
+            Send  As: RLL { "channel": string, "dice": string }
+            </summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.RMO(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> Change room mode to accept chat, ads, or both.
+            Received: RMO {"mode": enum, "channel": string}
+            Send  As: RMO {"channel": string, "mode": enum}</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.RST(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> This command requires channel op or higher. Sets a private room's status to closed or open.
+            Send  As: RST { "channel": string, "status": enum }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.RTB(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> Real-time bridge. Indicates the user received a note or message, right at the very moment this is received.
+            Received: RTB { "type": string, "character": string }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.RWD(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> This command is admin only. Rewards a user, setting their status to 'crown' until they change it or log out.
+            Send  As: RWD { "character": string }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.SFC(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> Alerts admins and chatops (global moderators) of an issue.
+            Send  As: SFC { "action": "report", "report": string, "character": string }</summary>
+            Received: SFC {action:"string", moderator:"string", character:"string", timestamp:"string"}
         </member>
         <member name="M:CogitoSharp.FListProcessor.STA(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> A user changed their status
+            Received: STA { status: "status", character: "channel", statusmsg:"statusmsg" }
+            Send  As: STA { "status": enum, "statusmsg": string }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.SYS(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> An informative autogenerated message from the server.
+            Received: SYS { "message": string, "channel": string }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.TMO(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> This command requires chat op or higher. Times out a user for a given amount minutes.
+            Send  As: TMO { "character": string, "time": int, "reason": string }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.TPN(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> "user x is typing/stopped typing/has entered text" for private messages.
+            Send  As: TPN { "character": string, "status": enum }
+            Received: TPN { "character": string, "status": enum }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.UBN(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> This command requires chat op or higher. Unbans a character's account from the server.
+            Send  As: UBN { "character": string }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.UPT(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
+            <summary> Informs the client of the server's self-tracked online time, and a few other bits of information
+            Received: UPT { "time": int, "starttime": int, "startstring": string, "accepted": int, "channels": int, "users": int, "maxusers": int }</summary>
         </member>
         <member name="M:CogitoSharp.FListProcessor.VAR(CogitoSharp.IO.SystemCommand)">
-            <summary> </summary>
-        </member>
-        <member name="F:CogitoSharp.FriendsList.components">
-            <summary>
-            Required designer variable.
-            </summary>
-        </member>
-        <member name="M:CogitoSharp.FriendsList.Dispose(System.Boolean)">
-            <summary>
-            Clean up any resources being used.
-            </summary>
-            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        </member>
-        <member name="M:CogitoSharp.FriendsList.InitializeComponent">
-            <summary>
-            Required method for Designer support - do not modify
-            the contents of this method with the code editor.
-            </summary>
+            <summary> Variables the server sends to inform the client about server variables.</summary>
         </member>
         <member name="M:CogitoSharp.IO.SystemCommand.send">
             <summary>
             Sends the message by adding it to the OutgoingMessageQueue
             </summary>
         </member>
-        <member name="M:CogitoSharp.IO.SystemCommand.ToString">
+        <member name="M:CogitoSharp.IO.SystemCommand.ToServerString">
             <summary>
-            Implementation for fserv - turns data into OPCODE and JSON
+            Produces a string that fserv can interpret.
             </summary>
-            <returns>A string OPCODE {JSONKEY: "value"}</returns>
+            <returns>A string "OPCODE {JSONKEY: "value", [...]}"</returns>
+        </member>
+        <member name="F:CogitoSharp.IO.Message.chat_max">
+            <summary> Maximum length (in bytes) of a channel message; longer and you gotta split it </summary>
+        </member>
+        <member name="F:CogitoSharp.IO.Message.priv_max">
+            <summary> Maximum length (in bytes) of a private message. </summary>
         </member>
         <member name="M:CogitoSharp.IO.Message.send">
             <summary>
@@ -251,14 +334,20 @@
             </summary>
             <param name="replyText">Text to reply with.</param>
         </member>
-        <member name="M:CogitoSharp.IO.Logging.LogFile.#ctor(System.String,System.String,System.Int64)">
+        <member name="M:CogitoSharp.IO.Logging.LogFile.#ctor(System.String,System.String,System.String,System.Int64)">
             <summary>
             Creates a FileStream for writing to the logfile, and periodically (default: 10 sec.) flushes the buffer to preserve that data in event of failure. 
             Keeping the file open rathern than open -> append -> close aparently improves performance
             </summary>
-            <param name="DestinationFile">The Filename of the file to be logged to. Folder is automatically added.</param>
-            /// <param name="subfolder">The folder below the root logging folder, if any, this log should be put into. Default is none.</param>
-            /// <param name="writeInterval">The interval, in milliseconds, between calling Flush().</param>
+            <param name="FileName">The Filename of the file to be logged to. Folder is automatically added.</param>
+            <param name="subfolder">The folder below the root logging folder, if any, this log should be put into. Default is none.</param>
+            <param name="writeInterval">The interval, in milliseconds, between calling Flush().</param>
+            <param name="extension">The file extension for the log, default ".txt".</param>
+        </member>
+        <member name="T:CogitoSharp.Gimmicks.RPAdDeployer">
+            <summary>
+            A Control to remember your last-used RP ads and re-publish them periodically. 
+            </summary>
         </member>
         <member name="F:CogitoSharp.Gimmicks.RPAdDeployer.components">
             <summary>
@@ -311,6 +400,26 @@
             the contents of this method with the code editor.
             </summary>
         </member>
+        <member name="T:CogitoSharp.ChatTabControl">
+            <summary>
+            Collection of chat tabs, with a method to avoid killing the console.
+            </summary>
+        </member>
+        <member name="T:CogitoSharp.ChatTab">
+            <summary>
+            A Tab in the chat interface, representing an open conversation with a room or a single user
+            </summary>
+        </member>
+        <member name="T:CogitoSharp.OwnerDrawnListBox">
+            <summary> Base Class for Boxes with images, yay </summary>
+        </member>
+        <member name="M:CogitoSharp.OwnerDrawnListBox.OnSelectedIndexChanged(System.EventArgs)">
+            <summary> Raise the SelectedIndexChanged event </summary>
+            <param name="e"></param>
+        </member>
+        <member name="P:CogitoSharp.OwnerDrawnListBox.SelectedIndex">
+            <summary> Get or set index of selected item. </summary>
+        </member>
         <member name="F:CogitoSharp.Debug.CogitoConsole.components">
             <summary>
             Required designer variable.
@@ -328,8 +437,108 @@
             the contents of this method with the code editor.
             </summary>
         </member>
+        <member name="T:CogitoSharp.Scanner">
+            <summary>
+            A GUI Element that's supposed to capture, catalogue and summarize information about all members of a channel, similar to the old Cogito's .scan function.
+            Everybody loves essentially worthless statistics!
+            </summary>
+        </member>
+        <member name="F:CogitoSharp.Scanner.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:CogitoSharp.Scanner.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:CogitoSharp.Scanner.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
         <member name="T:CogitoSharp.User">
             <summary>User (synonymous with Character)</summary>
+        </member>
+        <member name="F:CogitoSharp.User.Name">
+            <summary> xXxSEPHIROTHxXx </summary>
+        </member>
+        <member name="F:CogitoSharp.User.Weight">
+            <summary> You're fat. </summary>
+        </member>
+        <member name="F:CogitoSharp.User.Orientation">
+            <summary> Sexual orientation; can't be made an enum due to hyphens not working and that fucking up parsing, iirc</summary>
+        </member>
+        <member name="F:CogitoSharp.User.Stats">
+            <summary> Since currently I'd have to implement custom parsing code for all of this, instead I just stick it into a dict. Eye color, dick size, everything is in here. Probably.</summary>
+        </member>
+        <member name="F:CogitoSharp.User.Kinks">
+            <summary> Here's where things get WEIRD.</summary>
+        </member>
+        <member name="F:CogitoSharp.User.isInteresting">
+            <summary> Filtering ideas blatantly stolen from slimCat; sorry, Andrew.</summary>
+        </member>
+        <member name="F:CogitoSharp.User.dataTakenOn">
+            <summary> Stores the DateTime on which the profile was last scraped, allowing the program to self-update every... what, week?</summary>
+        </member>
+        <member name="M:CogitoSharp.User.GetAvatar">
+            <summary> Retriedves the users's avatar (100 * 100 px Bitmap image) from F-Lists' server, and saves it. If it's less than a week old, it won't bother fetching it.</summary>
+        </member>
+        <member name="M:CogitoSharp.User.GetProfileInfo">
+            <summary> Connects to F-List and grabs all of the user's delicious information. Data is serialized when program shuts down to cut down on API connections / web scraping bandwith </summary>
+        </member>
+        <member name="P:CogitoSharp.User.Age">
+            <summary> 2 shota 4 u </summary>
+        </member>
+        <member name="T:CogitoSharp.Utils.Math">
+            <summary>
+            Mathematical utility functions
+            </summary>
+        </member>
+        <member name="M:CogitoSharp.Utils.Math.dampenedSpringDelta(System.Int32,System.Single,System.Single,System.Single,System.Int32)">
+            <summary>
+            Returns a float[] filled with values for a 'dampened spring' animation.
+            </summary>
+            <param name="start">Integer at which to start; x-position. Default: 0 (can be used for addition to start position)</param>
+            <param name="amplitude">Amplitude of the spring, default 1f. Max value which it can reach.</param>
+            <param name="damping">Level of damping, default 0.2f</param>
+            <param name="tension">Tension of the spring, default 0.7f</param>
+            <param name="precision">Number of data points to generate; the higher the number, the smoother the curve. Default: 50</param>
+            <returns>A float[] with values describing the oscillation of the dampened spring.</returns>
+        </member>
+        <member name="M:CogitoSharp.Utils.Math.numberToSentence``1(``0@)">
+            <summary>
+            Transforms a number into its spoken representation, e.g. 123.45 to "one hundred and twenty three point fourty five"
+            </summary>
+            <typeparam name="T">The type of number suppled</typeparam>
+            <param name="number">The number</param>
+            <returns>A string with the number in spoken form.</returns>
+        </member>
+        <member name="M:CogitoSharp.Utils.Math.RandomChoice``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Returns a random element from the IEnumerable T
+            </summary>
+            <typeparam name="T">The type of collection from which to get the item. Must implement IEnumerable</typeparam>
+            <param name="source">The collection from which to randomly choose an item</param>
+            <returns>A random item from object source</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:CogitoSharp.Utils.Math.parseNumberFromDescription``1(System.String,CogitoSharp.Utils.Math.MeasurementUnit)" -->
+        <member name="T:CogitoSharp.Utils.Math.MeasurementUnit">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:CogitoSharp.Utils.Math.Measurement`1">
+            <summary>
+            Simple numeric struct to keep a measurement and its unit.
+            </summary>
+            <typeparam name="T">Numeric type of the measurement</typeparam>
+        </member>
+        <member name="M:CogitoSharp.CogitoUI.#ctor">
+            <summary> Main UI, containing all other elements. Win98, baby </summary>
         </member>
         <member name="F:CogitoSharp.CogitoUI.components">
             <summary>
@@ -365,13 +574,20 @@
             the contents of this method with the code editor.
             </summary>
         </member>
-        <member name="T:CogitoSharp.ICogitoPlugin">
-            <summary> 
-            Interface for all Plugins. Defining method triggers, commands, loop triggers and exit cleanup.
-            </summary>
-        </member>
         <member name="T:CogitoSharp.ILoginKey">
             <summary>May be implemented for proper JSON serialization.</summary>
+        </member>
+        <member name="P:CogitoSharp.ILoginKey.error">
+            <summary> Error message, if authentication failed</summary>
+        </member>
+        <member name="P:CogitoSharp.ILoginKey.ticket">
+            <summary> The string which allows access to the fserv systems; returned on successful authentication with account and password</summary>
+        </member>
+        <member name="T:CogitoSharp.LoginKey">
+            <summary> Collection of all values and variables needed to establish a connection to an fchat server </summary>
+        </member>
+        <member name="F:CogitoSharp.LoginKey.ticketTaken">
+            <summary> The DateTime when this ticket was obtained; used to avoid </summary>
         </member>
         <member name="P:CogitoSharp.LoginKey.account_id">
             <summary>Server-side account number</summary>
@@ -408,18 +624,6 @@
             </summary>
             <param name="username">Username (string) to look for</param>
             <returns>User instance</returns>
-        </member>
-        <member name="M:CogitoSharp.Core.getUser(CogitoSharp.User)">
-            <summary> Overloaded in order to immediately return User instances, as may happen...?
-            </summary>
-            <param name="user">User instance.</param>
-            <returns>User instance</returns>
-        </member>
-        <member name="M:CogitoSharp.Core.getChannel(CogitoSharp.Channel)">
-            <summary> Overloaded in order to immediately return Channel instances, as may happen...?
-            </summary>
-            <param name="channel">Channel instance.</param>
-            <returns>channel instance</returns>
         </member>
         <member name="M:CogitoSharp.Core.getChannel(System.String)">
             <summary>

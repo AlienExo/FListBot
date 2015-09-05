@@ -30,31 +30,45 @@
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CASIE));
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+			this.pictureSubjectAvatar = new System.Windows.Forms.PictureBox();
+			this.tableLayoutPanel1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureSubjectAvatar)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// tableLayoutPanel1
 			// 
 			this.tableLayoutPanel1.ColumnCount = 2;
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.6287F));
-			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 83.3713F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.50114F));
+			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 79.49886F));
+			this.tableLayoutPanel1.Controls.Add(this.pictureSubjectAvatar, 0, 0);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
 			this.tableLayoutPanel1.RowCount = 2;
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.35644F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 85.64356F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(439, 606);
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 15F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 85F));
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(434, 612);
 			this.tableLayoutPanel1.TabIndex = 0;
+			// 
+			// pictureSubjectAvatar
+			// 
+			this.pictureSubjectAvatar.Location = new System.Drawing.Point(3, 3);
+			this.pictureSubjectAvatar.Name = "pictureSubjectAvatar";
+			this.pictureSubjectAvatar.Size = new System.Drawing.Size(80, 80);
+			this.pictureSubjectAvatar.TabIndex = 0;
+			this.pictureSubjectAvatar.TabStop = false;
 			// 
 			// CASIE
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(439, 606);
+			this.ClientSize = new System.Drawing.Size(434, 612);
 			this.Controls.Add(this.tableLayoutPanel1);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "CASIE";
 			this.Text = "CASIE";
+			this.tableLayoutPanel1.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.pictureSubjectAvatar)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -62,5 +76,6 @@
 		#endregion
 
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+		private System.Windows.Forms.PictureBox pictureSubjectAvatar;
 	}
 }

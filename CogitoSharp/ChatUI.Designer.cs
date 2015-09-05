@@ -31,7 +31,11 @@
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ChatUI));
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-			this.userListBox = new System.Windows.Forms.ListBox();
+			this.chatTabs = new CogitoSharp.ChatTabControl();
+			this.tabPage1 = new System.Windows.Forms.TabPage();
+			this.currentChannelUserList = new CogitoSharp.ChatUserList();
+			this.userListButtonPanel = new System.Windows.Forms.Panel();
+			this.UserListFilterButton = new System.Windows.Forms.Button();
 			this.sendButton = new System.Windows.Forms.Button();
 			this.mainTextBox = new System.Windows.Forms.TextBox();
 			this.infoBarPanel = new System.Windows.Forms.Panel();
@@ -39,8 +43,6 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.currenctCharAvatar = new System.Windows.Forms.PictureBox();
 			this.CoreUITable = new System.Windows.Forms.TableLayoutPanel();
-			this.chatTabs = new CogitoSharp.ChatTabControl();
-			this.tabPage1 = new System.Windows.Forms.TabPage();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
@@ -49,10 +51,11 @@
 			this.splitContainer2.Panel1.SuspendLayout();
 			this.splitContainer2.Panel2.SuspendLayout();
 			this.splitContainer2.SuspendLayout();
+			this.chatTabs.SuspendLayout();
+			this.userListButtonPanel.SuspendLayout();
 			this.infoBarPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.currenctCharAvatar)).BeginInit();
 			this.CoreUITable.SuspendLayout();
-			this.chatTabs.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// splitContainer1
@@ -86,23 +89,63 @@
 			// 
 			// splitContainer2.Panel2
 			// 
-			this.splitContainer2.Panel2.Controls.Add(this.userListBox);
+			this.splitContainer2.Panel2.Controls.Add(this.currentChannelUserList);
+			this.splitContainer2.Panel2.Controls.Add(this.userListButtonPanel);
 			this.splitContainer2.Size = new System.Drawing.Size(618, 300);
 			this.splitContainer2.SplitterDistance = 444;
 			this.splitContainer2.TabIndex = 0;
 			// 
-			// userListBox
+			// chatTabs
 			// 
-			this.userListBox.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.userListBox.FormattingEnabled = true;
-			this.userListBox.Location = new System.Drawing.Point(0, 0);
-			this.userListBox.Name = "userListBox";
-			this.userListBox.Size = new System.Drawing.Size(170, 300);
-			this.userListBox.TabIndex = 3;
+			this.chatTabs.Controls.Add(this.tabPage1);
+			this.chatTabs.Dock = System.Windows.Forms.DockStyle.Left;
+			this.chatTabs.Location = new System.Drawing.Point(0, 0);
+			this.chatTabs.Name = "chatTabs";
+			this.chatTabs.SelectedIndex = 0;
+			this.chatTabs.Size = new System.Drawing.Size(444, 300);
+			this.chatTabs.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
+			this.chatTabs.TabIndex = 2;
+			// 
+			// tabPage1
+			// 
+			this.tabPage1.Location = new System.Drawing.Point(4, 22);
+			this.tabPage1.Name = "tabPage1";
+			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage1.Size = new System.Drawing.Size(436, 274);
+			this.tabPage1.TabIndex = 0;
+			this.tabPage1.Text = "Console";
+			this.tabPage1.UseVisualStyleBackColor = true;
+			// 
+			// currentChannelUserList
+			// 
+			this.currentChannelUserList.Location = new System.Drawing.Point(7, 4);
+			this.currentChannelUserList.Name = "currentChannelUserList";
+			this.currentChannelUserList.SelectedIndex = -1;
+			this.currentChannelUserList.Size = new System.Drawing.Size(160, 260);
+			this.currentChannelUserList.TabIndex = 1;
+			this.currentChannelUserList.Text = "chatUserList1";
+			// 
+			// userListButtonPanel
+			// 
+			this.userListButtonPanel.Controls.Add(this.UserListFilterButton);
+			this.userListButtonPanel.Location = new System.Drawing.Point(4, 267);
+			this.userListButtonPanel.Name = "userListButtonPanel";
+			this.userListButtonPanel.Size = new System.Drawing.Size(163, 28);
+			this.userListButtonPanel.TabIndex = 0;
+			// 
+			// UserListFilterButton
+			// 
+			this.UserListFilterButton.Location = new System.Drawing.Point(3, 3);
+			this.UserListFilterButton.Name = "UserListFilterButton";
+			this.UserListFilterButton.Size = new System.Drawing.Size(30, 23);
+			this.UserListFilterButton.TabIndex = 0;
+			this.UserListFilterButton.Text = "button1";
+			this.UserListFilterButton.UseVisualStyleBackColor = true;
 			// 
 			// sendButton
 			// 
-			this.sendButton.Dock = System.Windows.Forms.DockStyle.Right;
+			this.sendButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.sendButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
 			this.sendButton.Location = new System.Drawing.Point(537, 0);
 			this.sendButton.Name = "sendButton";
@@ -178,27 +221,6 @@
 			this.CoreUITable.Size = new System.Drawing.Size(624, 442);
 			this.CoreUITable.TabIndex = 12;
 			// 
-			// chatTabs
-			// 
-			this.chatTabs.Controls.Add(this.tabPage1);
-			this.chatTabs.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.chatTabs.Location = new System.Drawing.Point(0, 0);
-			this.chatTabs.Name = "chatTabs";
-			this.chatTabs.SelectedIndex = 0;
-			this.chatTabs.Size = new System.Drawing.Size(444, 300);
-			this.chatTabs.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
-			this.chatTabs.TabIndex = 2;
-			// 
-			// tabPage1
-			// 
-			this.tabPage1.Location = new System.Drawing.Point(4, 22);
-			this.tabPage1.Name = "tabPage1";
-			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(436, 274);
-			this.tabPage1.TabIndex = 0;
-			this.tabPage1.Text = "Console";
-			this.tabPage1.UseVisualStyleBackColor = true;
-			// 
 			// ChatUI
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -219,11 +241,12 @@
 			this.splitContainer2.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
 			this.splitContainer2.ResumeLayout(false);
+			this.chatTabs.ResumeLayout(false);
+			this.userListButtonPanel.ResumeLayout(false);
 			this.infoBarPanel.ResumeLayout(false);
 			this.infoBarPanel.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.currenctCharAvatar)).EndInit();
 			this.CoreUITable.ResumeLayout(false);
-			this.chatTabs.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -235,7 +258,6 @@
 		private System.Windows.Forms.SplitContainer splitContainer2;
 		protected internal ChatTabControl chatTabs;
 		private System.Windows.Forms.TabPage tabPage1;
-		protected internal System.Windows.Forms.ListBox userListBox;
 		protected internal System.Windows.Forms.Button sendButton;
 		protected internal System.Windows.Forms.TextBox mainTextBox;
 		private System.Windows.Forms.Panel infoBarPanel;
@@ -243,6 +265,9 @@
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.PictureBox currenctCharAvatar;
 		private System.Windows.Forms.TableLayoutPanel CoreUITable;
+		private System.Windows.Forms.Panel userListButtonPanel;
+		private System.Windows.Forms.Button UserListFilterButton;
+		private ChatUserList currentChannelUserList;
 
 	}
 }
