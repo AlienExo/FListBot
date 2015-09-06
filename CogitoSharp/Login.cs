@@ -31,6 +31,7 @@ namespace CogitoSharp
 				CogitoUI.console.Show();
 				CogitoSharp.Core.websocket.OnMessage += (snder, evnt) => CogitoUI.console.console.AppendText(evnt.Data);
 			#endif
+			Core.EternalSender.Change(0, IO.Message.chat_flood);
 			Core.OwnUser = new User((string)this.characterSelectBox.SelectedItem); //set the ref needed for the GUI to construct; it fails with 0 items due to ~scroll bars~
 			CogitoUI.chatUI = new ChatUI();
 			CogitoUI.chatUI.Show();
@@ -144,8 +145,7 @@ namespace CogitoSharp
 			//Implemented below due to Double Password Shit
 		}
 
-/*
- *		private void loginPasswordField_KeyUp(object sender, KeyEventArgs e)
+/*		private void loginPasswordField_KeyUp(object sender, KeyEventArgs e)
  *		{
  *			char kc = (char)e.KeyCode;
  *			if (!char.IsLetterOrDigit(kc) && !char.IsPunctuation(kc) && !(new char[] { ' ', '!', '"', '£', '$', '%', '^', '&', '*', '(', ')', '_', '+', '=', '\'', '§' }.Contains<char>(kc)))

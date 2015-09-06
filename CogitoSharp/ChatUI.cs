@@ -8,16 +8,23 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+/*
+ * TODO: [----------] Add code to populate Die ChatListUser box
+ */
+
 namespace CogitoSharp
 {
 	public partial class ChatUI : Form
 	{
+		ChatTab chatConsole = null;
+
 		public ChatUI(){ 
 			InitializeComponent(); 
 			this.chatTabs = new ChatTabControl();
 			this.chatTabs.TabPages.Clear();
-			this.chatTabs.TabPages.Add("Console");	
-			((ChatTab)this.chatTabs.TabPages["Console"]).UserList.Hide();
+			chatConsole = new ChatTab();
+			this.chatTabs.TabPages.Add(chatConsole);	
+			chatConsole.UserList.Hide();
 			this.MdiParent = Core.cogitoUI;
 			this.Hide();
 		}
@@ -45,6 +52,9 @@ namespace CogitoSharp
 					}
 					else if (((ChatTab)this.chatTabs.SelectedTab).parent.GetType() == typeof(Channel)){	//It's a channel with anywhere between 1 and 1000 users.
 						Channel c = ((ChatTab)this.chatTabs.SelectedTab).parent as Channel; //create actual object to avoid a billion casts
+						object SearchObject;
+						if (c.name == "Console"){ SearchObject = Core.allGlobalUsers; }
+						else { SearchObject = c.Users; }
 						string searchParam;	//instantiate a string 
 						if (c.lastSearchFragment.Length > 0){
 							if (this.mainTextBox.Text.IndexOf(c.lastSearchFragment) > -1) { searchParam = this.mainTextBox.Text.Substring(this.mainTextBox.Text.IndexOf(c.lastSearchFragment)); }
@@ -54,16 +64,17 @@ namespace CogitoSharp
 							}
 						} //if you've (unsuccessfully) searched before, the search fragment is extended, except if it's been removed utterly
 						else{ searchParam = this.mainTextBox.Text.Substring(this.mainTextBox.Text.LastIndexOf(" ")).ToLowerInvariant(); } //searchParam is everything from the last space forward
-						string[] matches = c.Users.FindAll(n => n.Name.ToLowerInvariant().StartsWith(searchParam)).ConvertAll<string>(n => n.Name).ToArray(); //Find all users whose name Starts with (e.g. search from the right) the Search param and convert to a string array
+						string[] matches = ((HashSet<User>)SearchObject).Where(n => n.Name.ToLowerInvariant().StartsWith(searchParam)).Select(n => n.Name).ToArray<string>(); //Find all users whose name Starts with (e.g. search from the right) the Search param and convert to a string array
 						if (matches.Length > 1){
 							c.lastSearchFragment = searchParam; //We have more than one result, so the user must supply more data. Saving our current search(in case of edits)
-							c.Log("");
+							c.Log(String.Format("Multiple possible matches for {0}: {1}", searchParam, String.Join(" ", matches)));
 						}
 						else if (matches.Length == 1) { 
 							this.mainTextBox.Text.Remove(this.mainTextBox.Text.LastIndexOf(" "));
 							this.mainTextBox.Text += " " + matches[0] + " ";
 							c.lastSearchFragment = "";
 						}
+						else { c.Log("No matches found to autocomplete " + searchParam); }
 					}
 					break;
 
@@ -79,7 +90,11 @@ namespace CogitoSharp
 
 		private void ChatUI_Load(object sender, EventArgs e){
 			CogitoSharp.Core.websocket.OnMessage += Core.OnWebsocketMessage;
-			if (!CogitoSharp.Core.websocket.IsAlive) { CogitoSharp.Core.websocket.Connect(); } //this is where we start
+			if (!CogitoSharp.Core.websocket.IsAlive) { 
+				Core.OwnUser.GetAvatar();
+				this.currenctCharAvatar.Image = new Bitmap(Core.OwnUser.Avatar, this.currenctCharAvatar.Size);
+				CogitoSharp.Core.websocket.Connect(); 	
+			} //this is where we start
 			//TODO grab OWN character's avatar and display on top?
 
 		}
@@ -163,7 +178,85 @@ namespace CogitoSharp
 		}
 	}
 
+	//TODO Hack
 	internal class ChatUserList : OwnerDrawnListBox{
-		
+		const int FONT_SIZE    = 10;
+		const int DRAW_OFFSET  = 5;
+
+		public ChatUserList(){
+
+			// Determine what the item height should be
+			// by adding 30% padding after measuring
+			// the letter A with the selected font.
+			Graphics g = this.CreateGraphics();
+			this.ItemHeight = (int)(g.MeasureString("A", this.Font).Height * 1.3);
+			g.Dispose();
+		}
+
+		// Return the name of the selected font.
+		public string SelectedFaceName{
+			get{ return (string)this.Items[this.SelectedIndex]; }
+		}
+
+		// Determine what the text color should be
+		// for the selected item drawn as highlighted
+		Color CalcTextColor(Color backgroundColor){
+			if(backgroundColor.Equals(Color.Empty)) { return Color.Black;}
+
+			int sum = backgroundColor.R + backgroundColor.G + backgroundColor.B;
+
+			if(sum > 256){ return Color.Black; }
+			else { return Color.White; }
+		}
+
+		//TODO: Reprogram the shit out of. Font color... icons... the works.
+		protected override void OnPaint(PaintEventArgs e){
+			Font font;
+			Color fontColor;
+
+			// The base class contains a bitmap, offScreen, for constructing
+			// the control and is rendered when all items are populated.
+			// This technique prevents flicker.
+			Graphics gOffScreen = Graphics.FromImage(this.OffScreen);
+			gOffScreen.FillRectangle(new SolidBrush(this.BackColor), this.ClientRectangle);
+
+			int itemTop = 0;
+
+			// Draw the fonts in the list.
+			for(int n = this.VScrollBar.Value; n < this.VScrollBar.Value + DrawCount; n++){
+				// If the font name contains "dings" it needs to be displayed
+				// in the list box with a readable font with the default font.
+				if(((string)this.Items[n]).ToLower().IndexOf("dings") != -1) { font = new Font(this.Font.Name, FONT_SIZE, FontStyle.Regular); }
+				else { font = new Font((string)this.Items[n], FONT_SIZE, FontStyle.Regular); }
+
+				// Draw the selected item to appear highlighted
+				if(n == this.SelectedIndex){
+					gOffScreen.FillRectangle(new SolidBrush(SystemColors.Highlight),
+						1,
+						itemTop + 1,
+						// If the scroll bar is visible, subtract the scrollbar width
+						// otherwise subtract 2 for the width of the rectangle
+						this.ClientSize.Width - (this.VScrollBar.Visible ? this.VScrollBar.Width : 2),
+						this.ItemHeight);
+					fontColor = CalcTextColor(SystemColors.Highlight);
+				}
+				else{ fontColor = this.ForeColor; }
+
+				// Draw the item
+				gOffScreen.DrawString((string)this.Items[n], font, new SolidBrush(fontColor), DRAW_OFFSET, itemTop);
+				itemTop += this.ItemHeight;
+			}
+
+			// Draw the list box
+			e.Graphics.DrawImage(this.OffScreen, 1, 1);
+
+			gOffScreen.Dispose();
+		}
+
+		// Draws the external border around the control.
+
+		protected override void OnPaintBackground(PaintEventArgs e){
+			e.Graphics.DrawRectangle(new Pen(Color.Black), 0, 0, this.ClientSize.Width - 1, this.ClientSize.Height - 1);
+		}
 	}
 }

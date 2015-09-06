@@ -104,8 +104,9 @@ namespace CogitoSharp.Utils
 		/// <typeparam name="T">The numeric type the function returns. Internally, numbers are handled as doubles...?</typeparam>
 		/// <param name="profileText">The text string from which data is supposed to be taken</param>
 		/// <param name="MeasureToParseAs">If known, the type of data to be parsed.</param>
-		/// <returns> A Measurement<T> instance with the result as type T and the unit in a string"/></returns>
+		/// <returns> A Measurement<T> instance with the result as type T and the unit in a string"/> A Measurement with numeric type T</returns>
 		protected internal static Measurement<T> parseNumberFromDescription<T>(string profileText, MeasurementUnit MeasureToParseAs = MeasurementUnit.Unknown){
+			throw new NotImplementedException("METHOD ISN'T DONE YET");
 			Measurement<T> Result = new Measurement<T>();
 			string[] RangeIndicators = { "-", "/", " to ", " and " };
 			string[] MetricIndicators = { "cm", "m", "km" };
@@ -121,18 +122,23 @@ namespace CogitoSharp.Utils
 				break;
 				
 				case MeasurementUnit.ImperialVolume:
+
 				break;
 				
 				case MeasurementUnit.ImperialWeight:
+				
 				break;
 				
 				case MeasurementUnit.MetricLength:
+				
 				break;
 				
 				case MeasurementUnit.MetricVolume:
+				
 				break;
 				
 				case MeasurementUnit.MetricWeight:
+				
 				break;
 			}
 

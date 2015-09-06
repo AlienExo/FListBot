@@ -25,6 +25,7 @@ namespace CogitoSharp
 			this.IsMdiContainer = true;
 			#if DEBUG
 				CogitoUI.console = new CogitoSharp.Debug.CogitoConsole();
+				console.MdiParent = this;
 			#endif
 		}
 		
@@ -41,11 +42,6 @@ namespace CogitoSharp
 				if (d1 == DialogResult.Yes) {
 					Console.WriteLine("Program is shutting down. Closing connection...");
 					Core.websocket.Close();
-					using (Stream fs = File.Create(Config.AppSettings.DataPath + "UserData.dat")){
-						BinaryFormatter bf = new BinaryFormatter();
-						bf.Serialize(fs, Core.users);
-						fs.Flush();
-					}
 					base.OnFormClosing(e);
 				}
 				else { e.Cancel = true; }
@@ -184,7 +180,7 @@ namespace CogitoSharp
 		protected int DrawCount{
 			get{
 				if (this.vs.Value + this.vs.LargeChange > this.vs.Maximum) { return this.vs.Maximum - this.vs.Value + 1; }
-				else { return this.vs.LargeChange; }
+				else { return this.vs.LargeChange > 0 ? this.vs.LargeChange : 0; }
 			}
 		}
 
@@ -207,7 +203,7 @@ namespace CogitoSharp
 				this.vs.LargeChange = this.items.Count;
 				this.offScreen = new Bitmap(this.ClientSize.Width - 1, this.ClientSize.Height - 2);
 			}
-			this.vs.Maximum = this.items.Count - 1;
+			this.vs.Maximum = this.items.Count - 1 > 0 ? this.items.Count - 1 : 0;
 		}
 	}
 }

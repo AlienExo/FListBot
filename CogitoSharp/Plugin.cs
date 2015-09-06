@@ -9,9 +9,7 @@ using CogitoSharp.IO;
 
 namespace CogitoSharp
 {
-
-	static class Plugins
-	{
+	static class Plugins{
 		internal static Dictionary<string, CogitoPlugin> PluginStore = null;
 
 		internal abstract class CogitoPlugin{

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,7 +58,19 @@ namespace CogitoSharp
 		/// <summary> Sends the client a list of all public channels.
 		/// Send  As: CHA
 		/// Received: CHA { "channels": [object] } </summary>
-		internal static void CHA(SystemCommand c) { }
+		//  CHA {"channels":[{"name":"Gay Males","mode":"both","characters":0}, [...] } ] }
+		internal static void CHA(SystemCommand c) {
+			try{
+			//TODO - this'll need actual Dictionary<string, object> Deserialization, custom to this format, I bet.
+				foreach (object[] currentChannel in (object[][])c.data["channels"]){
+					Channel ch = Core.getChannel(currentChannel[].ToString());
+				}
+
+			}
+			catch (Exception){
+				
+			}
+		}
 
 		/// <summary>  Invites a user to a channel. Sending requires channel op or higher.
 		/// Send  As: CIU { "channel": string, "character": string }
@@ -151,8 +164,10 @@ namespace CogitoSharp
 		///	Received: JCH { "channel": string, "character": object, "title": string }
 		///	Send  As: JCH { "channel": string } </summary>
 		internal static void JCH(SystemCommand c) { 
-			Channel ch = Core.getChannel(c.data["channel"].ToString());
-			ch.Log("Joined Channel " + ch.name); 
+			Channel ch = Core.getChannel(c.data["channel"].ToString()); //"title" would be the channel's name, which in case of private channels can collide!
+			User us = Core.getUser(c.data["character"].ToString());
+			ch.Log(String.Format("User '{0}' joined Channel '{1}'", ch.name));
+			ch.Users.Add(us); 
 			}
 
 		/// <summary> Kinks data in response to a KIN client command.
@@ -175,7 +190,24 @@ namespace CogitoSharp
 
 		/// <summary> Sends an array of *all* the online characters and their gender, status, and status message.
 		/// Received: LIS { characters: [object] }</summary>
-		internal static void LIS(SystemCommand c) { }
+		//LIS {"characters":[["Zeus Keraunos","Male","online",""],["Dionysos Thyrsos","Male","online","... Uncle, you have it bad."],["Bill Cypher","None","online",""],["Uvaxstra","Male","online",""]]}
+		// /!\ OBVIOUSLY A HUGE POTENTIAL PERFORMANCE SINK /!\
+		internal static void LIS(SystemCommand c) {
+			try{
+				foreach (string[] currentUser in (string[][])c.data["characters"]){
+					//Expected format e.g. ["Zeus Keraunos","Male","online",""]
+					//						Name		     Gender	Status  Statusmessage
+					User u = Core.getUser(currentUser[0]);
+					u.status = (Status)Enum.Parse(typeof(Status), currentUser[2]);
+					u.Gender = (Genders)Enum.Parse(typeof(Genders), currentUser[1]);
+				}
+			}
+			catch (InvalidCastException){ 
+				Core.ErrorLog.Log("Could not cast contents of LIS message to string[][] - See dump below: "); 
+				Core.ErrorLog.Log(c.data["characters"].ToString());
+				Core.ErrorLog.Log("\t\tDump complete");	
+			}
+		}
 
 		/// <summary> A roleplay ad is received from a user in a channel.
 		/// Received: LRP { "channel": "", "message": "", "character": ""}</summary>
@@ -296,7 +328,10 @@ namespace CogitoSharp
 
 		/// <summary> Informs the client of the server's self-tracked online time, and a few other bits of information
 		/// Received: UPT { "time": int, "starttime": int, "startstring": string, "accepted": int, "channels": int, "users": int, "maxusers": int }</summary>
-		internal static void UPT(SystemCommand c) { }
+		internal static void UPT(SystemCommand c) {
+			
+
+		}
 
 		internal enum Permissions : int
 		{
@@ -305,27 +340,30 @@ namespace CogitoSharp
 			subscriptions = 65536, formerstaff = 131072
 		};
 
-		/// <summary> Variables the server sends to inform the client about server variables.</summary>
-	
 		//priv_max: Maximum number of bytes allowed with PRI.
 		//lfrp_max: Maximum number of bytes allowed with LRP.
 		//lfrp_flood: Required seconds between LRP messages.
 		//chat_flood: Required seconds between MSG messages.
 		//permissions: Permissions mask for this character.
 		//chat_max: Maximum number of bytes allowed with MSG.	
+		/// <summary> Variables the server sends to inform the client about server variables.</summary>
 		internal static void VAR(SystemCommand c){
 			//TODO: check format
 			switch ((string)c.data["variable"]){
 				case "msg_flood":
-					long NewSenderInterval = (long)(Convert.ToDouble(c.data["value"]) * 1.05);
-					Core.EternalSender.Change(1000, NewSenderInterval * 1000);
-					CogitoUI.console.console.AppendText("Sender interval adjusted: Sending messages every " + NewSenderInterval * 1000 + " seconds.");
+				case "chat_flood":
+					IO.Message.chat_flood = (int)(int.Parse(c.data["value"].ToString()) * 1005); //Multiplying by 1.05 for latency protection / timer shenanigans
+					Core.EternalSender.Change(IO.Message.chat_flood, IO.Message.chat_flood);
+					Core.SystemLog.Log("SYS: Send interval auto-adjusted to interval of " + (IO.Message.chat_flood / 1000f) + " seconds.");
 					break;
+				
 				case "chat_max":
 					IO.Message.chat_max = int.Parse(c.data["value"].ToString());
 					break;
 				
-				
+				case "priv_max":
+					IO.Message.priv_max = int.Parse(c.data["value"].ToString());
+					break;
 			}
 		}
 	}

@@ -23,17 +23,16 @@ namespace CogitoSharp
 		}
 		/// <summary>Channel name, in human-readable format</summary>
 		internal string name;
-		/// <summary>Array of all Users in the channel</summary>
-		private User[] Userlist;
+
 		/// <summary>Associated TabPage for this channel</summary>
-		internal TabPage chanTab;
+		internal ChatTab chanTab;
 		/// <summary>Minimum age to be in this channel. If set to a value greater than 0, the bot will attempt to kick everyone below this age.</summary>
 		internal Int16 minAge = 0;
 
 		internal string lastSearchFragment = "";
 
-		internal List<User> Mods = new List<User>();
-		internal List<User> Users = new List<User>();
+		internal HashSet<User> Mods = new HashSet<User>();
+		internal HashSet<User> Users = new HashSet<User>();
 
 		private CogitoSharp.IO.Logging.LogFile ChannelLog = null;
 
@@ -47,7 +46,6 @@ namespace CogitoSharp
 				this.chanTab.Dispose();
 			}
 			this.disposed = true;
-			
 		}
 
 		public void Join(){
@@ -55,26 +53,28 @@ namespace CogitoSharp
 			c.opcode = "JCH";
 			c.data["channel"] = this.key;
 			c.send();
+			CogitoUI.chatUI.chatTabs.TabPages.Add(this.chanTab);
+			this.ChannelLog = new IO.Logging.LogFile(this.name);
 		}
 
-		public void Leave() {
+		public void Leave(){
 			IO.SystemCommand c = new IO.SystemCommand();
 			c.opcode = "LCH";
 			c.data["channel"] = this.key;
 			c.send();
+			CogitoUI.chatUI.chatTabs.TabPages.Remove(this.chanTab);
+			this.ChannelLog.Dispose();
 		}
 
 		/// <summary>
 		/// Constructor, used with Public (e.g. name-only) channels
 		/// </summary>
 		/// <param name="_name">The channel's name</param>
-		public Channel(string _name)
-		{
+		public Channel(string _name){
+			this.CID = Core.channels.Count;
 			this.key = null;
 			this.name = _name;
 			this.chanTab = new ChatTab(this);
-			this.ChannelLog = new IO.Logging.LogFile(this.name);
-			CogitoUI.chatUI.chatTabs.TabPages.Add(this.chanTab);
 			Core.channels.Add(this);
 		}
 
@@ -83,16 +83,7 @@ namespace CogitoSharp
 		/// </summary>
 		/// <param name="_key">The channel's UUID, used to join it</param>
 		/// <param name="_name">The channel's name</param>
-		public Channel(string _key, string _name = "[Private Channel]")
-		{
-			this.key = _key;
-			this.name = _name;
-			this.ChannelLog = new IO.Logging.LogFile(this.name);
-			this.chanTab = new ChatTab(this);
-			CogitoUI.chatUI.chatTabs.TabPages.Add(this.chanTab);
-			Core.channels.Add(this);
-			this.CID = Core.channels.Count;
-		}
+		public Channel(string _key, string _name = "[Private Channel]") : this(_name){ this.key = _key; }
 
 		internal void MessageReceived(CogitoSharp.IO.Message m){
 			//TODO: Flash tab
@@ -105,8 +96,9 @@ namespace CogitoSharp
 			Dispose();
 		}
 
+		//TODO Is this really how you want it?
 		public override string ToString(){
-			return this.name;
+			return this.key == null ? String.Format("Public Channel '{0}'", this.name) : String.Format("Private Channel '{0}', Key: {1}", this.name, this.key);
 		}
 
 		public override bool Equals(object obj){

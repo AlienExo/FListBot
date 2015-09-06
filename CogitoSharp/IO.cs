@@ -51,6 +51,8 @@ namespace CogitoSharp.IO
 		internal static int chat_max = 4096;
 		/// <summary> Maximum length (in bytes) of a private message. </summary>
 		internal static int priv_max = 50000;
+		/// <summary> Minimum number of milliseconds to wait in between sending chat messages; flood avoidance </summary>
+		internal static int chat_flood = 1000;
 		
 		internal string message{
 			get { return this.data["message"].ToString(); }
@@ -130,7 +132,10 @@ namespace CogitoSharp.IO
 			public void Log(string s){ 
 				s = String.Format("<{0}> -- {1}\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), s);
 				Console.Write(s);
-				this.logger.Write(s); 
+				this.logger.Write(s);
+				#if DEBUG
+				CogitoUI.console.console.AppendText(s);
+				#endif
 				}
 
 			/// <summary>
