@@ -62,6 +62,9 @@ using CogitoSharp.IO;
  */
 
 /*	--- TODO  ---
+ * 
+ *  !!!! new IO.SystemCommand("XXX").Send(); causes the "The header part of the frame cannot be read from the data source" error! ...HOW?!
+ * 
  * HACK Send raw AOP w/o op status. 
  * HACK Send login for a different character w/ valid ticket for another
  * 
@@ -107,7 +110,7 @@ using CogitoSharp.IO;
 
 namespace CogitoSharp
 {
-	/// <summary>May be implemented for proper JSON serialization.</summary>
+	/// <summary>Implemented for proper JSON serialization.</summary>
 	public interface ILoginKey{
 		/// <summary> Error message, if authentication failed</summary>
 		string error { get; set; }
@@ -190,27 +193,18 @@ namespace CogitoSharp
 			logindata["cversion"] = Application.ProductVersion;
 			string openString = JsonConvert.SerializeObject(logindata);
 			openString = "IDN " + openString;
-			#if DEBUG
-			Console.WriteLine("Open String: " + openString);
-			#endif
-			Core.websocket.OnOpen += (sender, e) => Core.websocket.Send(openString);
-			Core.websocket.OnOpen += (sender, e) => Core.SystemLog.Log("Opened Websocket.");
-			Core.websocket.OnOpen += (sender, e) => Thread.Sleep(Math.Max(1000, IO.Message.chat_flood)); 
+			//Core.websocket.OnOpen += (sender, e) => Core.websocket.Send(openString);
 			//Core.websocket.OnOpen += (sender, e) => Core.websocket.Send("ORS");
-			new SystemCommand("ORS").send();
-			new SystemCommand("CHA").send();
-			new SystemCommand("STA { \"status\": \"online\", \"statusmsg\": \"Running Cogito# v" + Application.ProductVersion + "\" }").send();
 			Core.SystemLog.Log("Logging in with selected character '" + character + "'.");
+			Core.websocket.Connect();
+			Core.websocket.Send(openString);
 		}
 	}
 
 	/// <summary>Websocket handling, server connection, threading, all that goodness</summary>
     internal static class Core{
-		#if DEBUG
-			internal static WebSocket websocket = new WebSocket("ws://chat.f-list.net:8722"); //8722 Dev, 9722 Real but dev server is down \o/
-		#else
-			internal static WebSocket websocket = new WebSocket(String.Format("ws://{0}:{1}", Properties.Settings.Default.Host, Properties.Settings.Default.Port));
-		#endif
+
+		internal static WebSocket websocket = null;
 		internal static volatile HashSet<User> allGlobalUsers = new HashSet<User>();
         internal static volatile HashSet<Channel> channels = new HashSet<Channel>();
 		internal static List<User> globalOps = new List<User>();
@@ -219,7 +213,15 @@ namespace CogitoSharp
 		internal static Queue<SystemCommand> OutgoingMessageQueue = new Queue<SystemCommand>();
 		private static volatile bool _sendForever = true;
 		
-		private static void SendMessageFromQueue(Object senderbool){ if (OutgoingMessageQueue.Count > 0){websocket.Send(OutgoingMessageQueue.Dequeue().ToServerString());} }
+		private static void SendMessageFromQueue(object senderbool){ 
+			if (OutgoingMessageQueue.Count > 0 && websocket.IsAlive){
+				string message = OutgoingMessageQueue.Dequeue().ToServerString();
+				websocket.Send(message);
+				#if DEBUG
+					Core.RawData.Log(">> " + message);
+				#endif	
+			} 
+		}
 
 		private static TimerCallback sendTimerCallback = SendMessageFromQueue;
 		internal static System.Threading.Timer EternalSender = new System.Threading.Timer(sendTimerCallback, _sendForever, System.Threading.Timeout.Infinite, IO.Message.chat_flood);
@@ -234,15 +236,17 @@ namespace CogitoSharp
 
 		internal static User OwnUser = null;
 
-		//internal static ThreadStart EternalSendMethod = SendMessage;
-		//internal static Thread EternalSender = new Thread();
-
 		/// <summary>The main entry point for the application.</summary>
-		[STAThread]
         static void Main(){
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			AppDomain.CurrentDomain.ProcessExit += OnProcessExit;
+			AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnProcessExit);
+			#if DEBUG
+			websocket = new WebSocket("ws://chat.f-list.net:8722"); //8722 Dev, 9722 Real but dev server is down \o/
+			#else
+			websocket = new WebSocket(String.Format("ws://{0}:{1}", Properties.Settings.Default.Host, Properties.Settings.Default.Port));
+			#endif
+			websocket.OnMessage += Core.OnWebsocketMessage;
 			cogitoUI = new CogitoUI();
 			SystemLog.Log("Start up: CogitoSharp v." + Application.ProductVersion);
 			SystemLog.Log("Loading Plugins...");
@@ -265,15 +269,15 @@ namespace CogitoSharp
 				SystemLog.Log("Incapable of accessing user database directory");
 				MessageBox.Show("Warning: Application is unable to access its user database in " + Config.AppSettings.DataPath + 
 				"'. Please ensure all proper permissions exist. Application may be unable to persist user database, leading to increased bandwith usage.", "Unable to load user database");
-			 }
-			 foreach (User u in Core.allGlobalUsers) { if ((u.dataTakenOn - DateTime.Now) >= Config.AppSettings.userProfileRefreshPeriod) { u.GetProfileInfo(); } } //Data is old, refresh it.
-			SYBIL.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
-			SYBIL.Rate = 7;
+			}
+			foreach (User u in Core.allGlobalUsers) { if ((u.dataTakenOn - DateTime.Now) >= Config.AppSettings.userProfileRefreshPeriod) { u.GetProfileInfo(); } } //Data is old, refresh it.
+			//SYBIL.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
+			//SYBIL.Rate = 7;
 			try{ Properties.Settings.Default.userAutoComplete.GetType(); }
 			catch (NullReferenceException){ 
 				Properties.Settings.Default.userAutoComplete = new AutoCompleteStringCollection();
 				Properties.Settings.Default.Save();
-			 }
+			}
 			Application.Run(cogitoUI);
         }
 
@@ -297,8 +301,8 @@ namespace CogitoSharp
 			#if DEBUG
 				RawData.Log(c.ToServerString());
 			#endif
-			try{ typeof(FListProcessor).GetMethod(c.opcode, BindingFlags.NonPublic | BindingFlags.Static).Invoke(c, new Object[] {c}); }
-			catch (Exception FuckUp) { ErrorLog.Log(String.Format("Invocation of Method {0} failed:\n\t{1}\n\t{2}", c.opcode, FuckUp.Message, FuckUp.InnerException)); }
+			try{ typeof(FListProcessor).GetMethod(c.OpCode, BindingFlags.NonPublic | BindingFlags.Static).Invoke(c, new Object[] {c}); }
+			catch (Exception FuckUp) { ErrorLog.Log(String.Format("Invocation of Method {0} failed:\n\t{1}\n\t{2}\t{3}", c.OpCode, FuckUp.Message, FuckUp.InnerException, c.Data)); }
 		}
 		
 		/// <summary> Fetches the corresponding User instance from the program's users database; creates (and registers) and returns a new one if no match is found.

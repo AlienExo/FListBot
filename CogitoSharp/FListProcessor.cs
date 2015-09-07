@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
 using CogitoSharp.IO;
+using Newtonsoft.Json;
 
 namespace CogitoSharp
 {
@@ -21,7 +23,13 @@ namespace CogitoSharp
 
 		/// <summary>Sends the client the current list of chatops.
 		/// Received: ADL { "ops": [string] }</summary>
-		internal static void ADL(SystemCommand c) { }
+		internal static void ADL(SystemCommand c) {
+			List<string> AllOpsData = ((Newtonsoft.Json.Linq.JArray)c.Data["ops"]).ToObject<List<string>>();
+			foreach (string op in AllOpsData){
+				User _op = Core.getUser(op);
+				Core.globalOps.Add(_op);
+			}
+		}
 
 		/// <summary>The given character has been promoted to chatop. 
 		/// Received: AOP { "character": string }
@@ -61,21 +69,28 @@ namespace CogitoSharp
 		//  CHA {"channels":[{"name":"Gay Males","mode":"both","characters":0}, [...] } ] }
 		internal static void CHA(SystemCommand c) {
 			try{
-			//TODO - this'll need actual Dictionary<string, object> Deserialization, custom to this format, I bet.
-				foreach (object[] currentChannel in (object[][])c.data["channels"]){
-					Channel ch = Core.getChannel(currentChannel[].ToString());
+				Newtonsoft.Json.Linq.JArray AllChannelData = Newtonsoft.Json.Linq.JArray.Parse(c.Data["channels"].ToString());
+				List<Dictionary<string, object>> _AllChannelData = AllChannelData.ToObject<List<Dictionary<string, object>>>();
+				foreach (Dictionary<string, object> currentChannel in _AllChannelData){
+					Channel ch = Core.getChannel(currentChannel["name"].ToString());
+					ch.mode = (ChannelMode)Enum.Parse(typeof(ChannelMode), currentChannel["mode"].ToString());
+					Console.WriteLine("Got data for Channel " + ch.name);
 				}
-
+				Core.getChannel("Development").Join();
 			}
-			catch (Exception){
-				
-			}
+			catch (Exception e){ Core.ErrorLog.Log(String.Format("Error whilst parsing channel list: {0}", e.Message)); }
+			//TODO Entry point for all auto-joins, now that we know the channels
+			
 		}
 
 		/// <summary>  Invites a user to a channel. Sending requires channel op or higher.
 		/// Send  As: CIU { "channel": string, "character": string }
 		/// Received: CIU { "sender":string,"title":string,"name":string } </summary>
-		internal static void CIU(SystemCommand c) { }
+		internal static void CIU(SystemCommand c) {
+			Channel ch = Core.getChannel(c.Data["title"].ToString());
+			Core.SystemLog.Log(String.Format("Joining channel '{0}' by invitation of user '{1}'", c.Data["title"].ToString(), c.Data["sender"].ToString()));
+			ch.Join();
+		}
 
 		/// <summary> This command requires channel op or higher. Kicks a user from a channel. 
 		/// Received: CKU {"operator":string,"channel":string,"character":string}
@@ -90,11 +105,25 @@ namespace CogitoSharp
 		/// <summary> Gives a list of channel ops. Sent in response to JCH.
 		/// Received: COL { "channel": string, "oplist": [string] }
 		/// Send  As: COL { "channel": string }</summary>
-		internal static void COL(SystemCommand c) { }
+		internal static void COL(SystemCommand c) { 
+		
+		}
 
 		/// <summary> After connecting and identifying you will receive a CON command, giving the number of connected users to the network.
 		/// Received: CON { "count": int }</summary>
-		internal static void CON(SystemCommand c) { }
+		internal static void CON(SystemCommand c) { 
+			using (FileStream fs = File.Open(Config.AppSettings.LoggingPath + "Connections.log", FileMode.Append)){
+				StreamWriter fsw = new StreamWriter(fs);
+				DateTime Now = DateTime.Now;
+				fsw.Write(String.Format("{0}\t{1}\t{2}\tusers connected\r\n", Now.ToString("yyyy-MM-dd"), Now.ToString("HH:mm:ss"), c.Data["count"].ToString()));
+				fsw.Flush();
+				fsw.Close();
+			}
+		//new IO.SystemCommand("ORS").Send();
+		//new IO.SystemCommand("CHA").Send();
+		//new IO.SystemCommand("STA { \"status\": \"online\", \"statusmsg\": \"Running Cogito# v" + System.Windows.Forms.Application.ProductVersion + "\" }").Send();
+
+		}
 
 		/// <summary> This command requires channel op or higher. Demotes a channel operator (channel moderator) to a normal user.
 		/// Send  As: COR { "channel": string, "character": string }
@@ -126,7 +155,7 @@ namespace CogitoSharp
 
 		/// <summary> Indicates that the given error has occurred.
 		/// Received: ERR {"message": "string", "number": int}</summary>
-		internal static void ERR(SystemCommand c) { Core.ErrorLog.Log(String.Format("F-List Error {0} : {1}", c.data["number"], c.data["message"])); }
+		internal static void ERR(SystemCommand c) { Core.ErrorLog.Log(String.Format("F-List Error {0} : {1}", c.Data["number"], c.Data["message"])); }
 
 		/// <summary> Search for characters fitting the user's selections. Kinks is required, all other parameters are optional.
 		/// Send  As: FKS { "kinks": [int], "genders": [enum], "orientations": [enum], "languages": [enum], "furryprefs": [enum], "roles": [enum] }
@@ -143,13 +172,12 @@ namespace CogitoSharp
 
 		/// <summary> Server hello command. Tells which server version is running and who wrote it.
 		/// Received: HLO { "message": string }</summary>
-		internal static void HLO(SystemCommand c) { }
+		internal static void HLO(SystemCommand c) {	}
 
 		/// <summary> Initial channel data. Received in response to JCH, along with CDS.
 		/// Received: ICH { "users": [object], "channel": string, "title": string, "mode": enum }
 		/// ICH {"users": [{"identity": "Shadlor"}], "channel": "Frontpage", mode: "chat"}</summary>
 		internal static void ICH(SystemCommand c) { }
-
 
 		internal static void IDN(SystemCommand c) { }
 
@@ -164,9 +192,10 @@ namespace CogitoSharp
 		///	Received: JCH { "channel": string, "character": object, "title": string }
 		///	Send  As: JCH { "channel": string } </summary>
 		internal static void JCH(SystemCommand c) { 
-			Channel ch = Core.getChannel(c.data["channel"].ToString()); //"title" would be the channel's name, which in case of private channels can collide!
-			User us = Core.getUser(c.data["character"].ToString());
-			ch.Log(String.Format("User '{0}' joined Channel '{1}'", ch.name));
+			Channel ch = Core.getChannel(c.Data["channel"].ToString()); //"title" would be the channel's name, which in case of private channels can collide!
+			Dictionary<string, object> UserData = (Dictionary<string, object>)c.Data["character"];
+			User us = Core.getUser(UserData["identity"].ToString());
+			ch.Log(String.Format("User '{0}' joined Channel '{1}'", us.Name, ch.name));
 			ch.Users.Add(us); 
 			}
 
@@ -186,7 +215,7 @@ namespace CogitoSharp
 		/// <summary> An indicator that the given character has left the channel. This may also be the client's character.
 		/// Received: LCH { "channel": string, "character": character }
 		/// Send  As: LCH { "channel": string }</summary>
-		internal static void LCH(SystemCommand c) { Core.getChannel(c.data["channel"].ToString()).Dispose(); }
+		internal static void LCH(SystemCommand c) { Core.getChannel(c.Data["channel"].ToString()).Leave(); }
 
 		/// <summary> Sends an array of *all* the online characters and their gender, status, and status message.
 		/// Received: LIS { characters: [object] }</summary>
@@ -194,17 +223,17 @@ namespace CogitoSharp
 		// /!\ OBVIOUSLY A HUGE POTENTIAL PERFORMANCE SINK /!\
 		internal static void LIS(SystemCommand c) {
 			try{
-				foreach (string[] currentUser in (string[][])c.data["characters"]){
+				foreach (List<string> currentUser in (List<List<string>>)Newtonsoft.Json.JsonConvert.DeserializeObject<List<List<string>>>(c.Data["characters"].ToString())){
 					//Expected format e.g. ["Zeus Keraunos","Male","online",""]
 					//						Name		     Gender	Status  Statusmessage
 					User u = Core.getUser(currentUser[0]);
-					u.status = (Status)Enum.Parse(typeof(Status), currentUser[2]);
 					u.Gender = (Genders)Enum.Parse(typeof(Genders), currentUser[1]);
+					u.status = (Status)Enum.Parse(typeof(Status), currentUser[2]);
 				}
 			}
 			catch (InvalidCastException){ 
-				Core.ErrorLog.Log("Could not cast contents of LIS message to string[][] - See dump below: "); 
-				Core.ErrorLog.Log(c.data["characters"].ToString());
+				Core.ErrorLog.Log("Could not cast contents of LIS message to List<List<string>> - See dump below: "); 
+				Core.ErrorLog.Log(c.Data["characters"].ToString());
 				Core.ErrorLog.Log("\t\tDump complete");	
 			}
 		}
@@ -220,6 +249,18 @@ namespace CogitoSharp
 		{
 			Message m = (Message)c;
 			m.sourceChannel.MessageReceived(m);
+			if (m.args[0].StartsWith(Config.AppSettings.TriggerPrefix)) {
+				Core.SystemLog.Log("Attempting to execute bot method " + m.args[0] + "...");
+				//try { typeof(Config.AITriggers).GetMethod(c.opcode, BindingFlags.NonPublic | BindingFlags.Static).Invoke(c, new Object[] { c }); }
+				try { 
+					Delegate AIMethod = Config.AITriggers[m.args[0]]; 
+					AIMethod.Method.Invoke(c, new object[] {m});
+				}
+				catch (KeyNotFoundException NoMethod) { Core.ErrorLog.Log(String.Format("Invocation of Bot Method {0} failed, as the method is not registered in the AITriggers.Triggers dictionary does not exist:\n\t{1}\n\t{2}", c.OpCode, NoMethod.Message, NoMethod.InnerException)); }
+				catch (TargetException NoMethod) { Core.ErrorLog.Log(String.Format("Invocation of Bot Method {0} failed, as the method does not exist:\n\t{1}\n\t{2}", c.OpCode, NoMethod.Message, NoMethod.InnerException)); }
+				catch (ArgumentException WrongData) { Core.ErrorLog.Log(String.Format("Invocation of Bot Method {0} failed, due to a wrong argument:\n\t{1}\n\t{2}", c.OpCode, WrongData.Message, WrongData.InnerException)); }
+				catch (Exception FuckUp) { Core.ErrorLog.Log(String.Format("Invocation of Bot Method {0} failed due to an unexpected error:\n\t{1}\n\t{2}", c.OpCode, FuckUp.Message, FuckUp.InnerException)); }
+			}
 			//TODO: Plugin System, Bot commands, the works.
 		}
 
@@ -227,8 +268,8 @@ namespace CogitoSharp
 		/// Received: NLN { "identity": string, "gender": enum, "status": enum }</summary>
 		internal static void NLN(SystemCommand c)
 		{
-			User u = Core.getUser(c.data["identity"].ToString());
-			u.status = (Status)Enum.Parse(typeof(Status), c.data["status"].ToString());
+			User u = Core.getUser(c.Data["identity"].ToString());
+			u.status = (Status)Enum.Parse(typeof(Status), c.Data["status"].ToString());
 		}
 
 		/// <summary> Gives a list of open private rooms.
@@ -237,7 +278,7 @@ namespace CogitoSharp
 		/// Send  As: ORS</summary>
 		internal static void ORS(SystemCommand c) { 
 			try{
-				List<Dictionary<string, string>> channelItems = (c.data["channels"] as List<Dictionary<string, string>>);
+				List<Dictionary<string, string>> channelItems = (c.Data["channels"] as List<Dictionary<string, string>>);
 				List<Dictionary<string, string>>.Enumerator e =  channelItems.GetEnumerator();
 				while (e.MoveNext()){
 					Dictionary<string, string> channelData = e.Current;
@@ -246,15 +287,15 @@ namespace CogitoSharp
 					CogitoUI.console.console.AppendText(String.Format("Setting Key for channel {0} to '{1}'\n", currentChannel.name, currentChannel.key));
 				}
 			}
-			catch{
-			
-			}
+			catch{ }
 		}
 
 		/// <summary> Ping command from the server, requiring a response, to keep the connection alive.
 		/// Received: PIN
 		/// Send  As: PIN </summary>
-		internal static void PIN(SystemCommand c) { Core.websocket.Send("PIN"); }
+		internal static void PIN(SystemCommand c) { 
+			Core.websocket.Send("PIN"); 
+		}
 
 		/// <summary> Profile data commands sent in response to a PRO client command. 
 		/// Received: PRD { "type": enum, "message": string, "key": string, "value": string }</summary>
@@ -328,13 +369,9 @@ namespace CogitoSharp
 
 		/// <summary> Informs the client of the server's self-tracked online time, and a few other bits of information
 		/// Received: UPT { "time": int, "starttime": int, "startstring": string, "accepted": int, "channels": int, "users": int, "maxusers": int }</summary>
-		internal static void UPT(SystemCommand c) {
-			
+		internal static void UPT(SystemCommand c) {	}
 
-		}
-
-		internal enum Permissions : int
-		{
+		internal enum Permissions : int{
 			Admin = 1, chatop = 2, chanop = 4, helpdeskchat = 8, helpdeskgeneral = 16, moderationsite = 32, reserved = 64, grouprequests = 128,
 			newsposts = 256, changelog = 512, featurerequests = 1024, bugreports = 2048, tags = 4096, kinks = 8192, developer = 16384, tester = 32768,
 			subscriptions = 65536, formerstaff = 131072
@@ -349,20 +386,20 @@ namespace CogitoSharp
 		/// <summary> Variables the server sends to inform the client about server variables.</summary>
 		internal static void VAR(SystemCommand c){
 			//TODO: check format
-			switch ((string)c.data["variable"]){
+			switch ((string)c.Data["variable"]){
 				case "msg_flood":
 				case "chat_flood":
-					IO.Message.chat_flood = (int)(int.Parse(c.data["value"].ToString()) * 1005); //Multiplying by 1.05 for latency protection / timer shenanigans
-					Core.EternalSender.Change(IO.Message.chat_flood, IO.Message.chat_flood);
+					IO.Message.chat_flood = (int)(float.Parse(c.Data["value"].ToString()) * 1250); //Multiplying by 1005 for latency protection / timer shenanigans, and converting from seconds to miliseconds
+					Core.EternalSender.Change(0, IO.Message.chat_flood);
 					Core.SystemLog.Log("SYS: Send interval auto-adjusted to interval of " + (IO.Message.chat_flood / 1000f) + " seconds.");
 					break;
 				
 				case "chat_max":
-					IO.Message.chat_max = int.Parse(c.data["value"].ToString());
+					IO.Message.chat_max = int.Parse(c.Data["value"].ToString());
 					break;
 				
 				case "priv_max":
-					IO.Message.priv_max = int.Parse(c.data["value"].ToString());
+					IO.Message.priv_max = int.Parse(c.Data["value"].ToString());
 					break;
 			}
 		}

@@ -24,9 +24,7 @@ namespace CogitoSharp
 	enum Status : int { online = 0, looking, busy, dnd, away }
 	/// <summary>User (synonymous with Character)</summary>
 	[Serializable]
-	public class User : IComparable
-	{
-		
+	public class User : IComparable{
 		[NonSerialized] private static int Count;
 		[NonSerialized] private readonly int UID = ++User.Count;
 		[NonSerialized] private object UserLock;
@@ -75,7 +73,7 @@ namespace CogitoSharp
 				this.Avatar = new Bitmap(_avatarPath);
 			}
 			catch (FileNotFoundException){
-				this.Avatar = null;
+				GetAvatar();
 			}
 
 			catch (DirectoryNotFoundException){
@@ -85,7 +83,7 @@ namespace CogitoSharp
 			}
 
 			catch (ArgumentException a){
-				Core.ErrorLog.Log(String.Format("Failed to fetch avatar for user {0}: {1}", this.Name, a.Message));
+				GetAvatar();
 			}
 
 			Core.allGlobalUsers.Add(this); 
@@ -95,7 +93,6 @@ namespace CogitoSharp
 		{
 			this.age = nAge;
 		}
-
 
 		public override string ToString() { return this.Name; }
 
@@ -132,9 +129,8 @@ namespace CogitoSharp
 			var worker = new BackgroundWorker();
 			worker.DoWork += (s, e) =>
 			{
-				var uri = new Uri((string)e.Argument, UriKind.Absolute);
-
-				using (var webClient = new WebClient())
+				Uri uri = new Uri(System.Net.WebUtility.HtmlEncode((string)e.Argument), UriKind.Absolute);
+				using (WebClient webClient = new WebClient())
 				{
 					webClient.Proxy = null;
 					webClient.CachePolicy = new RequestCachePolicy(RequestCacheLevel.Revalidate);

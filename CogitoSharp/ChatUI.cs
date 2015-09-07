@@ -16,6 +16,9 @@ namespace CogitoSharp
 {
 	public partial class ChatUI : Form
 	{
+		internal delegate void AddChatTabCallback(ChatTab tab);
+		internal delegate void RemoveChatTabCallback(ChatTab tab);
+
 		ChatTab chatConsole = null;
 
 		public ChatUI(){ 
@@ -30,46 +33,66 @@ namespace CogitoSharp
 		}
 
 		private void sendButton_Click(object sender, EventArgs e){
-			Console.WriteLine("Send button has been pressed");
 			IO.Message m = new IO.Message();
 			m.message = mainTextBox.Text;
 			Object parent = ((ChatTab)this.chatTabs.SelectedTab).parent;
+			if(parent == null) { mainTextBox.Text = ""; return; }
 			if ( parent.GetType() == typeof(User)) { m.sourceUser = (User)parent; }
 			else if (parent.GetType() == typeof(Channel)) { m.sourceChannel = (Channel)parent; }
 			m.send();
 			mainTextBox.Text = "";
+			mainTextBox.Select();
 		}
 
-		private void textBox1_GotFocus(object sender, EventArgs e){ Console.WriteLine("Text Box got focus!"); this.AcceptButton = sendButton; }
+		private void mainTextBox_Enter(object sender, EventArgs e){  this.AcceptButton = sendButton; }
 
-		private void textBox1_KeyDown(object sender, KeyEventArgs e){
+		private void ChatUI_Load(object sender, EventArgs e){
+			if (Core.OwnUser.Avatar == null) { Core.OwnUser.GetAvatar(); }
+			this.label1.Text = Core.OwnUser.Name;
+			try{ this.currenctCharAvatar.Image = new Bitmap(Core.OwnUser.Avatar, this.currenctCharAvatar.Size); }
+			catch (Exception) { }
+		}
+
+		private void chatTabs_DoubleClick(object sender, EventArgs e){
+			TabPage page = chatTabs.SelectedTab;
+			if (page != null && page.Text != "Console") { chatTabs.TabPages.Remove(page); }
+		}
+
+		private void mainTextBox_KeyDown(object sender, KeyEventArgs e)
+		{
 			switch (e.KeyCode) //"Depending on the key pressed, do..."
 			{
 				case Keys.Tab: //Key is Tab
-					if (((ChatTab)this.chatTabs.SelectedTab).parent.GetType() == typeof(User)){ //this is a private conversation, so there's only one option
+					if (((ChatTab)this.chatTabs.SelectedTab).parent.GetType() == typeof(User))
+					{ //this is a private conversation, so there's only one option
 						//this.mainTextBox.Text.Remove(this.mainTextBox.Text.LastIndexOf(" ")); //remove all text after the last space (that's when you started typing the name...? COMMENTED OUT, FUCK IT
 						this.mainTextBox.Text += " " + ((ChatTab)this.chatTabs.SelectedTab).parent.ToString() + " "; //Insert a space, the other's name, another space, BAM!
 					}
-					else if (((ChatTab)this.chatTabs.SelectedTab).parent.GetType() == typeof(Channel)){	//It's a channel with anywhere between 1 and 1000 users.
+					else if (((ChatTab)this.chatTabs.SelectedTab).parent.GetType() == typeof(Channel))
+					{	//It's a channel with anywhere between 1 and 1000 users.
 						Channel c = ((ChatTab)this.chatTabs.SelectedTab).parent as Channel; //create actual object to avoid a billion casts
 						object SearchObject;
-						if (c.name == "Console"){ SearchObject = Core.allGlobalUsers; }
+						if (c.name == "Console") { SearchObject = Core.allGlobalUsers; }
 						else { SearchObject = c.Users; }
 						string searchParam;	//instantiate a string 
-						if (c.lastSearchFragment.Length > 0){
+						if (c.lastSearchFragment.Length > 0)
+						{
 							if (this.mainTextBox.Text.IndexOf(c.lastSearchFragment) > -1) { searchParam = this.mainTextBox.Text.Substring(this.mainTextBox.Text.IndexOf(c.lastSearchFragment)); }
-							else { //original search param has been deleted/altered; gotta reset
-								searchParam = this.mainTextBox.Text.Substring(this.mainTextBox.Text.LastIndexOf(" ")).ToLowerInvariant(); 
+							else
+							{ //original search param has been deleted/altered; gotta reset
+								searchParam = this.mainTextBox.Text.Substring(this.mainTextBox.Text.LastIndexOf(" ")).ToLowerInvariant();
 								c.lastSearchFragment = searchParam;
 							}
 						} //if you've (unsuccessfully) searched before, the search fragment is extended, except if it's been removed utterly
-						else{ searchParam = this.mainTextBox.Text.Substring(this.mainTextBox.Text.LastIndexOf(" ")).ToLowerInvariant(); } //searchParam is everything from the last space forward
+						else { searchParam = this.mainTextBox.Text.Substring(this.mainTextBox.Text.LastIndexOf(" ")).ToLowerInvariant(); } //searchParam is everything from the last space forward
 						string[] matches = ((HashSet<User>)SearchObject).Where(n => n.Name.ToLowerInvariant().StartsWith(searchParam)).Select(n => n.Name).ToArray<string>(); //Find all users whose name Starts with (e.g. search from the right) the Search param and convert to a string array
-						if (matches.Length > 1){
+						if (matches.Length > 1)
+						{
 							c.lastSearchFragment = searchParam; //We have more than one result, so the user must supply more data. Saving our current search(in case of edits)
 							c.Log(String.Format("Multiple possible matches for {0}: {1}", searchParam, String.Join(" ", matches)));
 						}
-						else if (matches.Length == 1) { 
+						else if (matches.Length == 1)
+						{
 							this.mainTextBox.Text.Remove(this.mainTextBox.Text.LastIndexOf(" "));
 							this.mainTextBox.Text += " " + matches[0] + " ";
 							c.lastSearchFragment = "";
@@ -86,22 +109,6 @@ namespace CogitoSharp
 					base.OnKeyDown(e);
 					break;
 			}
-		}
-
-		private void ChatUI_Load(object sender, EventArgs e){
-			CogitoSharp.Core.websocket.OnMessage += Core.OnWebsocketMessage;
-			if (!CogitoSharp.Core.websocket.IsAlive) { 
-				Core.OwnUser.GetAvatar();
-				this.currenctCharAvatar.Image = new Bitmap(Core.OwnUser.Avatar, this.currenctCharAvatar.Size);
-				CogitoSharp.Core.websocket.Connect(); 	
-			} //this is where we start
-			//TODO grab OWN character's avatar and display on top?
-
-		}
-
-		private void chatTabs_DoubleClick(object sender, EventArgs e){
-			TabPage page = chatTabs.SelectedTab;
-			if (page != null && page.Text != "Console") { chatTabs.TabPages.Remove(page); }
 		}
 	}
 

@@ -37,6 +37,7 @@ namespace CogitoSharp
 		}
 
 		private void CogitoUI_FormClosing(object sender, FormClosingEventArgs e){
+			Console.WriteLine("SORRY WE'RE CLOSING");
 			if (Core.websocket.IsAlive){
 				DialogResult d1 = MessageBox.Show("This will close all connections and shut down. Are you sure?", "Please confirm Shutdown", MessageBoxButtons.YesNo);
 				if (d1 == DialogResult.Yes) {

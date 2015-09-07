@@ -14,29 +14,32 @@ namespace CogitoSharp.IO
 	class SystemCommand
 	{
 
-		internal protected string opcode { get; set; }
-		internal protected Dictionary<string, object> data = new Dictionary<string, object>();
+		internal protected string OpCode { get; set; }
+		internal protected Dictionary<string, object> Data = new Dictionary<string, object>();
 
 		/// <summary>
 		/// Sends the message by adding it to the OutgoingMessageQueue
 		/// </summary>
-		internal void send() { Core.OutgoingMessageQueue.Enqueue(this); }
+		internal void Send() { Core.OutgoingMessageQueue.Enqueue(this); }
 
 		/// <summary>
 		/// Produces a string that fserv can interpret.
 		/// </summary>
 		/// <returns>A string "OPCODE {JSONKEY: "value", [...]}"</returns>
-		public string ToServerString() { return this.opcode.ToUpperInvariant() + " " + JsonConvert.SerializeObject(this.data).ToString(); }
+		public string ToServerString() {
+			if (this.Data.Keys.Count > 0) { return this.OpCode.ToUpperInvariant() + " " + JsonConvert.SerializeObject(this.Data).ToString(); }
+			else { return this.OpCode.ToUpperInvariant(); }
+		}
 
 		public SystemCommand(string rawmessage){
-			this.opcode = rawmessage.Substring(0, 3);
-			if (rawmessage.Length<=4) { return; }
-			this.data = JsonConvert.DeserializeObject<Dictionary<string, object>>(rawmessage.Substring(4));
+			Console.WriteLine("Creating new SystemCommand from " + rawmessage);
+			this.OpCode = rawmessage.Substring(0, 3);
+			if (rawmessage.Length > 4) { this.Data = JsonConvert.DeserializeObject<Dictionary<string, object>>(rawmessage.Substring(4)); }
 		}
 
 		public SystemCommand(Message parentMessage){
-			this.opcode = parentMessage.opcode;
-			this.data = parentMessage.data;
+			this.OpCode = parentMessage.OpCode;
+			this.Data = parentMessage.Data;
 		}
 
 		public SystemCommand() { }
@@ -55,8 +58,8 @@ namespace CogitoSharp.IO
 		internal static int chat_flood = 1000;
 		
 		internal string message{
-			get { return this.data["message"].ToString(); }
-			set{ this.data["message"] = value; }
+			get { return this.Data["message"].ToString(); }
+			set{ this.Data["message"] = value; }
 		}
 
 		internal string[] args { 
@@ -65,10 +68,10 @@ namespace CogitoSharp.IO
 			}
 
 		public Message(SystemCommand s)	: base(){
-			this.opcode = s.opcode;
-			this.sourceUser = this.data.ContainsKey("character") ? Core.getUser((string)this.data["character"]) : null;
-			this.sourceChannel = this.data.ContainsKey("channel") ? Core.getChannel((string)this.data["channel"]) : null;
-			this.data = s.data;
+			this.OpCode = s.OpCode;
+			this.sourceUser = this.Data.ContainsKey("character") ? Core.getUser((string)this.Data["character"]) : null;
+			this.sourceChannel = this.Data.ContainsKey("channel") ? Core.getChannel((string)this.Data["channel"]) : null;
+			this.Data = s.Data;
 		}
 
 		public Message(string messageBody, Message parentMessage) : base(parentMessage) { 
@@ -83,17 +86,17 @@ namespace CogitoSharp.IO
 		/// Sends the message by adding it to the OutgoingMessageQueue
 		/// </summary>
 		internal new void send(){
-			if (this.opcode == null)
+			if (this.OpCode == null)
 			{
-				this.opcode = this.sourceUser == null ? "MSG" : "PRI"; //sets Opcode to MSG (send to entire channel) if no user is specified, else to PRI (only to user)
-				if (this.sourceUser != null) { this.data.Add("recipient", this.sourceUser.Name); }
-				else { this.data.Add("channel", this.sourceChannel.key); }
+				this.OpCode = this.sourceUser == null ? "MSG" : "PRI"; //sets Opcode to MSG (send to entire channel) if no user is specified, else to PRI (only to user)
+				if (this.sourceUser != null) { this.Data.Add("recipient", this.sourceUser.Name); }
+				else { this.Data.Add("channel", this.sourceChannel.key); }
 			};
 
 			//This should, in theory, make sure we don't send any too-long messages.
 			//y u no autosplit your buffer
 			int MessageLength = System.Text.Encoding.UTF8.GetByteCount(this.message);
-			int MaxLength = this.opcode == "MSG" ? Message.chat_max : Message.priv_max;
+			int MaxLength = this.OpCode == "MSG" ? Message.chat_max : Message.priv_max;
 			if (MessageLength > MaxLength) {
 				List<Message> messages = new List<Message>();
 				Message subMessage = new Message("", this);
@@ -106,7 +109,7 @@ namespace CogitoSharp.IO
 				}
 				messages.ForEach(x => x.send()); //If we did this recursively, the last subMessage would send first, chunks | to reversed  | leading 
 			}
-			base.send();
+			base.Send();
 		}
 
 		internal int getByteLength(){ return (System.Text.Encoding.UTF8.GetByteCount(this.message)); }
@@ -118,8 +121,8 @@ namespace CogitoSharp.IO
 		internal void reply(string replyText){ new Message(replyText, this).send(); }
 
 		public override string ToString(){
-			if (this.data["message"].ToString().StartsWith("/me")) { return this.sourceUser.Name + " " + this.data["message"].ToString().Substring(3); }
-			else {return this.sourceUser.Name + ": " + this.data["message"].ToString();}
+			if (this.Data["message"].ToString().StartsWith("/me")) { return this.sourceUser.Name + " " + this.Data["message"].ToString().Substring(3); }
+			else {return this.sourceUser.Name + ": " + this.Data["message"].ToString();}
 		}
 	}
 	internal class Logging{
@@ -184,8 +187,6 @@ namespace CogitoSharp.IO
 					}
 					this.flushTimer.Stop();
 					this.flushTimer.Dispose();
-					this.logger.Flush();
-					this.logger.Dispose();
 					this.disposed = true;
 				}
 			}

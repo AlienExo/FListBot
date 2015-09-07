@@ -35,7 +35,7 @@
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.currentChannelUserList = new CogitoSharp.ChatUserList();
 			this.userListButtonPanel = new System.Windows.Forms.Panel();
-			this.UserListFilterButton = new System.Windows.Forms.Button();
+			this.buttonFilterUserlist = new System.Windows.Forms.Button();
 			this.sendButton = new System.Windows.Forms.Button();
 			this.mainTextBox = new System.Windows.Forms.TextBox();
 			this.infoBarPanel = new System.Windows.Forms.Panel();
@@ -43,6 +43,8 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.currenctCharAvatar = new System.Windows.Forms.PictureBox();
 			this.CoreUITable = new System.Windows.Forms.TableLayoutPanel();
+			this.buttonSortUserlist = new System.Windows.Forms.Button();
+			this.menuStripFilterUserlist = new System.Windows.Forms.MenuStrip();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
@@ -60,7 +62,8 @@
 			// 
 			// splitContainer1
 			// 
-			this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.splitContainer1.Location = new System.Drawing.Point(3, 69);
 			this.splitContainer1.Name = "splitContainer1";
 			this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -91,14 +94,15 @@
 			// 
 			this.splitContainer2.Panel2.Controls.Add(this.currentChannelUserList);
 			this.splitContainer2.Panel2.Controls.Add(this.userListButtonPanel);
+			this.splitContainer2.Panel2.Controls.Add(this.menuStripFilterUserlist);
 			this.splitContainer2.Size = new System.Drawing.Size(618, 300);
 			this.splitContainer2.SplitterDistance = 444;
 			this.splitContainer2.TabIndex = 0;
 			// 
 			// chatTabs
 			// 
+			this.chatTabs.Anchor = System.Windows.Forms.AnchorStyles.Left;
 			this.chatTabs.Controls.Add(this.tabPage1);
-			this.chatTabs.Dock = System.Windows.Forms.DockStyle.Left;
 			this.chatTabs.Location = new System.Drawing.Point(0, 0);
 			this.chatTabs.Name = "chatTabs";
 			this.chatTabs.SelectedIndex = 0;
@@ -118,6 +122,7 @@
 			// 
 			// currentChannelUserList
 			// 
+			this.currentChannelUserList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.currentChannelUserList.Location = new System.Drawing.Point(7, 4);
 			this.currentChannelUserList.Name = "currentChannelUserList";
 			this.currentChannelUserList.SelectedIndex = -1;
@@ -127,25 +132,26 @@
 			// 
 			// userListButtonPanel
 			// 
-			this.userListButtonPanel.Controls.Add(this.UserListFilterButton);
+			this.userListButtonPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.userListButtonPanel.Controls.Add(this.buttonSortUserlist);
+			this.userListButtonPanel.Controls.Add(this.buttonFilterUserlist);
 			this.userListButtonPanel.Location = new System.Drawing.Point(4, 267);
 			this.userListButtonPanel.Name = "userListButtonPanel";
 			this.userListButtonPanel.Size = new System.Drawing.Size(163, 28);
 			this.userListButtonPanel.TabIndex = 0;
 			// 
-			// UserListFilterButton
+			// buttonFilterUserlist
 			// 
-			this.UserListFilterButton.Location = new System.Drawing.Point(3, 3);
-			this.UserListFilterButton.Name = "UserListFilterButton";
-			this.UserListFilterButton.Size = new System.Drawing.Size(30, 23);
-			this.UserListFilterButton.TabIndex = 0;
-			this.UserListFilterButton.Text = "button1";
-			this.UserListFilterButton.UseVisualStyleBackColor = true;
+			this.buttonFilterUserlist.Image = ((System.Drawing.Image)(resources.GetObject("buttonFilterUserlist.Image")));
+			this.buttonFilterUserlist.Location = new System.Drawing.Point(49, 3);
+			this.buttonFilterUserlist.Name = "buttonFilterUserlist";
+			this.buttonFilterUserlist.Size = new System.Drawing.Size(30, 23);
+			this.buttonFilterUserlist.TabIndex = 0;
+			this.buttonFilterUserlist.UseVisualStyleBackColor = true;
 			// 
 			// sendButton
 			// 
-			this.sendButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.sendButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.sendButton.ImeMode = System.Windows.Forms.ImeMode.NoControl;
 			this.sendButton.Location = new System.Drawing.Point(537, 0);
 			this.sendButton.Name = "sendButton";
@@ -153,22 +159,26 @@
 			this.sendButton.TabIndex = 5;
 			this.sendButton.Text = "Send";
 			this.sendButton.UseVisualStyleBackColor = true;
+			this.sendButton.Click += new System.EventHandler(this.sendButton_Click);
 			// 
 			// mainTextBox
 			// 
-			this.mainTextBox.Dock = System.Windows.Forms.DockStyle.Left;
+			this.mainTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.mainTextBox.Location = new System.Drawing.Point(0, 0);
 			this.mainTextBox.Multiline = true;
 			this.mainTextBox.Name = "mainTextBox";
 			this.mainTextBox.Size = new System.Drawing.Size(531, 66);
 			this.mainTextBox.TabIndex = 4;
+			this.mainTextBox.Enter += new System.EventHandler(this.mainTextBox_Enter);
+			this.mainTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.mainTextBox_KeyDown);
 			// 
 			// infoBarPanel
 			// 
+			this.infoBarPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
 			this.infoBarPanel.Controls.Add(this.label2);
 			this.infoBarPanel.Controls.Add(this.label1);
 			this.infoBarPanel.Controls.Add(this.currenctCharAvatar);
-			this.infoBarPanel.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.infoBarPanel.Location = new System.Drawing.Point(3, 3);
 			this.infoBarPanel.MaximumSize = new System.Drawing.Size(0, 56);
 			this.infoBarPanel.Name = "infoBarPanel";
@@ -221,6 +231,23 @@
 			this.CoreUITable.Size = new System.Drawing.Size(624, 442);
 			this.CoreUITable.TabIndex = 12;
 			// 
+			// buttonSortUserlist
+			// 
+			this.buttonSortUserlist.Image = ((System.Drawing.Image)(resources.GetObject("buttonSortUserlist.Image")));
+			this.buttonSortUserlist.Location = new System.Drawing.Point(85, 3);
+			this.buttonSortUserlist.Name = "buttonSortUserlist";
+			this.buttonSortUserlist.Size = new System.Drawing.Size(30, 23);
+			this.buttonSortUserlist.TabIndex = 1;
+			this.buttonSortUserlist.UseVisualStyleBackColor = true;
+			// 
+			// menuStripFilterUserlist
+			// 
+			this.menuStripFilterUserlist.Location = new System.Drawing.Point(0, 0);
+			this.menuStripFilterUserlist.Name = "menuStripFilterUserlist";
+			this.menuStripFilterUserlist.Size = new System.Drawing.Size(170, 24);
+			this.menuStripFilterUserlist.TabIndex = 2;
+			this.menuStripFilterUserlist.Text = "menuStrip1";
+			// 
 			// ChatUI
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -228,6 +255,7 @@
 			this.ClientSize = new System.Drawing.Size(624, 442);
 			this.Controls.Add(this.CoreUITable);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.MainMenuStrip = this.menuStripFilterUserlist;
 			this.MinimumSize = new System.Drawing.Size(640, 480);
 			this.Name = "ChatUI";
 			this.Text = "ChatUI";
@@ -239,6 +267,7 @@
 			this.splitContainer1.ResumeLayout(false);
 			this.splitContainer2.Panel1.ResumeLayout(false);
 			this.splitContainer2.Panel2.ResumeLayout(false);
+			this.splitContainer2.Panel2.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
 			this.splitContainer2.ResumeLayout(false);
 			this.chatTabs.ResumeLayout(false);
@@ -266,8 +295,10 @@
 		private System.Windows.Forms.PictureBox currenctCharAvatar;
 		private System.Windows.Forms.TableLayoutPanel CoreUITable;
 		private System.Windows.Forms.Panel userListButtonPanel;
-		private System.Windows.Forms.Button UserListFilterButton;
+		private System.Windows.Forms.Button buttonFilterUserlist;
 		private ChatUserList currentChannelUserList;
+		private System.Windows.Forms.Button buttonSortUserlist;
+		private System.Windows.Forms.MenuStrip menuStripFilterUserlist;
 
 	}
 }

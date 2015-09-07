@@ -99,12 +99,12 @@ namespace CogitoSharp.Utils
 		/// <summary>
 		/// Takes a descriptive string, e.g. "They are between 5 and 10 inches tall" and attempts to return a number of type T. 
 		/// When a range is detected, the arithmetic mean is returned.
-		/// All data is converted to a standard metric unit before being returned as a <see cref="Measurement"/> instance.
+		/// All data is converted to a standard metric unit before being returned as a Measurement instance.
 		/// </summary>
 		/// <typeparam name="T">The numeric type the function returns. Internally, numbers are handled as doubles...?</typeparam>
 		/// <param name="profileText">The text string from which data is supposed to be taken</param>
 		/// <param name="MeasureToParseAs">If known, the type of data to be parsed.</param>
-		/// <returns> A Measurement<T> instance with the result as type T and the unit in a string"/> A Measurement with numeric type T</returns>
+		/// <returns> A Measurement<!--<T>--> instance with the result as type T and the unit in a string"/> A Measurement with numeric type T</returns>
 		protected internal static Measurement<T> parseNumberFromDescription<T>(string profileText, MeasurementUnit MeasureToParseAs = MeasurementUnit.Unknown){
 			throw new NotImplementedException("METHOD ISN'T DONE YET");
 			Measurement<T> Result = new Measurement<T>();

@@ -35,6 +35,13 @@ namespace CogitoSharp.Debug
 			this.Enabled = false;
 			this.ReadOnly = true;
 			this.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+			this.VisibleChanged += (sender, e) => 
+				{
+					if (this.Visible){
+						this.SelectionStart = this.TextLength;
+						this.ScrollToCaret();
+					}
+				};
 			this.ResumeLayout(false);
 
 		}
@@ -45,6 +52,7 @@ namespace CogitoSharp.Debug
 		public CogitoConsole(){
 			InitializeComponent();
 			this.MdiParent = Core.cogitoUI;
+			this.console.ScrollBars = ScrollBars.Both;
 		}
 
 		private void input_KeyPress(object sender, KeyPressEventArgs e){

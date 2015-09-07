@@ -7,34 +7,46 @@ using System.Windows.Forms;
 
 namespace CogitoSharp
 {
+	internal enum ChannelMode : int { chat = 0, ads, both }
+
 	/// <summary>Channel class, for both public and private channels</summary>
+	[Serializable]
 	internal class Channel : IComparable, IDisposable
 	{
 		/// <summary>Channel ID Number</summary>
-		private static int Count;
-		private readonly int CID = ++Channel.Count;
-		private bool disposed = false;
+		[NonSerialized] private static int Count;
+		[NonSerialized] private readonly int CID = ++Channel.Count;
+		[NonSerialized] private bool disposed = false;
+		[NonSerialized] internal bool isJoined = false;
+
+		internal bool alertMinAge = false;
+		internal bool alertNoAge = false;
 		
 		/// <summary>Keys are the UUID for private channels; channel title for normal. Always use .key for channel-specific commands.</summary>
+		[NonSerialized] internal string _key;
+
 		internal string key
 		{
-			get { return this.key ?? this.name; }
-			set { }
+			get { return this._key ?? this.name; }
+			set { this._key = value;}
 		}
 		/// <summary>Channel name, in human-readable format</summary>
 		internal string name;
 
+		/// <summary> Channel mode - chat only, ads only, both. </summary>
+		internal ChannelMode mode = ChannelMode.both;
+
 		/// <summary>Associated TabPage for this channel</summary>
-		internal ChatTab chanTab;
+		[NonSerialized] internal ChatTab chanTab;
 		/// <summary>Minimum age to be in this channel. If set to a value greater than 0, the bot will attempt to kick everyone below this age.</summary>
 		internal Int16 minAge = 0;
 
-		internal string lastSearchFragment = "";
+		[NonSerialized] internal string lastSearchFragment = "";
 
-		internal HashSet<User> Mods = new HashSet<User>();
-		internal HashSet<User> Users = new HashSet<User>();
+		[NonSerialized] internal HashSet<User> Mods = new HashSet<User>();
+		[NonSerialized] internal HashSet<User> Users = new HashSet<User>();
 
-		private CogitoSharp.IO.Logging.LogFile ChannelLog = null;
+		[NonSerialized] private CogitoSharp.IO.Logging.LogFile ChannelLog = null;
 
 		/// <summary>
 		/// Implementation of IDispose - removes tab page and disposes of Log to ensure buffer is flushed
@@ -42,7 +54,7 @@ namespace CogitoSharp
 		public void Dispose(){
 			if (!disposed){
 				CogitoUI.chatUI.chatTabs.TabPages.Remove(this.chanTab);
-				this.ChannelLog.Dispose();
+				//this.ChannelLog.Dispose();
 				this.chanTab.Dispose();
 			}
 			this.disposed = true;
@@ -50,20 +62,32 @@ namespace CogitoSharp
 
 		public void Join(){
 			IO.SystemCommand c = new IO.SystemCommand();
-			c.opcode = "JCH";
-			c.data["channel"] = this.key;
-			c.send();
-			CogitoUI.chatUI.chatTabs.TabPages.Add(this.chanTab);
+			c.OpCode = "JCH";
+			c.Data["channel"] = this.key;
+			c.Send();
+			if (CogitoUI.chatUI.InvokeRequired){
+				ChatUI.AddChatTabCallback a = new ChatUI.AddChatTabCallback(CogitoUI.chatUI.chatTabs.TabPages.Add);
+				CogitoUI.chatUI.Invoke(a, new object[] { this.chanTab });
+			}
+			else { CogitoUI.chatUI.chatTabs.TabPages.Add(this.chanTab); }
 			this.ChannelLog = new IO.Logging.LogFile(this.name);
+			this.isJoined = true;
+			CogitoUI.chatUI.Refresh();
 		}
 
 		public void Leave(){
 			IO.SystemCommand c = new IO.SystemCommand();
-			c.opcode = "LCH";
-			c.data["channel"] = this.key;
-			c.send();
-			CogitoUI.chatUI.chatTabs.TabPages.Remove(this.chanTab);
+			c.OpCode = "LCH";
+			c.Data["channel"] = this.key;
+			c.Send();
+			if (CogitoUI.chatUI.InvokeRequired)
+			{
+				ChatUI.RemoveChatTabCallback _a = new ChatUI.RemoveChatTabCallback(CogitoUI.chatUI.chatTabs.TabPages.Add);
+				CogitoUI.chatUI.Invoke(_a, new object[] { this.chanTab });
+			}
+			else { CogitoUI.chatUI.chatTabs.TabPages.Remove(this.chanTab); }
 			this.ChannelLog.Dispose();
+			this.isJoined = false;
 		}
 
 		/// <summary>
@@ -75,6 +99,7 @@ namespace CogitoSharp
 			this.key = null;
 			this.name = _name;
 			this.chanTab = new ChatTab(this);
+			this.chanTab.Name = this.name;
 			Core.channels.Add(this);
 		}
 

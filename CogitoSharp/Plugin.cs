@@ -18,7 +18,8 @@ namespace CogitoSharp
 			internal string trigger;								//trigger, e.g. ".roll" 
 			internal abstract void MessageLoopMethod(Message m);	//Method to be executed on EACH message received (just pass if not needed)
 			internal abstract void ShutdownMethod(Message m);		//Method to be executed when program shuts down,	e.g. saving data
-			internal abstract void SetupMethod(Message m);			//Method to be executed when program starts,		e.g. loading data.
+			internal abstract void SetupMethod(Message m);			//Method to be executed when program starts,		e.g. loading data 
+																	//and registered trigger via Config.AITriggers.Register(string, Delegate)
 		}
 
 		internal static void loadPlugins()

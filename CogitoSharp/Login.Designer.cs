@@ -116,8 +116,6 @@
 			resources.ApplyResources(this.loginPasswordField, "loginPasswordField");
 			this.loginPasswordField.Name = "loginPasswordField";
 			this.loginPasswordField.UseSystemPasswordChar = true;
-			this.loginPasswordField.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.loginPasswordField_KeyPress);
-//			this.loginPasswordField.KeyUp += new System.Windows.Forms.KeyEventHandler(this.loginPasswordField_KeyUp);
 			// 
 			// loginSubmitButton
 			// 
@@ -224,6 +222,7 @@
 			this.MinimizeBox = false;
 			this.Name = "LoginForm";
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.LoginForm_FormClosing);
 			this.Load += new System.EventHandler(this.loginForm_Load);
 			((System.ComponentModel.ISupportInitialize)(this.CogitoLogoBox)).EndInit();
 			this.loginElements.ResumeLayout(false);

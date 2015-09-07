@@ -84,6 +84,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Channel.cs" />
+    <Compile Include="ChannelList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChannelList.Designer.cs">
+      <DependentUpon>ChannelList.cs</DependentUpon>
+    </Compile>
     <Compile Include="Config.cs" />
     <Compile Include="FListProcessor.cs" />
     <Compile Include="IO.cs" />
@@ -135,11 +141,15 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
+    <EmbeddedResource Include="ChannelList.resx">
+      <DependentUpon>ChannelList.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RPAdDeployer.resx">
       <DependentUpon>RPAdDeployer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CASIE.resx">
       <DependentUpon>CASIE.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ChatUI.resx">
       <DependentUpon>ChatUI.cs</DependentUpon>
