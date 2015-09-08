@@ -20,14 +20,14 @@ using HtmlAgilityPack;
 
 namespace CogitoSharp
 {
-	enum Genders : int { None = 0, Male, Female, Transgender }
-	enum Status : int { online = 0, looking, busy, dnd, away }
+	enum Status : int { online = 0, looking, idle, busy, dnd, away}
 	/// <summary>User (synonymous with Character)</summary>
 	[Serializable]
 	public class User : IComparable{
 		[NonSerialized] private static int Count;
 		[NonSerialized] private readonly int UID = ++User.Count;
 		[NonSerialized] private object UserLock;
+		[NonSerialized] internal ChatTab userTab;
 
 		/// <summary> xXxSEPHIROTHxXx </summary>
 		public readonly string Name = null;
@@ -45,7 +45,7 @@ namespace CogitoSharp
 		/// <summary> You're fat. </summary>
 		public int Weight;
 
-		internal Genders Gender = Genders.None;
+		internal string Gender = "None";
 		internal Status status = Status.online;
 		/// <summary> Sexual orientation; can't be made an enum due to hyphens not working and that fucking up parsing, iirc</summary>
 		internal string Orientation;
@@ -66,11 +66,15 @@ namespace CogitoSharp
 		/// <summary> Stores the DateTime on which the profile was last scraped, allowing the program to self-update every... what, week?</summary>
 		internal DateTime dataTakenOn = new DateTime(1, 1, 1);
 
+		internal DateTime avatarTakenOn = new DateTime(1, 1, 1);
+
 		public User(string nName) { 
 			this.Name = nName;
 			try{
-				string _avatarPath = CogitoSharp.Config.AppSettings.AvatarPath + this.Name.ToLowerInvariant() + @".bmp";
-				this.Avatar = new Bitmap(_avatarPath);
+				//string _avatarPath = CogitoSharp.Config.AppSettings.AvatarPath + this.Name.ToLowerInvariant() + @".bmp";
+				//this.Avatar = new Bitmap(_avatarPath);
+				var _image = Image.FromFile(Config.AppSettings.DefaultAvatarFile);
+				this.Avatar = new Bitmap(Config.AppSettings.DefaultAvatarFile);
 			}
 			catch (FileNotFoundException){
 				GetAvatar();
@@ -80,10 +84,6 @@ namespace CogitoSharp
 				Core.ErrorLog.Log("Avatar directory did not exist. Returning (null) and creating directory for future I/O");
 				Directory.CreateDirectory(CogitoSharp.Config.AppSettings.AvatarPath);
 				this.Avatar = null;
-			}
-
-			catch (ArgumentException a){
-				GetAvatar();
 			}
 
 			Core.allGlobalUsers.Add(this); 
@@ -125,54 +125,50 @@ namespace CogitoSharp
 		/// <summary> Retriedves the users's avatar (100 * 100 px Bitmap image) from F-Lists' server, and saves it. If it's less than a week old, it won't bother fetching it.
 		/// Background worker code blatantly inspired by slimCat, do not steal.</summary>
 		public void GetAvatar(){
-			if (Name == null || (this.Avatar != null && (DateTime.Now - this.dataTakenOn) <= Config.AppSettings.userProfileRefreshPeriod) ) { return; }
-			var worker = new BackgroundWorker();
-			worker.DoWork += (s, e) =>
-			{
-				Uri uri = new Uri(System.Net.WebUtility.HtmlEncode((string)e.Argument), UriKind.Absolute);
-				using (WebClient webClient = new WebClient())
+			if (Name == null || ((DateTime.Now - this.avatarTakenOn) <= Config.AppSettings.userProfileRefreshPeriod) ) { return; }
+			try{ this.Avatar = (Bitmap)Bitmap.FromFile(Config.AppSettings.AvatarPath + this.Name.ToLowerInvariant() + ".bmp"); }
+			catch (FileNotFoundException){
+				var worker = new BackgroundWorker();
+				worker.DoWork += (s, e) =>
 				{
-					webClient.Proxy = null;
-					webClient.CachePolicy = new RequestCachePolicy(RequestCacheLevel.Revalidate);
-					try
+					Uri uri = new Uri(System.Net.WebUtility.HtmlEncode((string)e.Argument), UriKind.Absolute);
+					using (WebClient webClient = new WebClient())
 					{
-						var imageBytes = webClient.DownloadData(uri);
-
-						if (imageBytes == null)
+						webClient.Proxy = null;
+						webClient.CachePolicy = new RequestCachePolicy(RequestCacheLevel.Revalidate);
+						try
 						{
-							e.Result = null;
-							return;
+							var imageBytes = webClient.DownloadData(uri);
+
+							if (imageBytes == null)
+							{
+								e.Result = null;
+								return;
+							}
+
+							MemoryStream imageStream = new MemoryStream(imageBytes);
+							Bitmap image = new Bitmap(imageStream);
+
+							//if (!Directory.Exists(Config.AppSettings.AvatarPath)){ Directory.CreateDirectory(Config.AppSettings.AvatarPath); }
+							image.Save(CogitoSharp.Config.AppSettings.AvatarPath + this.Name.ToLowerInvariant() + ".bmp", System.Drawing.Imaging.ImageFormat.Bmp); //let us never web-load this again
+							imageStream.Close();
+							imageStream.Dispose();
+
+							e.Result = image;
 						}
-
-						MemoryStream imageStream = new MemoryStream(imageBytes);
-						Bitmap image = new Bitmap(imageStream);
-
-						//image.BeginInit();
-						//image.StreamSource = imageStream;
-						//image.CacheOption = BitmapCacheOption.OnLoad;
-						//image.EndInit();
-						//
-						//image.Freeze();
-						
-						//if (!Directory.Exists(Config.AppSettings.AvatarPath)){ Directory.CreateDirectory(Config.AppSettings.AvatarPath); }
-						image.Save(CogitoSharp.Config.AppSettings.AvatarPath + this.Name.ToLowerInvariant() + ".bmp"); //let us never web-load this again
-						imageStream.Close();
-						imageStream.Dispose();
-
-						e.Result = image;
+						catch (Exception) { }
 					}
-					catch (Exception) { }
-				}
-			};
+				};
 
-			worker.RunWorkerCompleted += (s, e) =>
-			{
-				var bitmapImage = e.Result as Bitmap;
-				if (bitmapImage != null) { Avatar = bitmapImage; }
-				worker.Dispose();
-			};
+				worker.RunWorkerCompleted += (s, e) =>
+				{
+					var bitmapImage = e.Result as Bitmap;
+					if (bitmapImage != null) { Avatar = bitmapImage; }
+					worker.Dispose();
+				};
 
-			worker.RunWorkerAsync(Config.URLConstants.CharacterAvatar + Name.ToLower() + ".png");
+				worker.RunWorkerAsync(Config.URLConstants.CharacterAvatar + Name.ToLower() + ".png");	
+			}
 		}
 
 		/// <summary> Connects to F-List and grabs all of the user's delicious information. Data is serialized when program shuts down to cut down on API connections / web scraping bandwith </summary>
@@ -215,7 +211,7 @@ namespace CogitoSharp
 						var Results = e.Result as Dictionary<string, object>;
 						if (Results.ContainsKey("age")){ this.age = int.Parse(Utils.RegularExpressions.AgeSearch.Match(Results["age"].ToString()).Groups[0].ToString()); }
 						if (Results.ContainsKey("weight")){ this.Weight = int.Parse(Utils.RegularExpressions.AgeSearch.Match(Results["age"].ToString()).Groups[0].ToString()); }
-						if (Results.ContainsKey("gender")){ this.Gender = (Genders)Enum.Parse(typeof(Genders), Results["gender"].ToString()); }
+						if (Results.ContainsKey("gender")){ this.Gender = Results["gender"].ToString(); }
 						this.Stats = Results; //Catch-all data assignment
 						this.dataTakenOn = DateTime.Now; //sets the flag
 						//TODO etc etc
@@ -225,6 +221,12 @@ namespace CogitoSharp
 
 				worker.RunWorkerAsync();
 			}
+		}
+
+		internal void MessageReceived(IO.Message m){
+			if (this.userTab == null) { this.userTab = new ChatTab(this); }
+			if (!CogitoUI.chatUI.chatTabs.TabPages.Contains(this.userTab)) { CogitoUI.chatUI.chatTabs.TabPages.Add(this.userTab); }
+			this.userTab.ChannelMessages.AppendText(m.ToString());
 		}
 	}
 }

@@ -27,14 +27,14 @@ namespace CogitoSharp.IO
 		/// </summary>
 		/// <returns>A string "OPCODE {JSONKEY: "value", [...]}"</returns>
 		public string ToServerString() {
-			if (this.Data.Keys.Count > 0) { return this.OpCode.ToUpperInvariant() + " " + JsonConvert.SerializeObject(this.Data).ToString(); }
+			if (this.Data != null) { return this.OpCode.ToUpperInvariant() + " " + JsonConvert.SerializeObject(this.Data).ToString(); }
 			else { return this.OpCode.ToUpperInvariant(); }
 		}
 
 		public SystemCommand(string rawmessage){
-			Console.WriteLine("Creating new SystemCommand from " + rawmessage);
 			this.OpCode = rawmessage.Substring(0, 3);
 			if (rawmessage.Length > 4) { this.Data = JsonConvert.DeserializeObject<Dictionary<string, object>>(rawmessage.Substring(4)); }
+			else { this.Data = null; }
 		}
 
 		public SystemCommand(Message parentMessage){
@@ -54,8 +54,8 @@ namespace CogitoSharp.IO
 		internal static int chat_max = 4096;
 		/// <summary> Maximum length (in bytes) of a private message. </summary>
 		internal static int priv_max = 50000;
-		/// <summary> Minimum number of milliseconds to wait in between sending chat messages; flood avoidance </summary>
-		internal static int chat_flood = 1000;
+		/// <summary> Minimum number of milliseconds to wait in between sending chat messages (flood avoidance)</summary>
+		internal static int chat_flood = 550;
 		
 		internal string message{
 			get { return this.Data["message"].ToString(); }
@@ -85,7 +85,7 @@ namespace CogitoSharp.IO
 		/// <summary>
 		/// Sends the message by adding it to the OutgoingMessageQueue
 		/// </summary>
-		internal new void send(){
+		internal new void Send(){
 			if (this.OpCode == null)
 			{
 				this.OpCode = this.sourceUser == null ? "MSG" : "PRI"; //sets Opcode to MSG (send to entire channel) if no user is specified, else to PRI (only to user)
@@ -107,7 +107,7 @@ namespace CogitoSharp.IO
 					MessageLength = System.Text.Encoding.UTF8.GetByteCount(this.message);
 					messages.Add(subMessage);
 				}
-				messages.ForEach(x => x.send()); //If we did this recursively, the last subMessage would send first, chunks | to reversed  | leading 
+				messages.ForEach(x => x.Send()); //If we did this recursively, the last subMessage would send first,[ chunks | to reversed  | leading ]
 			}
 			base.Send();
 		}
@@ -118,7 +118,7 @@ namespace CogitoSharp.IO
 		/// Replies to the message by posting to the same user/channel where the Message originated
 		/// </summary>
 		/// <param name="replyText">Text to reply with.</param>
-		internal void reply(string replyText){ new Message(replyText, this).send(); }
+		internal void Reply(string replyText){ new Message(replyText, this).Send(); }
 
 		public override string ToString(){
 			if (this.Data["message"].ToString().StartsWith("/me")) { return this.sourceUser.Name + " " + this.Data["message"].ToString().Substring(3); }

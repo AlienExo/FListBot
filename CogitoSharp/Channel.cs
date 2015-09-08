@@ -111,8 +111,12 @@ namespace CogitoSharp
 		public Channel(string _key, string _name = "[Private Channel]") : this(_name){ this.key = _key; }
 
 		internal void MessageReceived(CogitoSharp.IO.Message m){
-			//TODO: Flash tab
 			this.ChannelLog.Log(m.ToString());
+			this.chanTab.ChannelMessages.AppendText(m.ToString());
+			if (!CogitoUI.chatUI.chatTabs.TabPages.Contains(this.chanTab)) { CogitoUI.chatUI.chatTabs.TabPages.Add(this.chanTab); }
+			//TODO: Flash tab
+			//TODO: Make sure tab is shown when there is none, e.g. message on user 
+			
 		}
 
 		/// <summary>Generic destrutor, closes associated TabPage</summary>

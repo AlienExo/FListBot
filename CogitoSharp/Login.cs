@@ -29,7 +29,6 @@ namespace CogitoSharp
 			this.Hide();
 			#if DEBUG
 				CogitoUI.console.Show();
-				CogitoSharp.Core.websocket.OnMessage += (snder, evnt) => CogitoUI.console.console.AppendText(evnt.Data);
 			#endif
 			//putting new IO.SystemCommand("").send() here appears to fuck you up via a "cannot read..." error. IDK why.
 			Core.OwnUser = new User((string)this.characterSelectBox.SelectedItem); //set the ref needed for the GUI to construct; else it fails with 0 items due to ~scroll bars~

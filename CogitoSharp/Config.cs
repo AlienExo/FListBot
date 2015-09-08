@@ -41,8 +41,11 @@ namespace CogitoSharp
 			internal static string DataPath = AppPath + @"data\";
 			internal static string AvatarPath = DataPath + @"avatars\";
 			internal const string UserFileName = "Account.dat";
+			internal const string UserDBFileName = "Users.dat";
+			internal const string ChannelDBFileName = "Channels.dat";
 			internal const string MasterKey = "";
 			internal const string TriggerPrefix = ".";
+			internal static string DefaultAvatarFile = DataPath + "DefaultAvatar.bmp";
 		}
 
 		internal static Dictionary<string, Delegate> AITriggers = new Dictionary<string, Delegate>();

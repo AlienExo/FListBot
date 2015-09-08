@@ -39,7 +39,7 @@ namespace CogitoSharp
 			if(parent == null) { mainTextBox.Text = ""; return; }
 			if ( parent.GetType() == typeof(User)) { m.sourceUser = (User)parent; }
 			else if (parent.GetType() == typeof(Channel)) { m.sourceChannel = (Channel)parent; }
-			m.send();
+			m.Send();
 			mainTextBox.Text = "";
 			mainTextBox.Select();
 		}

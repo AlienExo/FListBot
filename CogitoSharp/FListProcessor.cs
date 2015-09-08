@@ -74,11 +74,10 @@ namespace CogitoSharp
 				foreach (Dictionary<string, object> currentChannel in _AllChannelData){
 					Channel ch = Core.getChannel(currentChannel["name"].ToString());
 					ch.mode = (ChannelMode)Enum.Parse(typeof(ChannelMode), currentChannel["mode"].ToString());
-					Console.WriteLine("Got data for Channel " + ch.name);
 				}
-				Core.getChannel("Development").Join();
+				//Core.getChannel("Development").Join();
 			}
-			catch (Exception e){ Core.ErrorLog.Log(String.Format("Error whilst parsing channel list: {0}", e.Message)); }
+			catch (Exception e){ Core.ErrorLog.Log(String.Format("Error whilst parsing channel list: {0} {1}", e.Message, e.StackTrace)); }
 			//TODO Entry point for all auto-joins, now that we know the channels
 			
 		}
@@ -119,10 +118,6 @@ namespace CogitoSharp
 				fsw.Flush();
 				fsw.Close();
 			}
-		//new IO.SystemCommand("ORS").Send();
-		//new IO.SystemCommand("CHA").Send();
-		//new IO.SystemCommand("STA { \"status\": \"online\", \"statusmsg\": \"Running Cogito# v" + System.Windows.Forms.Application.ProductVersion + "\" }").Send();
-
 		}
 
 		/// <summary> This command requires channel op or higher. Demotes a channel operator (channel moderator) to a normal user.
@@ -172,7 +167,10 @@ namespace CogitoSharp
 
 		/// <summary> Server hello command. Tells which server version is running and who wrote it.
 		/// Received: HLO { "message": string }</summary>
-		internal static void HLO(SystemCommand c) {	}
+		internal static void HLO(SystemCommand c) {	
+			//new IO.SystemCommand("CHA").Send();
+			//new IO.SystemCommand("ORS").Send();
+		}
 
 		/// <summary> Initial channel data. Received in response to JCH, along with CDS.
 		/// Received: ICH { "users": [object], "channel": string, "title": string, "mode": enum }
@@ -227,7 +225,7 @@ namespace CogitoSharp
 					//Expected format e.g. ["Zeus Keraunos","Male","online",""]
 					//						Name		     Gender	Status  Statusmessage
 					User u = Core.getUser(currentUser[0]);
-					u.Gender = (Genders)Enum.Parse(typeof(Genders), currentUser[1]);
+					u.Gender = currentUser[1];
 					u.status = (Status)Enum.Parse(typeof(Status), currentUser[2]);
 				}
 			}
@@ -284,17 +282,26 @@ namespace CogitoSharp
 					Dictionary<string, string> channelData = e.Current;
 					Channel currentChannel = Core.getChannel(HttpUtility.HtmlDecode(channelData["title"]));
 					currentChannel.key = channelData["name"];
-					CogitoUI.console.console.AppendText(String.Format("Setting Key for channel {0} to '{1}'\n", currentChannel.name, currentChannel.key));
+					Core.SystemLog.Log(String.Format("Setting Key for channel {0} to '{1}'\n", currentChannel.name, currentChannel.key));
 				}
 			}
-			catch{ }
+			catch (Exception ex){
+				Core.ErrorLog.Log(String.Format("Private Channel Parsing failed:\n\t{0}\n\t{1}", ex.Message, ex.InnerException));
+			}
 		}
 
 		/// <summary> Ping command from the server, requiring a response, to keep the connection alive.
 		/// Received: PIN
 		/// Send  As: PIN </summary>
 		internal static void PIN(SystemCommand c) { 
-			Core.websocket.Send("PIN"); 
+			//WARNING: In v0.8.12 the following two lines, at any command, BREAK THE SOCKET
+			//Update: As of the new, shiny, queue-based architecture, IT FUKKEN WORKS. 
+			//Only took, like, ten years worth' of my nerves
+			//#if DEBUG
+			//	new SystemCommand("PIN").Send();
+			//#else
+			Core.websocket.Send("PIN"); //TECHNICALLY I could use the above now, but PIN is serious business... Don't want that getting lost in a queue due to flood?
+			//#endif
 		}
 
 		/// <summary> Profile data commands sent in response to a PRO client command. 
@@ -306,7 +313,14 @@ namespace CogitoSharp
 		/// Send  As: PRI { "recipient": string, "message": string }</summary>
 		internal static void PRI(SystemCommand c)
 		{
-			Message message = (Message)c;
+			Message message = new Message(c);
+			try{
+				if (message.sourceChannel == null){ message.sourceChannel.MessageReceived(message); }
+				else { message.sourceUser.MessageReceived(message); }
+			}
+			catch (Exception ex){
+				Core.ErrorLog.Log(String.Format("Error trying to receive message: {0} {1} {2}", message.ToString(), ex.Message, ex.StackTrace));
+			}
 		}
 
 		/// <summary> Requests some of the profile tags on a character, such as Top/Bottom position and Language Preference.
@@ -389,9 +403,20 @@ namespace CogitoSharp
 			switch ((string)c.Data["variable"]){
 				case "msg_flood":
 				case "chat_flood":
-					IO.Message.chat_flood = (int)(float.Parse(c.Data["value"].ToString()) * 1250); //Multiplying by 1005 for latency protection / timer shenanigans, and converting from seconds to miliseconds
-					Core.EternalSender.Change(0, IO.Message.chat_flood);
-					Core.SystemLog.Log("SYS: Send interval auto-adjusted to interval of " + (IO.Message.chat_flood / 1000f) + " seconds.");
+					IO.Message.chat_flood = (int)(float.Parse(c.Data["value"].ToString()) * 1500); //Multiplying by 1005 for latency protection / timer shenanigans, and converting from seconds to miliseconds
+					CogitoUI.EternalSender.Change(1000, IO.Message.chat_flood);
+					Core.SystemLog.Log("SYS: Send interval auto-adjusted to interval of " + (IO.Message.chat_flood / 1000f) + " seconds. Starting EternalSender...");
+					
+					//TODO WHY IS THIS A BIG FAT PROGRAM BREAKER????
+					new SystemCommand("ORS").Send();
+					new SystemCommand("CHA").Send();
+					new IO.SystemCommand("STA { \"status\": \"online\", \"statusmsg\": \"Running Cogito# v" + System.Windows.Forms.Application.ProductVersion + "\" }").Send();
+					
+					//Core.websocket.Send("ORS");
+					//System.Threading.Thread.Sleep(IO.Message.chat_flood);
+					//Core.websocket.Send("CHA");
+					//System.Threading.Thread.Sleep(IO.Message.chat_flood);
+					//Core.websocket.Send("STA { \"status\": \"online\", \"statusmsg\": \"Running Cogito# v" + System.Windows.Forms.Application.ProductVersion + "\" }");
 					break;
 				
 				case "chat_max":

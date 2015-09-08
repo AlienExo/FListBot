@@ -4,9 +4,7 @@ using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Speech.Synthesis;
 using System.Security;
 using System.Text;
 using System.Threading;
@@ -209,34 +207,43 @@ namespace CogitoSharp
         internal static volatile HashSet<Channel> channels = new HashSet<Channel>();
 		internal static List<User> globalOps = new List<User>();
 		
-		private static Queue<CogitoSharp.IO.Message> IncomingMessageQueue = new Queue<CogitoSharp.IO.Message>();
-		internal static Queue<SystemCommand> OutgoingMessageQueue = new Queue<SystemCommand>();
-		private static volatile bool _sendForever = true;
-		
-		private static void SendMessageFromQueue(object senderbool){ 
-			if (OutgoingMessageQueue.Count > 0 && websocket.IsAlive){
-				string message = OutgoingMessageQueue.Dequeue().ToServerString();
-				websocket.Send(message);
-				#if DEBUG
-					Core.RawData.Log(">> " + message);
-				#endif	
-			} 
+		internal static Queue<IO.SystemCommand> IncomingMessageQueue = new Queue<IO.SystemCommand>();
+		internal static Queue<IO.SystemCommand> OutgoingMessageQueue = new Queue<IO.SystemCommand>();
+				
+		//internal static void SendMessageFromQueue(object sender, EventArgs e){ 
+		internal static void SendMessageFromQueue(object stateobject){ 
+			try{
+				//Console.WriteLine("SendMessageFromQueue called");
+				if (OutgoingMessageQueue.Count > 0) { //&& websocket.IsAlive){
+					string _message = OutgoingMessageQueue.Dequeue().ToServerString();
+					#if DEBUG
+						Core.RawData.Log(">> " + _message);
+						Console.WriteLine("Sending message " + _message);
+					#endif
+						websocket.Send(_message);
+				} 
+			}
+			catch (Exception ex){
+				Core.ErrorLog.Log(String.Format("Sending message failed:\n\t{0}\n\t{1}\t{2}", ex.Message, ex.InnerException));
+			}
+
 		}
 
-		private static TimerCallback sendTimerCallback = SendMessageFromQueue;
-		internal static System.Threading.Timer EternalSender = new System.Threading.Timer(sendTimerCallback, _sendForever, System.Threading.Timeout.Infinite, IO.Message.chat_flood);
-
+		//private static TimerCallback sendTimerCallback = SendMessageFromQueue;
+		internal static bool _sendForever = true;
+		//internal static System.Threading.Timer EternalSender = new System.Threading.Timer(sendTimerCallback, _sendForever, System.Threading.Timeout.Infinite, IO.Message.chat_flood);
+		
 		internal static IO.Logging.LogFile SystemLog = new IO.Logging.LogFile("System Log");
 		internal static IO.Logging.LogFile ErrorLog = new IO.Logging.LogFile("Error Log");
 		#if DEBUG
 		internal static IO.Logging.LogFile RawData = new IO.Logging.LogFile("RawData");
 		#endif
 		internal static CogitoUI cogitoUI = null;
-		internal static SpeechSynthesizer SYBIL = new SpeechSynthesizer();
 
 		internal static User OwnUser = null;
 
 		/// <summary>The main entry point for the application.</summary>
+		[STAThread]
         static void Main(){
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
@@ -247,8 +254,12 @@ namespace CogitoSharp
 			websocket = new WebSocket(String.Format("ws://{0}:{1}", Properties.Settings.Default.Host, Properties.Settings.Default.Port));
 			#endif
 			websocket.OnMessage += Core.OnWebsocketMessage;
+			websocket.OnError += Core.OnWebsocketError;
+
 			cogitoUI = new CogitoUI();
+
 			SystemLog.Log("Start up: CogitoSharp v." + Application.ProductVersion);
+
 			SystemLog.Log("Loading Plugins...");
 			try{ Plugins.loadPlugins(); }
 			catch (Exception e) { 
@@ -256,12 +267,14 @@ namespace CogitoSharp
 				SystemLog.Log(e.InnerException.ToString());
 				throw; 
 			}
+
 			SystemLog.Log("Loading User Database...");
 			try{
-				Stream s = File.OpenRead(Path.Combine(Config.AppSettings.DataPath, Config.AppSettings.UserFileName));
+				Stream s = File.OpenRead(Path.Combine(Config.AppSettings.DataPath, Config.AppSettings.UserDBFileName));
 				BinaryFormatter bf = new BinaryFormatter();
 				Core.allGlobalUsers = (HashSet<User>)bf.Deserialize(s);
 				s.Close();
+				SystemLog.Log("Deserialized User Database and loaded " + Core.allGlobalUsers.Count + " entries.");
 			}
 			catch (FileNotFoundException) { } //Do Nothing ¯\_(ツ)_/¯
 			catch (DirectoryNotFoundException) { Directory.CreateDirectory(Config.AppSettings.DataPath); }
@@ -271,21 +284,44 @@ namespace CogitoSharp
 				"'. Please ensure all proper permissions exist. Application may be unable to persist user database, leading to increased bandwith usage.", "Unable to load user database");
 			}
 			foreach (User u in Core.allGlobalUsers) { if ((u.dataTakenOn - DateTime.Now) >= Config.AppSettings.userProfileRefreshPeriod) { u.GetProfileInfo(); } } //Data is old, refresh it.
-			//SYBIL.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
-			//SYBIL.Rate = 7;
+
+			SystemLog.Log("Loading Channel Database...");
+			try
+			{
+				Stream s = File.OpenRead(Path.Combine(Config.AppSettings.DataPath, Config.AppSettings.ChannelDBFileName));
+				BinaryFormatter bf = new BinaryFormatter();
+				Core.channels = (HashSet<Channel>)bf.Deserialize(s);
+				s.Close();
+				SystemLog.Log("Deserialized Channel Database and loaded " + Core.allGlobalUsers.Count + " entries.");
+			}
+			catch (FileNotFoundException) { } //Do Nothing ¯\_(ツ)_/¯
+			catch (DirectoryNotFoundException) { Directory.CreateDirectory(Config.AppSettings.DataPath); }
+			catch (UnauthorizedAccessException)
+			{
+				SystemLog.Log("Incapable of accessing Channel database directory");
+				MessageBox.Show("Warning: Application is unable to access its Channel database in " + Config.AppSettings.DataPath +
+				"'. Please ensure all proper permissions exist. Application may be unable to persist Channel database, leading to increased bandwith usage.", "Unable to load Channel database");
+			}
+
 			try{ Properties.Settings.Default.userAutoComplete.GetType(); }
 			catch (NullReferenceException){ 
 				Properties.Settings.Default.userAutoComplete = new AutoCompleteStringCollection();
 				Properties.Settings.Default.Save();
 			}
+
 			Application.Run(cogitoUI);
         }
 
 		static void OnProcessExit(object sender, EventArgs e){
-			using (Stream fs = File.Create(Config.AppSettings.DataPath + "UserData.dat"))
-			{
+			using (Stream fs = File.Create(Config.AppSettings.DataPath + Config.AppSettings.UserDBFileName)){
 				BinaryFormatter bf = new BinaryFormatter();
 				bf.Serialize(fs, Core.allGlobalUsers);
+				fs.Flush();
+			}
+
+			using (Stream fs = File.Create(Config.AppSettings.DataPath + Config.AppSettings.ChannelDBFileName)){
+				BinaryFormatter bf = new BinaryFormatter();
+				bf.Serialize(fs, Core.channels);
 				fs.Flush();
 			}
 			if (Core.websocket.IsAlive) { Core.websocket.Close(); }
@@ -296,13 +332,16 @@ namespace CogitoSharp
 			//websocket.Send("");
 		}
 
+		internal static void OnWebsocketError(Object sender, WebSocketSharp.ErrorEventArgs e){
+			ErrorLog.Log(String.Format("Error in Websocket: {0} {1}", e.Message, e.Exception));
+		}
+
 		internal static void OnWebsocketMessage(Object sender, WebSocketSharp.MessageEventArgs e){
 			SystemCommand c = new SystemCommand(e.Data);
 			#if DEBUG
 				RawData.Log(c.ToServerString());
 			#endif
-			try{ typeof(FListProcessor).GetMethod(c.OpCode, BindingFlags.NonPublic | BindingFlags.Static).Invoke(c, new Object[] {c}); }
-			catch (Exception FuckUp) { ErrorLog.Log(String.Format("Invocation of Method {0} failed:\n\t{1}\n\t{2}\t{3}", c.OpCode, FuckUp.Message, FuckUp.InnerException, c.Data)); }
+			IncomingMessageQueue.Enqueue(c);
 		}
 		
 		/// <summary> Fetches the corresponding User instance from the program's users database; creates (and registers) and returns a new one if no match is found.

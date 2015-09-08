@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,9 @@ namespace CogitoSharp
 		internal static LoginForm loginForm = new LoginForm();
 		internal static ChatUI chatUI = null;
 		internal static CogitoSharp.Debug.CogitoConsole console = null;
+		internal static System.Threading.Timer EternalSender;
+		internal static System.Threading.Timer LaplacesDemon;
+		internal static FListProcessor Processor;
 
 		/// <summary> Main UI, containing all other elements. Win98, baby </summary>
 		public CogitoUI()
@@ -27,6 +31,9 @@ namespace CogitoSharp
 				CogitoUI.console = new CogitoSharp.Debug.CogitoConsole();
 				console.MdiParent = this;
 			#endif
+			EternalSender = new System.Threading.Timer(Core.SendMessageFromQueue, Core._sendForever, System.Threading.Timeout.Infinite, (long)IO.Message.chat_flood);
+			LaplacesDemon = new System.Threading.Timer(ProcessCommandFromQueue, Core._sendForever, 1000, 1000);
+			Processor = new FListProcessor();
 		}
 		
        	private void CogitoUI_Load(object sender, EventArgs e)
@@ -37,8 +44,7 @@ namespace CogitoSharp
 		}
 
 		private void CogitoUI_FormClosing(object sender, FormClosingEventArgs e){
-			Console.WriteLine("SORRY WE'RE CLOSING");
-			if (Core.websocket.IsAlive){
+			if (Core.websocket.IsAlive == true){
 				DialogResult d1 = MessageBox.Show("This will close all connections and shut down. Are you sure?", "Please confirm Shutdown", MessageBoxButtons.YesNo);
 				if (d1 == DialogResult.Yes) {
 					Console.WriteLine("Program is shutting down. Closing connection...");
@@ -48,7 +54,17 @@ namespace CogitoSharp
 				else { e.Cancel = true; }
 			}
 		}
+	
+		private void ProcessCommandFromQueue(object stateobject){
+			if (Core.IncomingMessageQueue.Count > 0) {
+				IO.SystemCommand c = Core.IncomingMessageQueue.Dequeue();
+				try { Processor.GetType().GetMethod(c.OpCode, BindingFlags.NonPublic | BindingFlags.Static).Invoke(c, new Object[] { c }); }
+				catch (Exception FuckUp) { Core.ErrorLog.Log(String.Format("Invocation of Method {0} failed:\n\t{1}\n\t{2}\t{3}", c.OpCode, FuckUp.Message, FuckUp.InnerException, c.Data)); }
+			}
+		}
 	}
+
+
 
 	/// <summary> Base Class for Boxes with images, yay </summary>
 	public class OwnerDrawnListBox : Control
