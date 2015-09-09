@@ -27,10 +27,11 @@ namespace CogitoSharp
         {
             InitializeComponent();
 			this.IsMdiContainer = true;
-			#if DEBUG
+			//#if DEBUG
 				CogitoUI.console = new CogitoSharp.Debug.CogitoConsole();
 				console.MdiParent = this;
-			#endif
+				CogitoUI.console.Show();
+			//#endif
 			EternalSender = new System.Threading.Timer(Core.SendMessageFromQueue, Core._sendForever, System.Threading.Timeout.Infinite, (long)IO.Message.chat_flood);
 			LaplacesDemon = new System.Threading.Timer(ProcessCommandFromQueue, Core._sendForever, 1000, 1000);
 			Processor = new FListProcessor();
@@ -69,15 +70,26 @@ namespace CogitoSharp
 
 		private void tileVerticallyToolStripMenuItem_Click(object sender, EventArgs e) { this.LayoutMdi(MdiLayout.TileVertical); }
 
-		private void consoleToolStripMenuItem_Click(object sender, EventArgs e){
-			IEnumerable<Debug.CogitoConsole> consoles = Application.OpenForms.OfType<Debug.CogitoConsole>(); 
-			if (consoles.Count<Debug.CogitoConsole>() > 0) { foreach (Debug.CogitoConsole c in consoles)	{ c.Show(); } }
+		private void openWindow<T>() where T: new(){
+			IEnumerable<T> Windows = Application.OpenForms.OfType<T>();
+			if (Windows.Count<T>() > 0) { foreach (T w in Windows) { (w as Form).Show(); } }
 			else{
-				Debug.CogitoConsole console = new Debug.CogitoConsole();
-				console.MdiParent = this;
-
+				T newWindow = new T();
+				(newWindow as Form).MdiParent = this;
+				(newWindow as Form).Show();
+				//TODO this.Menu.MenuItems[""].MenuItems[""].Checked = true;
 			}
 		}
+
+		private void consoleToolStripMenuItem_Click(object sender, EventArgs e){ openWindow<Debug.CogitoConsole>(); }
+
+		private void scannerToolStripMenuItem_Click(object sender, EventArgs e){ openWindow<Gimmicks.Scanner>(); }
+
+		private void channelListToolStripMenuItem_Click(object sender, EventArgs e){ openWindow<ChannelList>(); }
+
+		private void cASIEToolStripMenuItem_Click(object sender, EventArgs e){ openWindow<Gimmicks.CASIE>(); }
+
+		
 	} // CogitoUI
 
 	/// <summary> Base Class for Boxes with images, yay </summary>

@@ -205,6 +205,12 @@
   <data name="cASIEToolStripMenuItem.Text" xml:space="preserve">
     <value>CASIE</value>
   </data>
+  <data name="channelListToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>152, 22</value>
+  </data>
+  <data name="channelListToolStripMenuItem.Text" xml:space="preserve">
+    <value>Channel List</value>
+  </data>
   <data name="chatToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>152, 22</value>
   </data>
@@ -2083,6 +2089,12 @@
     <value>cASIEToolStripMenuItem</value>
   </data>
   <data name="&gt;&gt;cASIEToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;channelListToolStripMenuItem.Name" xml:space="preserve">
+    <value>channelListToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;channelListToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;chatToolStripMenuItem.Name" xml:space="preserve">

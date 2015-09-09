@@ -12,7 +12,6 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Windows.Markup;
 using System.Reflection;
-using System.Runtime.InteropServices.Expando;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -20,13 +19,13 @@ using HtmlAgilityPack;
 
 namespace CogitoSharp
 {
-	enum Status : int { online = 0, looking, idle, busy, dnd, away}
+	enum Status : int { online = 0, crown, looking, idle, busy, dnd, away, offline}
 	/// <summary>User (synonymous with Character)</summary>
 	[Serializable]
 	public class User : IComparable{
 		[NonSerialized] private static int Count;
 		[NonSerialized] private readonly int UID = ++User.Count;
-		[NonSerialized] private object UserLock;
+		[NonSerialized] internal object UserLock;
 		[NonSerialized] internal ChatTab userTab;
 
 		/// <summary> xXxSEPHIROTHxXx </summary>
@@ -61,7 +60,7 @@ namespace CogitoSharp
 		
 		/// <summary> Filtering ideas blatantly stolen from slimCat; sorry, Andrew.</summary>
 		internal bool isInteresting;
-		[NonSerialized] internal Bitmap Avatar; //...does this get serialized? like, do I have to bother with the... oh, fuck it, I'll just slap non-serialized on it.
+		internal Bitmap Avatar; //...does this get serialized? like, do I have to bother with the... oh, fuck it, I'll just slap non-serialized on it.
 
 		/// <summary> Stores the DateTime on which the profile was last scraped, allowing the program to self-update every... what, week?</summary>
 		internal DateTime dataTakenOn = new DateTime(1, 1, 1);
@@ -70,29 +69,18 @@ namespace CogitoSharp
 
 		public User(string nName) { 
 			this.Name = nName;
-			try{
-				//string _avatarPath = CogitoSharp.Config.AppSettings.AvatarPath + this.Name.ToLowerInvariant() + @".bmp";
-				//this.Avatar = new Bitmap(_avatarPath);
-				var _image = Image.FromFile(Config.AppSettings.DefaultAvatarFile);
-				this.Avatar = new Bitmap(Config.AppSettings.DefaultAvatarFile);
-			}
-			catch (FileNotFoundException){
-				GetAvatar();
-			}
+			try{ this.Avatar = (Bitmap)Bitmap.FromFile(Config.AppSettings.AvatarPath + this.Name.ToLowerInvariant() + ".bmp"); }
+			catch (FileNotFoundException){ this.Avatar = Core.DefaultAvatar; }
 
 			catch (DirectoryNotFoundException){
 				Core.ErrorLog.Log("Avatar directory did not exist. Returning (null) and creating directory for future I/O");
 				Directory.CreateDirectory(CogitoSharp.Config.AppSettings.AvatarPath);
-				this.Avatar = null;
 			}
 
 			Core.allGlobalUsers.Add(this); 
 		}
 
-		public User(string nName, int nAge) : this(nName)
-		{
-			this.age = nAge;
-		}
+		public User(string nName, int nAge) : this(nName){ this.age = nAge; }
 
 		public override string ToString() { return this.Name; }
 
@@ -164,6 +152,8 @@ namespace CogitoSharp
 				{
 					var bitmapImage = e.Result as Bitmap;
 					if (bitmapImage != null) { Avatar = bitmapImage; }
+					//TODO - update avatar in component this.userTab.Container.Components.
+					if (((ChatTab)CogitoUI.chatUI.chatTabs.SelectedTab).parent == this) { CogitoUI.chatUI.currenctCharAvatar.Image = this.Avatar; }
 					worker.Dispose();
 				};
 
@@ -218,7 +208,6 @@ namespace CogitoSharp
 						worker.Dispose();
 					}
 				};
-
 				worker.RunWorkerAsync();
 			}
 		}

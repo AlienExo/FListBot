@@ -14,12 +14,14 @@ namespace CogitoSharp
 	internal class Channel : IComparable, IDisposable
 	{
 		/// <summary>Channel ID Number</summary>
-		[NonSerialized] private static int Count;
+		[NonSerialized] private static int Count = 1;
 		[NonSerialized] private readonly int CID = ++Channel.Count;
 		[NonSerialized] private bool disposed = false;
 		[NonSerialized] internal bool isJoined = false;
 
-		internal bool alertMinAge = false;
+		/// <summary> Any characters that join below this age will cause a Mod to be alerted. When set to 0, it's off.</summary>
+		internal int alertMinAge = 0;
+		/// <summary> When true, also alerts Mods when a character whose age cannot be parsed joins. </summary>
 		internal bool alertNoAge = false;
 		
 		/// <summary>Keys are the UUID for private channels; channel title for normal. Always use .key for channel-specific commands.</summary>
@@ -30,24 +32,31 @@ namespace CogitoSharp
 			get { return this._key ?? this.name; }
 			set { this._key = value;}
 		}
+
 		/// <summary>Channel name, in human-readable format</summary>
 		internal string name;
+
+		/// <summary> Contains the messages for the channel; contents are shoved into the channel's message box on tab change. </summary>
+		string[] channelBuffer = new string[Config.AppSettings.MessageBufferSize];
 
 		/// <summary> Channel mode - chat only, ads only, both. </summary>
 		internal ChannelMode mode = ChannelMode.both;
 
 		/// <summary>Associated TabPage for this channel</summary>
 		[NonSerialized] internal ChatTab chanTab;
+
 		/// <summary>Minimum age to be in this channel. If set to a value greater than 0, the bot will attempt to kick everyone below this age.</summary>
 		internal Int16 minAge = 0;
 
+		/// <summary> EXPERIMENTAL - contains the last fragment for Autocompletion </summary>
 		[NonSerialized] internal string lastSearchFragment = "";
 
 		[NonSerialized] internal HashSet<User> Mods = new HashSet<User>();
+
 		[NonSerialized] internal HashSet<User> Users = new HashSet<User>();
 
 		[NonSerialized] private CogitoSharp.IO.Logging.LogFile ChannelLog = null;
-
+		
 		/// <summary>
 		/// Implementation of IDispose - removes tab page and disposes of Log to ensure buffer is flushed
 		/// </summary>
@@ -110,12 +119,12 @@ namespace CogitoSharp
 		public Channel(string _key, string _name = "[Private Channel]") : this(_name){ this.key = _key; }
 
 		internal void MessageReceived(CogitoSharp.IO.Message m){
-			this.ChannelLog.Log(m.ToString());
-			this.chanTab.ChannelMessages.AppendText(m.ToString());
+			string _m = m.ToString();
+			this.ChannelLog.LogRaw(_m);
+			if (this.channelBuffer.Length == Config.AppSettings.MessageBufferSize){ Array.Copy(this.channelBuffer, 1, this.channelBuffer, 0, this.channelBuffer.Length - 1);  }
+			this.channelBuffer[this.channelBuffer.Length + 1] = m.ToString();
 			if (!CogitoUI.chatUI.chatTabs.TabPages.Contains(this.chanTab)) { CogitoUI.chatUI.chatTabs.TabPages.Add(this.chanTab); }
-			//TODO: Flash tab
-			//TODO: Make sure tab is shown when there is none, e.g. message on user 
-			
+			//TODO: Flash tab			
 		}
 
 		/// <summary>Generic destrutor, closes associated TabPage</summary>
@@ -126,7 +135,7 @@ namespace CogitoSharp
 
 		//TODO Is this really how you want it?
 		public override string ToString(){
-			return this.key == null ? String.Format("Public Channel '{0}'", this.name) : String.Format("Private Channel '{0}', Key: {1}", this.name, this.key);
+			return this._key == null ? String.Format("Public Channel '{0}'", this.name) : String.Format("Private Channel '{0}' ({1})", this.name, this.key);
 		}
 
 		public override bool Equals(object obj){
@@ -150,10 +159,6 @@ namespace CogitoSharp
 			if (c != null) { return this.key.CompareTo(c.key); }
 			else { throw new ArgumentException("Object cannot be made into Channel. Cannot CompareTo()."); }
 
-		}
-
-		internal void newMessage(IO.Message m){
-			//this.chanTab.
 		}
 
 		public void Log(string s){ this.ChannelLog.Log(s); }

@@ -159,7 +159,11 @@ namespace CogitoSharp
 
 		/// <summary> Sent by the server to inform the client a given character went offline.
 		/// Received: FLN { "character": string }</summary>
-		internal static void FLN(SystemCommand c) { }
+		internal static void FLN(SystemCommand c) {
+			User us = Core.getUser(c.Data["character"].ToString());
+			us.status = Status.offline;
+			((ChatTab)CogitoUI.chatUI.chatTabs.SelectedTab).ChannelMessages.AppendText("User " + us.Name + " has logged out.");
+		}
 
 		/// <summary> Initial friends list.
 		/// Received: FRL { "characters": [string] }</summary>
@@ -175,7 +179,9 @@ namespace CogitoSharp
 		/// <summary> Initial channel data. Received in response to JCH, along with CDS.
 		/// Received: ICH { "users": [object], "channel": string, "title": string, "mode": enum }
 		/// ICH {"users": [{"identity": "Shadlor"}], "channel": "Frontpage", mode: "chat"}</summary>
-		internal static void ICH(SystemCommand c) { }
+		internal static void ICH(SystemCommand c) { 
+			//todo set chattab text and labels and whatnot
+		}
 
 		internal static void IDN(SystemCommand c) { }
 
@@ -195,6 +201,7 @@ namespace CogitoSharp
 			User us = Core.getUser(UserData["identity"].ToString());
 			ch.Log(String.Format("User '{0}' joined Channel '{1}'", us.Name, ch.name));
 			ch.Users.Add(us); 
+			ch.chanTab.Text = ch.name + "(" + ch.Users.Count + ")";
 			}
 
 		/// <summary> Kinks data in response to a KIN client command.
@@ -213,7 +220,15 @@ namespace CogitoSharp
 		/// <summary> An indicator that the given character has left the channel. This may also be the client's character.
 		/// Received: LCH { "channel": string, "character": character }
 		/// Send  As: LCH { "channel": string }</summary>
-		internal static void LCH(SystemCommand c) { Core.getChannel(c.Data["channel"].ToString()).Leave(); }
+		internal static void LCH(SystemCommand c) {
+			Channel ch = Core.getChannel(c.Data["channel"].ToString()); //"title" would be the channel's name, which in case of private channels can collide!
+			Dictionary<string, object> UserData = (Dictionary<string, object>)c.Data["character"];
+			User us = Core.getUser(UserData["identity"].ToString());
+			ch.Log(String.Format("User '{0}' has left Channel '{1}'", us.Name, ch.name));
+			ch.Users.Remove(us);
+			ch.chanTab.Text = ch.name + "(" + ch.Users.Count + ")";
+			if (us.Name == Core.OwnUser.Name) { ch.Leave(); }
+		}
 
 		/// <summary> Sends an array of *all* the online characters and their gender, status, and status message.
 		/// Received: LIS { characters: [object] }</summary>
@@ -221,12 +236,15 @@ namespace CogitoSharp
 		// /!\ OBVIOUSLY A HUGE POTENTIAL PERFORMANCE SINK /!\
 		internal static void LIS(SystemCommand c) {
 			try{
-				foreach (List<string> currentUser in (List<List<string>>)Newtonsoft.Json.JsonConvert.DeserializeObject<List<List<string>>>(c.Data["characters"].ToString())){
+				List<List<string>> UserData = Newtonsoft.Json.JsonConvert.DeserializeObject<List<List<string>>>(c.Data["characters"].ToString());
+				foreach (List<string> currentUser in UserData){
 					//Expected format e.g. ["Zeus Keraunos","Male","online",""]
 					//						Name		     Gender	Status  Statusmessage
 					User u = Core.getUser(currentUser[0]);
-					u.Gender = currentUser[1];
-					u.status = (Status)Enum.Parse(typeof(Status), currentUser[2]);
+					lock (u.UserLock){
+						u.Gender = currentUser[1];
+						u.status = (Status)Enum.Parse(typeof(Status), currentUser[2]);
+					}
 				}
 			}
 			catch (InvalidCastException){ 
@@ -276,12 +294,12 @@ namespace CogitoSharp
 		/// Send  As: ORS</summary>
 		internal static void ORS(SystemCommand c) { 
 			try{
-				List<Dictionary<string, string>> channelItems = (c.Data["channels"] as List<Dictionary<string, string>>);
-				List<Dictionary<string, string>>.Enumerator e =  channelItems.GetEnumerator();
+				List<Dictionary<string, object>> channelItems = ((List<Dictionary<string, object>>)c.Data["channels"]);
+				List<Dictionary<string, object>>.Enumerator e = channelItems.GetEnumerator();
 				while (e.MoveNext()){
-					Dictionary<string, string> channelData = e.Current;
-					Channel currentChannel = Core.getChannel(HttpUtility.HtmlDecode(channelData["title"]));
-					currentChannel.key = channelData["name"];
+					Dictionary<string, object> channelData = (Dictionary<string, object>)e.Current;
+					Channel currentChannel = Core.getChannel(HttpUtility.HtmlDecode(channelData["title"].ToString()));
+					currentChannel.key = channelData["name"].ToString();
 					Core.SystemLog.Log(String.Format("Setting Key for channel {0} to '{1}'\n", currentChannel.name, currentChannel.key));
 				}
 			}
@@ -408,8 +426,8 @@ namespace CogitoSharp
 					Core.SystemLog.Log("SYS: Send interval auto-adjusted to interval of " + (IO.Message.chat_flood / 1000f) + " seconds. Starting EternalSender...");
 					
 					//TODO WHY IS THIS A BIG FAT PROGRAM BREAKER????
-					new SystemCommand("ORS").Send();
-					new SystemCommand("CHA").Send();
+					new IO.SystemCommand("ORS").Send();
+					new IO.SystemCommand("CHA").Send();
 					new IO.SystemCommand("STA { \"status\": \"online\", \"statusmsg\": \"Running Cogito# v" + System.Windows.Forms.Application.ProductVersion + "\" }").Send();
 					
 					//Core.websocket.Send("ORS");

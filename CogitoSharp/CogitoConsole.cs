@@ -32,9 +32,13 @@ namespace CogitoSharp.Debug
 			base.OnKeyPress(e);
 		}
 
+		
+	}
+
+	internal sealed class ConsoleTextBox : TextBox{
 		delegate void AppendTextCallback(string text);
 
-		internal new void AppendText(string text)
+		public new void AppendText(string text)
 		{
 			if (this.InvokeRequired)
 			{
@@ -43,10 +47,9 @@ namespace CogitoSharp.Debug
 			}
 			else
 			{
-				if (!text.EndsWith(@"\n")) { text += @"\n"; }
-				this.console.Text += text;
+				if (!text.EndsWith(Environment.NewLine)) { text += Environment.NewLine; }
+				this.Text += text;
 			}
 		}
-
 	}
 }

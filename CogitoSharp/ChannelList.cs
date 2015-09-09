@@ -12,13 +12,14 @@ namespace CogitoSharp
 {
 	public partial class ChannelList : Form
 	{
-		public ChannelList()
-		{
+		public ChannelList(){
 			InitializeComponent();
+			RegenerateChannelList();
 		}
 
-		private void ChannelList_Enter(object sender, EventArgs e)
-		{
+		private void ChannelList_Enter(object sender, EventArgs e){ RegenerateChannelList(); }
+
+		private void RegenerateChannelList(){
 			this.listViewChannels.Groups[0].Items.Clear();
 			this.listViewChannels.Groups[1].Items.Clear();
 			foreach (Channel c in Core.channels){

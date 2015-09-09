@@ -278,12 +278,12 @@
 		private System.Windows.Forms.Panel infoBarPanel;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.PictureBox currenctCharAvatar;
 		private System.Windows.Forms.TableLayoutPanel CoreUITable;
 		private System.Windows.Forms.Panel userListButtonPanel;
 		private System.Windows.Forms.Button buttonFilterUserlist;
 		private ChatUserList currentChannelUserList;
 		private System.Windows.Forms.Button buttonSortUserlist;
+		protected internal System.Windows.Forms.PictureBox currenctCharAvatar;
 
 	}
 }

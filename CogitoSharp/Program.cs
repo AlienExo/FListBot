@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -207,7 +208,9 @@ namespace CogitoSharp
 		internal static volatile HashSet<User> allGlobalUsers = new HashSet<User>();
         internal static volatile HashSet<Channel> channels = new HashSet<Channel>();
 		internal static List<User> globalOps = new List<User>();
-		
+		internal static Bitmap DefaultAvatar = null;
+
+
 		internal static Queue<IO.SystemCommand> IncomingMessageQueue = new Queue<IO.SystemCommand>();
 		internal static Queue<IO.SystemCommand> OutgoingMessageQueue = new Queue<IO.SystemCommand>();
 				
@@ -217,10 +220,10 @@ namespace CogitoSharp
 				//Console.WriteLine("SendMessageFromQueue called");
 				if (OutgoingMessageQueue.Count > 0) { //&& websocket.IsAlive){
 					string _message = OutgoingMessageQueue.Dequeue().ToServerString();
-					#if DEBUG
+					//#if DEBUG
 						Core.RawData.Log(">> " + _message);
 						Console.WriteLine("Sending message " + _message);
-					#endif
+					//#endif
 						websocket.Send(_message);
 				} 
 			}
@@ -236,9 +239,9 @@ namespace CogitoSharp
 		
 		internal static IO.Logging.LogFile SystemLog = new IO.Logging.LogFile("System Log");
 		internal static IO.Logging.LogFile ErrorLog = new IO.Logging.LogFile("Error Log");
-		#if DEBUG
+		//#if DEBUG
 		internal static IO.Logging.LogFile RawData = new IO.Logging.LogFile("RawData");
-		#endif
+		//#endif
 		internal static CogitoUI cogitoUI = null;
 
 		internal static User OwnUser = null;
@@ -248,6 +251,7 @@ namespace CogitoSharp
         static void Main(){
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
+			cogitoUI = new CogitoUI();
 			AppDomain.CurrentDomain.ProcessExit += new EventHandler(OnProcessExit);
 			#if DEBUG
 			websocket = new WebSocket("ws://chat.f-list.net:8722"); //8722 Dev, 9722 Real but dev server is down \o/
@@ -257,8 +261,8 @@ namespace CogitoSharp
 			websocket.OnMessage += Core.OnWebsocketMessage;
 			websocket.OnError += Core.OnWebsocketError;
 
-			cogitoUI = new CogitoUI();
-
+			DefaultAvatar = new Bitmap(Config.AppSettings.DefaultAvatarFile);
+			
 			SystemLog.Log("Start up: CogitoSharp v." + Application.ProductVersion);
 
 			SystemLog.Log("Loading Plugins...");
@@ -269,40 +273,10 @@ namespace CogitoSharp
 				throw; 
 			}
 
-			SystemLog.Log("Loading User Database...");
-			try{
-				Stream s = File.OpenRead(Path.Combine(Config.AppSettings.DataPath, Config.AppSettings.UserDBFileName));
-				BinaryFormatter bf = new BinaryFormatter();
-				Core.allGlobalUsers = (HashSet<User>)bf.Deserialize(s);
-				s.Close();
-				SystemLog.Log("Deserialized User Database and loaded " + Core.allGlobalUsers.Count + " entries.");
-			}
-			catch (FileNotFoundException) { } //Do Nothing ¯\_(ツ)_/¯
-			catch (DirectoryNotFoundException) { Directory.CreateDirectory(Config.AppSettings.DataPath); }
-			catch (UnauthorizedAccessException) { 
-				SystemLog.Log("Incapable of accessing user database directory");
-				MessageBox.Show("Warning: Application is unable to access its user database in " + Config.AppSettings.DataPath + 
-				"'. Please ensure all proper permissions exist. Application may be unable to persist user database, leading to increased bandwith usage.", "Unable to load user database");
-			}
+			Core.allGlobalUsers = DeserializeDatabase<User>(Config.AppSettings.UserDBFileName);
 			foreach (User u in Core.allGlobalUsers) { if ((u.dataTakenOn - DateTime.Now) >= Config.AppSettings.userProfileRefreshPeriod) { u.GetProfileInfo(); } } //Data is old, refresh it.
 
-			SystemLog.Log("Loading Channel Database...");
-			try
-			{
-				Stream s = File.OpenRead(Path.Combine(Config.AppSettings.DataPath, Config.AppSettings.ChannelDBFileName));
-				BinaryFormatter bf = new BinaryFormatter();
-				Core.channels = (HashSet<Channel>)bf.Deserialize(s);
-				s.Close();
-				SystemLog.Log("Deserialized Channel Database and loaded " + Core.allGlobalUsers.Count + " entries.");
-			}
-			catch (FileNotFoundException) { } //Do Nothing ¯\_(ツ)_/¯
-			catch (DirectoryNotFoundException) { Directory.CreateDirectory(Config.AppSettings.DataPath); }
-			catch (UnauthorizedAccessException)
-			{
-				SystemLog.Log("Incapable of accessing Channel database directory");
-				MessageBox.Show("Warning: Application is unable to access its Channel database in " + Config.AppSettings.DataPath +
-				"'. Please ensure all proper permissions exist. Application may be unable to persist Channel database, leading to increased bandwith usage.", "Unable to load Channel database");
-			}
+			Core.channels = DeserializeDatabase<Channel>(Config.AppSettings.ChannelDBFileName);
 
 			try{ Properties.Settings.Default.userAutoComplete.GetType(); }
 			catch (NullReferenceException){ 
@@ -312,6 +286,45 @@ namespace CogitoSharp
 
 			Application.Run(cogitoUI);
         }
+
+		/// <summary>
+		/// Function to Deserialize a HashSet T instance from BinarySerializer-produced files.
+		/// </summary>
+		/// <typeparam name="T">The inner type for the HashSet to deserialize, e.g. HashSet User</typeparam>
+		/// <param name="TargetObject">The object into which the deserialized data is transmitted.</param>
+		/// <param name="DataBaseFileName">The name of the BinaryFormatted database file to be deserialized. Expects a List T.</param>
+		/// <param name="ContainingFolder">Leave optional (null) to load from Config.AppSettings.DataPath (/data/); else, supply full path to containing folder</param>
+		/// <exception cref="System.ArgumentException">Thrown when the TargetObject's type and the data inside the file do not match.</exception>
+		/// <exception cref=""></exception>
+		private static HashSet<T> DeserializeDatabase<T>(string DataBaseFileName, string ContainingFolder = null){
+			SystemLog.Log("Loading " + typeof(T).Name + " Database...");
+			HashSet<T> TargetObject = new HashSet<T>();
+			try
+			{
+				ContainingFolder = ContainingFolder ?? Config.AppSettings.DataPath;
+				Stream s = File.OpenRead(Path.Combine(ContainingFolder, DataBaseFileName));
+				BinaryFormatter bf = new BinaryFormatter();
+				try{ TargetObject = (HashSet<T>)bf.Deserialize(s); }
+				catch (System.Runtime.Serialization.SerializationException ex) { 
+					Core.ErrorLog.Log(String.Format("Could not deserialize database: {0} {1}", ex.Message, ex.StackTrace)); 
+					TargetObject = new HashSet<T>();
+					}
+				catch (Exception e) {
+					Core.ErrorLog.Log(String.Format("Error whilst deserializing database: {0} {1}", e.Message, e.StackTrace));
+					throw new System.ArgumentException("Could not deserialize to type HashSet<" + typeof(T).Name +">."); }
+				s.Close();
+				SystemLog.Log("Deserialized " + typeof(T).Name + " Database and loaded " + ((HashSet<T>)TargetObject).Count() + " entries.");
+			}
+			catch (FileNotFoundException) { } //Do Nothing ¯\_(ツ)_/¯
+			catch (DirectoryNotFoundException) { Directory.CreateDirectory(Config.AppSettings.DataPath); }
+			catch (UnauthorizedAccessException)
+			{
+				SystemLog.Log("Incapable of accessing user database directory");
+				MessageBox.Show("Warning: Application is unable to access its user database in " + Config.AppSettings.DataPath +
+				"'. Please ensure all proper permissions exist. Application may be unable to persist user database, leading to increased bandwith usage.", "Unable to load user database");
+			}
+			return TargetObject;
+		}
 
 		static void OnProcessExit(object sender, EventArgs e){
 			using (Stream fs = File.Create(Config.AppSettings.DataPath + Config.AppSettings.UserDBFileName)){
@@ -339,9 +352,9 @@ namespace CogitoSharp
 
 		internal static void OnWebsocketMessage(Object sender, WebSocketSharp.MessageEventArgs e){
 			SystemCommand c = new SystemCommand(e.Data);
-			#if DEBUG
-				RawData.Log(c.ToServerString());
-			#endif
+			//#if DEBUG
+			if (!new string[]{"LIS", "NLN", "STA", "ORS"}.Contains(c.OpCode)){ RawData.Log(c.ToServerString()); }
+			//#endif
 			IncomingMessageQueue.Enqueue(c);
 		}
 		

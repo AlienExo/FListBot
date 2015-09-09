@@ -121,8 +121,10 @@ namespace CogitoSharp.IO
 		internal void Reply(string replyText){ new Message(replyText, this).Send(); }
 
 		public override string ToString(){
-			if (this.Data["message"].ToString().StartsWith("/me")) { return this.sourceUser.Name + " " + this.Data["message"].ToString().Substring(3); }
-			else {return this.sourceUser.Name + ": " + this.Data["message"].ToString();}
+			string _message;
+			if (this.Data["message"].ToString().StartsWith("/me")) { _message = this.sourceUser.Name + " " + this.Data["message"].ToString().Substring(3); }
+			else {_message = this.sourceUser.Name + ": " + this.Data["message"].ToString();}
+			return String.Format("<{0}> -- {1}{2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), _message, Environment.NewLine);
 		}
 	}
 	internal class Logging{
@@ -133,13 +135,24 @@ namespace CogitoSharp.IO
 			private bool disposed = false;
 			
 			public void Log(string s){ 
-				s = String.Format("<{0}> -- {1}\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), s);
+				s = String.Format("<{0}> -- {1}{2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), s, Environment.NewLine);
 				Console.Write(s);
 				this.logger.Write(s);
-				#if DEBUG
+				//#if DEBUG
 				CogitoUI.console.console.AppendText(s);
-				#endif
+				//#endif
 				}
+
+			/// <summary>
+			/// To be called when you've already processed the mesasge with a timestamp for the channel; just pass the message.ToString() result and it's logged 'raw'
+			/// </summary>
+			public void LogRaw(string s){
+				Console.Write(s);
+				this.logger.Write(s);
+				//#if DEBUG
+				CogitoUI.console.console.AppendText(s);
+				//#endif
+			}
 
 			/// <summary>
 			/// Creates a FileStream for writing to the logfile, and periodically (default: 10 sec.) flushes the buffer to preserve that data in event of failure. 

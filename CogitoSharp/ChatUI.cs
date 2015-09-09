@@ -132,12 +132,31 @@ namespace CogitoSharp
 	//	
 	//}
 
+
+	class ChatRichTextBox : RichTextBox{
+		delegate void AppendTextCallback(string text);
+
+		public new void AppendText(string text)
+		{
+			if (this.InvokeRequired)
+			{
+				AppendTextCallback d = new AppendTextCallback(AppendText);
+				this.Invoke(d, new object[] { text });
+			}
+			else
+			{
+				if (!text.EndsWith(Environment.NewLine)) { text += Environment.NewLine; }
+				this.Text += text;
+			}
+		}
+	}
+
 	/// <summary>
 	/// A Tab in the chat interface, representing an open conversation with a room or a single user
 	/// </summary>
 	internal class ChatTab : TabPage{
 		private TextBox ChatTabTextInput = new TextBox();
-		internal TextBox ChannelMessages = new TextBox();
+		internal ChatRichTextBox ChannelMessages = new ChatRichTextBox();
 		internal Object parent = null;
 		internal ChatUserList UserList = new ChatUserList();
 		private bool flashing = false;
@@ -184,6 +203,7 @@ namespace CogitoSharp
 			this.Name = parent.Name;
 			this.Text = parent.Name;
 			this.parent = parent;
+			parent.GetAvatar();
 		}
 	}
 

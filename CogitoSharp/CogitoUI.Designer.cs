@@ -47,6 +47,7 @@
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.adCommanderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.cASIEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.channelListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.chatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.consoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.scannerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -122,6 +123,7 @@
             this.toolStripSeparator2,
             this.adCommanderToolStripMenuItem,
             this.cASIEToolStripMenuItem,
+            this.channelListToolStripMenuItem,
             this.chatToolStripMenuItem,
             this.consoleToolStripMenuItem,
             this.scannerToolStripMenuItem});
@@ -169,6 +171,13 @@
 			// 
 			this.cASIEToolStripMenuItem.Name = "cASIEToolStripMenuItem";
 			resources.ApplyResources(this.cASIEToolStripMenuItem, "cASIEToolStripMenuItem");
+			this.cASIEToolStripMenuItem.Click += new System.EventHandler(this.cASIEToolStripMenuItem_Click);
+			// 
+			// channelListToolStripMenuItem
+			// 
+			this.channelListToolStripMenuItem.Name = "channelListToolStripMenuItem";
+			resources.ApplyResources(this.channelListToolStripMenuItem, "channelListToolStripMenuItem");
+			this.channelListToolStripMenuItem.Click += new System.EventHandler(this.channelListToolStripMenuItem_Click);
 			// 
 			// chatToolStripMenuItem
 			// 
@@ -185,6 +194,7 @@
 			// 
 			this.scannerToolStripMenuItem.Name = "scannerToolStripMenuItem";
 			resources.ApplyResources(this.scannerToolStripMenuItem, "scannerToolStripMenuItem");
+			this.scannerToolStripMenuItem.Click += new System.EventHandler(this.scannerToolStripMenuItem_Click);
 			// 
 			// toolStripMenuItem1
 			// 
@@ -251,6 +261,7 @@
 		private System.Windows.Forms.ToolStripMenuItem chatToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem consoleToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem scannerToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem channelListToolStripMenuItem;
     }
 }
 

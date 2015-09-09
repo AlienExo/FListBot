@@ -46,6 +46,7 @@ namespace CogitoSharp
 			internal const string MasterKey = "";
 			internal const string TriggerPrefix = ".";
 			internal static string DefaultAvatarFile = DataPath + "DefaultAvatar.bmp";
+			internal const int MessageBufferSize = 256;
 		}
 
 		internal static Dictionary<string, Delegate> AITriggers = new Dictionary<string, Delegate>();

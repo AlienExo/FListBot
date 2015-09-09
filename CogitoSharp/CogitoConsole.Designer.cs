@@ -29,7 +29,7 @@
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CogitoConsole));
-			this.console = new System.Windows.Forms.TextBox();
+			this.console = new CogitoSharp.Debug.ConsoleTextBox();
 			this.input = new System.Windows.Forms.TextBox();
 			this.SuspendLayout();
 			// 
@@ -39,15 +39,17 @@
 			this.console.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.console.Cursor = System.Windows.Forms.Cursors.IBeam;
 			this.console.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.console.Enabled = false;
 			this.console.Font = new System.Drawing.Font("Consolas", 10F);
 			this.console.ForeColor = System.Drawing.Color.Gold;
 			this.console.Location = new System.Drawing.Point(0, 0);
 			this.console.Margin = new System.Windows.Forms.Padding(0);
 			this.console.Multiline = true;
 			this.console.Name = "console";
+			this.console.ReadOnly = true;
+			this.console.ScrollBars = System.Windows.Forms.ScrollBars.Both;
 			this.console.Size = new System.Drawing.Size(542, 695);
 			this.console.TabIndex = 0;
+			this.console.WordWrap = false;
 			// 
 			// input
 			// 
@@ -76,7 +78,7 @@
 			this.ForeColor = System.Drawing.Color.Gold;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+			this.Margin = new System.Windows.Forms.Padding(4);
 			this.Name = "CogitoConsole";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.WindowsDefaultBounds;
 			this.Text = "Console";
@@ -88,6 +90,6 @@
 		#endregion
 
 		private System.Windows.Forms.TextBox input;
-		protected internal System.Windows.Forms.TextBox console;
+		internal ConsoleTextBox console;
 	}
 }
