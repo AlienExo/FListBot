@@ -62,9 +62,23 @@ namespace CogitoSharp
 				catch (Exception FuckUp) { Core.ErrorLog.Log(String.Format("Invocation of Method {0} failed:\n\t{1}\n\t{2}\t{3}", c.OpCode, FuckUp.Message, FuckUp.InnerException, c.Data)); }
 			}
 		}
-	}
 
+		private void cascadeToolStripMenuItem_Click(object sender, EventArgs e) { this.LayoutMdi(MdiLayout.Cascade); }
 
+		private void tileHorizontallyToolStripMenuItem_Click(object sender, EventArgs e) { this.LayoutMdi(MdiLayout.TileHorizontal); }
+
+		private void tileVerticallyToolStripMenuItem_Click(object sender, EventArgs e) { this.LayoutMdi(MdiLayout.TileVertical); }
+
+		private void consoleToolStripMenuItem_Click(object sender, EventArgs e){
+			IEnumerable<Debug.CogitoConsole> consoles = Application.OpenForms.OfType<Debug.CogitoConsole>(); 
+			if (consoles.Count<Debug.CogitoConsole>() > 0) { foreach (Debug.CogitoConsole c in consoles)	{ c.Show(); } }
+			else{
+				Debug.CogitoConsole console = new Debug.CogitoConsole();
+				console.MdiParent = this;
+
+			}
+		}
+	} // CogitoUI
 
 	/// <summary> Base Class for Boxes with images, yay </summary>
 	public class OwnerDrawnListBox : Control
@@ -222,5 +236,5 @@ namespace CogitoSharp
 			}
 			this.vs.Maximum = this.items.Count - 1 > 0 ? this.items.Count - 1 : 0;
 		}
-	}
-}
+	} // OwnerDrawnListBox
+} //namespace CogitoSharp

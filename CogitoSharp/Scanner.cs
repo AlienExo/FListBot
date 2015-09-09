@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace CogitoSharp
+namespace CogitoSharp.Gimmicks
 {
 	/// <summary>
 	/// A GUI Element that's supposed to capture, catalogue and summarize information about all members of a channel, similar to the old Cogito's .scan function.

@@ -53,9 +53,8 @@ namespace CogitoSharp
 		/// </summary>
 		public void Dispose(){
 			if (!disposed){
-				CogitoUI.chatUI.chatTabs.TabPages.Remove(this.chanTab);
-				//this.ChannelLog.Dispose();
-				this.chanTab.Dispose();
+				if (this.chanTab != null) { this.chanTab.Dispose(); }
+				if (this.ChannelLog != null) { this.ChannelLog.Dispose(); }
 			}
 			this.disposed = true;
 		}

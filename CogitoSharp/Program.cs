@@ -65,6 +65,7 @@ using CogitoSharp.IO;
  * 
  * HACK Send raw AOP w/o op status. 
  * HACK Send login for a different character w/ valid ticket for another
+ * HACK are channel keys just ADH-[md5 channel name] or some other hash? test it.
  * 
  * [||||||||||] DONE: I have no idea what I'm doing 
  * [||||||||||] DONE: Start off by implementing some way of getting your API Key (getKey())

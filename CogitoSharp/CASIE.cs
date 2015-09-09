@@ -23,10 +23,12 @@ namespace CogitoSharp.Gimmicks
 
 		public CASIE(){
 			InitializeComponent();
+			this.MdiParent = Core.cogitoUI;
 		}
 
-		public CASIE(string targetCharacter){
+		public CASIE(string targetCharacter) : this(){
 			InitializeComponent();
+			//TODO: Init w/ target character
 		}
 
 		internal void calculateCASIE(string targetCharacter){

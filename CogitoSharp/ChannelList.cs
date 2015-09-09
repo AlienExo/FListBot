@@ -16,5 +16,15 @@ namespace CogitoSharp
 		{
 			InitializeComponent();
 		}
+
+		private void ChannelList_Enter(object sender, EventArgs e)
+		{
+			this.listViewChannels.Groups[0].Items.Clear();
+			this.listViewChannels.Groups[1].Items.Clear();
+			foreach (Channel c in Core.channels){
+				if (c._key == null) { this.listViewChannels.Groups[0].Items.Add(new ListViewItem(c.name)); }
+				else { this.listViewChannels.Groups[1].Items.Add(new ListViewItem(c.name)); }
+			}
+		}
 	}
 }

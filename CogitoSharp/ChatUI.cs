@@ -9,7 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 /*
- * TODO: [----------] Add code to populate Die ChatListUser box
+ * TODO: [----------] Add code to populate ChatListUser box
+ * TODO: [----------] Add code to populate MenuUseRightClick 
+ * TODO: [----------] Add code that only right clicks over the UserList cause that menu to open
  */
 
 namespace CogitoSharp

@@ -102,10 +102,10 @@ namespace CogitoSharp.Utils
 		/// All data is converted to a standard metric unit before being returned as a Measurement instance.
 		/// </summary>
 		/// <typeparam name="T">The numeric type the function returns. Internally, numbers are handled as doubles...?</typeparam>
-		/// <param name="profileText">The text string from which data is supposed to be taken</param>
-		/// <param name="MeasureToParseAs">If known, the type of data to be parsed.</param>
+		/// <param name="TextToAnalyze">The text string from which data is supposed to be parsed</param>
+		/// <param name="MeasureToParseAs">If known, the type of measurement to be parsed.</param>
 		/// <returns> A Measurement<!--<T>--> instance with the result as type T and the unit in a string"/> A Measurement with numeric type T</returns>
-		protected internal static Measurement<T> parseNumberFromDescription<T>(string profileText, MeasurementUnit MeasureToParseAs = MeasurementUnit.Unknown){
+		protected internal static Measurement<T> parseNumberFromDescription<T>(string TextToAnalyze, MeasurementUnit MeasureToParseAs = MeasurementUnit.Unknown){
 			throw new NotImplementedException("METHOD ISN'T DONE YET");
 			Measurement<T> Result = new Measurement<T>();
 			string[] RangeIndicators = { "-", "/", " to ", " and " };
@@ -158,5 +158,6 @@ namespace CogitoSharp.Utils
 	class RegularExpressions{
 		internal static Regex ProfileHTMLTags = new Regex(@"<span class=.*>(.*):</span>(.*)");
 		internal static Regex AgeSearch = new Regex(@"\d{1, 9}");
+		internal static Regex Numbers = new Regex(@"\d{1,5}\.?\d{0,2}");
 	}
 }

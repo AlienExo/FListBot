@@ -40,6 +40,16 @@
 			this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.windowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.arrangeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.tileHorizontallyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.tileVerticallyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.cascadeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.adCommanderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.cASIEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.chatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.consoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.scannerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpF1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -107,8 +117,74 @@
 			// 
 			// windowsToolStripMenuItem
 			// 
+			this.windowsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.arrangeToolStripMenuItem,
+            this.toolStripSeparator2,
+            this.adCommanderToolStripMenuItem,
+            this.cASIEToolStripMenuItem,
+            this.chatToolStripMenuItem,
+            this.consoleToolStripMenuItem,
+            this.scannerToolStripMenuItem});
 			this.windowsToolStripMenuItem.Name = "windowsToolStripMenuItem";
 			resources.ApplyResources(this.windowsToolStripMenuItem, "windowsToolStripMenuItem");
+			// 
+			// arrangeToolStripMenuItem
+			// 
+			this.arrangeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tileHorizontallyToolStripMenuItem,
+            this.tileVerticallyToolStripMenuItem,
+            this.cascadeToolStripMenuItem});
+			this.arrangeToolStripMenuItem.Name = "arrangeToolStripMenuItem";
+			resources.ApplyResources(this.arrangeToolStripMenuItem, "arrangeToolStripMenuItem");
+			// 
+			// tileHorizontallyToolStripMenuItem
+			// 
+			this.tileHorizontallyToolStripMenuItem.Name = "tileHorizontallyToolStripMenuItem";
+			resources.ApplyResources(this.tileHorizontallyToolStripMenuItem, "tileHorizontallyToolStripMenuItem");
+			this.tileHorizontallyToolStripMenuItem.Click += new System.EventHandler(this.tileHorizontallyToolStripMenuItem_Click);
+			// 
+			// tileVerticallyToolStripMenuItem
+			// 
+			this.tileVerticallyToolStripMenuItem.Name = "tileVerticallyToolStripMenuItem";
+			resources.ApplyResources(this.tileVerticallyToolStripMenuItem, "tileVerticallyToolStripMenuItem");
+			this.tileVerticallyToolStripMenuItem.Click += new System.EventHandler(this.tileVerticallyToolStripMenuItem_Click);
+			// 
+			// cascadeToolStripMenuItem
+			// 
+			this.cascadeToolStripMenuItem.Name = "cascadeToolStripMenuItem";
+			resources.ApplyResources(this.cascadeToolStripMenuItem, "cascadeToolStripMenuItem");
+			this.cascadeToolStripMenuItem.Click += new System.EventHandler(this.cascadeToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			resources.ApplyResources(this.toolStripSeparator2, "toolStripSeparator2");
+			// 
+			// adCommanderToolStripMenuItem
+			// 
+			this.adCommanderToolStripMenuItem.Name = "adCommanderToolStripMenuItem";
+			resources.ApplyResources(this.adCommanderToolStripMenuItem, "adCommanderToolStripMenuItem");
+			// 
+			// cASIEToolStripMenuItem
+			// 
+			this.cASIEToolStripMenuItem.Name = "cASIEToolStripMenuItem";
+			resources.ApplyResources(this.cASIEToolStripMenuItem, "cASIEToolStripMenuItem");
+			// 
+			// chatToolStripMenuItem
+			// 
+			this.chatToolStripMenuItem.Name = "chatToolStripMenuItem";
+			resources.ApplyResources(this.chatToolStripMenuItem, "chatToolStripMenuItem");
+			// 
+			// consoleToolStripMenuItem
+			// 
+			this.consoleToolStripMenuItem.Name = "consoleToolStripMenuItem";
+			resources.ApplyResources(this.consoleToolStripMenuItem, "consoleToolStripMenuItem");
+			this.consoleToolStripMenuItem.Click += new System.EventHandler(this.consoleToolStripMenuItem_Click);
+			// 
+			// scannerToolStripMenuItem
+			// 
+			this.scannerToolStripMenuItem.Name = "scannerToolStripMenuItem";
+			resources.ApplyResources(this.scannerToolStripMenuItem, "scannerToolStripMenuItem");
 			// 
 			// toolStripMenuItem1
 			// 
@@ -165,6 +241,16 @@
 		private System.Windows.Forms.ToolStripMenuItem windowsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem helpF1ToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem arrangeToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem tileHorizontallyToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem tileVerticallyToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem cascadeToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+		private System.Windows.Forms.ToolStripMenuItem adCommanderToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem cASIEToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem chatToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem consoleToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem scannerToolStripMenuItem;
     }
 }
 

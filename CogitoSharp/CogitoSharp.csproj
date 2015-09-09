@@ -90,6 +90,12 @@
     <Compile Include="ChannelList.Designer.cs">
       <DependentUpon>ChannelList.cs</DependentUpon>
     </Compile>
+    <Compile Include="CogitoConsole.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CogitoConsole.Designer.cs">
+      <DependentUpon>CogitoConsole.cs</DependentUpon>
+    </Compile>
     <Compile Include="Config.cs" />
     <Compile Include="FListProcessor.cs" />
     <Compile Include="IO.cs" />
@@ -111,12 +117,6 @@
     </Compile>
     <Compile Include="ChatUI.Designer.cs">
       <DependentUpon>ChatUI.cs</DependentUpon>
-    </Compile>
-    <Compile Include="CogitoConsole.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="CogitoConsole.Designer.cs">
-      <DependentUpon>CogitoConsole.cs</DependentUpon>
     </Compile>
     <Compile Include="Scanner.cs">
       <SubType>Form</SubType>
@@ -144,6 +144,9 @@
     <EmbeddedResource Include="ChannelList.resx">
       <DependentUpon>ChannelList.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="CogitoConsole.resx">
+      <DependentUpon>CogitoConsole.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RPAdDeployer.resx">
       <DependentUpon>RPAdDeployer.cs</DependentUpon>
     </EmbeddedResource>
@@ -153,9 +156,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ChatUI.resx">
       <DependentUpon>ChatUI.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CogitoConsole.resx">
-      <DependentUpon>CogitoConsole.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CogitoUI.resx">
       <DependentUpon>CogitoUI.cs</DependentUpon>

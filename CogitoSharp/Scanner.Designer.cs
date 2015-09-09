@@ -1,7 +1,6 @@
-﻿namespace CogitoSharp
+﻿namespace CogitoSharp.Gimmicks
 {
-	partial class Scanner
-	{
+	partial class Scanner{
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
