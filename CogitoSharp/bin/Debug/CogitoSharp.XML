@@ -10,17 +10,29 @@
         <member name="F:CogitoSharp.Channel.Count">
             <summary>Channel ID Number</summary>
         </member>
+        <member name="F:CogitoSharp.Channel.alertMinAge">
+            <summary> Any characters that join below this age will cause a Mod to be alerted. When set to 0, it's off.</summary>
+        </member>
+        <member name="F:CogitoSharp.Channel.alertNoAge">
+            <summary> When true, also alerts Mods when a character whose age cannot be parsed joins. </summary>
+        </member>
+        <member name="F:CogitoSharp.Channel._key">
+            <summary>Keys are the UUID for private channels; channel title for normal. Always use .key for channel-specific commands.</summary>
+        </member>
         <member name="F:CogitoSharp.Channel.name">
             <summary>Channel name, in human-readable format</summary>
         </member>
-        <member name="F:CogitoSharp.Channel.Userlist">
-            <summary>Array of all Users in the channel</summary>
+        <member name="F:CogitoSharp.Channel.mode">
+            <summary> Channel mode - chat only, ads only, both. </summary>
         </member>
         <member name="F:CogitoSharp.Channel.chanTab">
             <summary>Associated TabPage for this channel</summary>
         </member>
         <member name="F:CogitoSharp.Channel.minAge">
             <summary>Minimum age to be in this channel. If set to a value greater than 0, the bot will attempt to kick everyone below this age.</summary>
+        </member>
+        <member name="F:CogitoSharp.Channel.lastSearchFragment">
+            <summary> EXPERIMENTAL - contains the last fragment for Autocompletion </summary>
         </member>
         <member name="M:CogitoSharp.Channel.Dispose">
             <summary>
@@ -43,8 +55,39 @@
         <member name="M:CogitoSharp.Channel.Finalize">
             <summary>Generic destrutor, closes associated TabPage</summary>
         </member>
-        <member name="P:CogitoSharp.Channel.key">
-            <summary>Keys are the UUID for private channels; channel title for normal. Always use .key for channel-specific commands.</summary>
+        <member name="F:CogitoSharp.ChannelList.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:CogitoSharp.ChannelList.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:CogitoSharp.ChannelList.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:CogitoSharp.Debug.CogitoConsole.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:CogitoSharp.Debug.CogitoConsole.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:CogitoSharp.Debug.CogitoConsole.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
         </member>
         <member name="T:CogitoSharp.FListProcessor">
             <summary>
@@ -306,7 +349,7 @@
         <member name="M:CogitoSharp.FListProcessor.VAR(CogitoSharp.IO.SystemCommand)">
             <summary> Variables the server sends to inform the client about server variables.</summary>
         </member>
-        <member name="M:CogitoSharp.IO.SystemCommand.send">
+        <member name="M:CogitoSharp.IO.SystemCommand.Send">
             <summary>
             Sends the message by adding it to the OutgoingMessageQueue
             </summary>
@@ -323,16 +366,24 @@
         <member name="F:CogitoSharp.IO.Message.priv_max">
             <summary> Maximum length (in bytes) of a private message. </summary>
         </member>
-        <member name="M:CogitoSharp.IO.Message.send">
+        <member name="F:CogitoSharp.IO.Message.chat_flood">
+            <summary> Minimum number of milliseconds to wait in between sending chat messages (flood avoidance)</summary>
+        </member>
+        <member name="M:CogitoSharp.IO.Message.Send">
             <summary>
             Sends the message by adding it to the OutgoingMessageQueue
             </summary>
         </member>
-        <member name="M:CogitoSharp.IO.Message.reply(System.String)">
+        <member name="M:CogitoSharp.IO.Message.Reply(System.String)">
             <summary>
             Replies to the message by posting to the same user/channel where the Message originated
             </summary>
             <param name="replyText">Text to reply with.</param>
+        </member>
+        <member name="M:CogitoSharp.IO.Logging.LogFile.LogRaw(System.String)">
+            <summary>
+            To be called when you've already processed the mesasge with a timestamp for the channel; just pass the message.ToString() result and it's logged 'raw'
+            </summary>
         </member>
         <member name="M:CogitoSharp.IO.Logging.LogFile.#ctor(System.String,System.String,System.String,System.Int64)">
             <summary>
@@ -410,6 +461,9 @@
             A Tab in the chat interface, representing an open conversation with a room or a single user
             </summary>
         </member>
+        <member name="F:CogitoSharp.ChatTab.messageBuffer">
+            <summary> Contains the messages for the channel; contents are shoved into the channel's message box on tab change. </summary>
+        </member>
         <member name="T:CogitoSharp.OwnerDrawnListBox">
             <summary> Base Class for Boxes with images, yay </summary>
         </member>
@@ -420,41 +474,24 @@
         <member name="P:CogitoSharp.OwnerDrawnListBox.SelectedIndex">
             <summary> Get or set index of selected item. </summary>
         </member>
-        <member name="F:CogitoSharp.Debug.CogitoConsole.components">
-            <summary>
-            Required designer variable.
-            </summary>
-        </member>
-        <member name="M:CogitoSharp.Debug.CogitoConsole.Dispose(System.Boolean)">
-            <summary>
-            Clean up any resources being used.
-            </summary>
-            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        </member>
-        <member name="M:CogitoSharp.Debug.CogitoConsole.InitializeComponent">
-            <summary>
-            Required method for Designer support - do not modify
-            the contents of this method with the code editor.
-            </summary>
-        </member>
-        <member name="T:CogitoSharp.Scanner">
+        <member name="T:CogitoSharp.Gimmicks.Scanner">
             <summary>
             A GUI Element that's supposed to capture, catalogue and summarize information about all members of a channel, similar to the old Cogito's .scan function.
             Everybody loves essentially worthless statistics!
             </summary>
         </member>
-        <member name="F:CogitoSharp.Scanner.components">
+        <member name="F:CogitoSharp.Gimmicks.Scanner.components">
             <summary>
             Required designer variable.
             </summary>
         </member>
-        <member name="M:CogitoSharp.Scanner.Dispose(System.Boolean)">
+        <member name="M:CogitoSharp.Gimmicks.Scanner.Dispose(System.Boolean)">
             <summary>
             Clean up any resources being used.
             </summary>
             <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         </member>
-        <member name="M:CogitoSharp.Scanner.InitializeComponent">
+        <member name="M:CogitoSharp.Gimmicks.Scanner.InitializeComponent">
             <summary>
             Required method for Designer support - do not modify
             the contents of this method with the code editor.
@@ -472,6 +509,9 @@
         <member name="F:CogitoSharp.User.Orientation">
             <summary> Sexual orientation; can't be made an enum due to hyphens not working and that fucking up parsing, iirc</summary>
         </member>
+        <member name="F:CogitoSharp.User.Memos">
+            <summary> Stores user-generated Memos, to be displayed in a sidebar or w/e</summary>
+        </member>
         <member name="F:CogitoSharp.User.Stats">
             <summary> Since currently I'd have to implement custom parsing code for all of this, instead I just stick it into a dict. Eye color, dick size, everything is in here. Probably.</summary>
         </member>
@@ -485,7 +525,8 @@
             <summary> Stores the DateTime on which the profile was last scraped, allowing the program to self-update every... what, week?</summary>
         </member>
         <member name="M:CogitoSharp.User.GetAvatar">
-            <summary> Retriedves the users's avatar (100 * 100 px Bitmap image) from F-Lists' server, and saves it. If it's less than a week old, it won't bother fetching it.</summary>
+            <summary> Retriedves the users's avatar (100 * 100 px Bitmap image) from F-Lists' server, and saves it. If it's less than a week old, it won't bother fetching it.
+            Background worker code blatantly inspired by slimCat, do not steal.</summary>
         </member>
         <member name="M:CogitoSharp.User.GetProfileInfo">
             <summary> Connects to F-List and grabs all of the user's delicious information. Data is serialized when program shuts down to cut down on API connections / web scraping bandwith </summary>
@@ -525,7 +566,17 @@
             <param name="source">The collection from which to randomly choose an item</param>
             <returns>A random item from object source</returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:CogitoSharp.Utils.Math.parseNumberFromDescription``1(System.String,CogitoSharp.Utils.Math.MeasurementUnit)" -->
+        <member name="M:CogitoSharp.Utils.Math.parseNumberFromDescription``1(System.String,CogitoSharp.Utils.Math.MeasurementUnit)">
+            <summary>
+            Takes a descriptive string, e.g. "They are between 5 and 10 inches tall" and attempts to return a number of type T. 
+            When a range is detected, the arithmetic mean is returned.
+            All data is converted to a standard metric unit before being returned as a Measurement instance.
+            </summary>
+            <typeparam name="T">The numeric type the function returns. Internally, numbers are handled as doubles...?</typeparam>
+            <param name="TextToAnalyze">The text string from which data is supposed to be parsed</param>
+            <param name="MeasureToParseAs">If known, the type of measurement to be parsed.</param>
+            <returns> A Measurement<!--<T>--> instance with the result as type T and the unit in a string"/> A Measurement with numeric type T</returns>
+        </member>
         <member name="T:CogitoSharp.Utils.Math.MeasurementUnit">
             <summary>
             
@@ -536,6 +587,18 @@
             Simple numeric struct to keep a measurement and its unit.
             </summary>
             <typeparam name="T">Numeric type of the measurement</typeparam>
+        </member>
+        <member name="M:CogitoSharp.Utils.StringManipulation.ReverseString(System.String)">
+            <summary> Reverses a string into a string and not a char[] nightmare. What the eff, C#.</summary>
+            <param name="s">String to be reversed</param>
+            <returns>desrever eb ot gnirtS</returns>
+        </member>
+        <member name="M:CogitoSharp.Utils.StringManipulation.Chunk(System.String,System.Int32,System.Boolean)">
+            <summary> Devides a string str into an IEnumerable with chunkSize elements in it</summary>
+            <param name="str">The string to chunk</param>
+            <param name="chunkSize">The number of chunks to divide into</param>
+            <param name="forward">Determines if chunking is forward or reverse, e.g. XXXXXXXX into chunks of 3 can be "XXX XXX XX"(fwd) or "XX XXX XXX"(rev). Default is true.</param>
+            <returns>An IEnumerable containing the chunks</returns>
         </member>
         <member name="M:CogitoSharp.CogitoUI.#ctor">
             <summary> Main UI, containing all other elements. Win98, baby </summary>
@@ -575,7 +638,7 @@
             </summary>
         </member>
         <member name="T:CogitoSharp.ILoginKey">
-            <summary>May be implemented for proper JSON serialization.</summary>
+            <summary>Implemented for proper JSON serialization.</summary>
         </member>
         <member name="P:CogitoSharp.ILoginKey.error">
             <summary> Error message, if authentication failed</summary>
@@ -613,21 +676,115 @@
         <member name="T:CogitoSharp.LoginKeyConverter">
             <summary>Stub class for JSON Deserialization</summary>
         </member>
+        <member name="M:CogitoSharp.ConcurrentSet`1.GetEnumerator">
+            <summary> Returns an enumerator that iterates through the collection. </summary>
+            <returns> A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection. </returns>
+        </member>
+        <member name="M:CogitoSharp.ConcurrentSet`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary> Returns an enumerator that iterates through a collection. </summary>
+            <returns> An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection. </returns>
+        </member>
+        <member name="M:CogitoSharp.ConcurrentSet`1.Remove(`0)">
+            <summary> Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1"/>. </summary>
+            <returns> true if <paramref name="item"/> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1"/>; otherwise, false. This method also returns false if <paramref name="item"/> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1"/>. </returns>
+            <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param><exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</exception>
+        </member>
+        <member name="M:CogitoSharp.ConcurrentSet`1.System#Collections#Generic#ICollection{T}#Add(`0)">
+            <summary>Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1"/>. </summary>
+            <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+            <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</exception>
+        </member>
+        <member name="M:CogitoSharp.ConcurrentSet`1.UnionWith(System.Collections.Generic.IEnumerable{`0})">
+            <summary> Modifies the current set so that it contains all elements that are present in both the current set and in the specified collection. </summary>
+            <param name="other">The collection to compare to the current set.</param><exception cref="T:System.ArgumentNullException"><paramref name="other"/> is null.</exception>
+        </member>
+        <member name="M:CogitoSharp.ConcurrentSet`1.IntersectWith(System.Collections.Generic.IEnumerable{`0})">
+            <summary>Modifies the current set so that it contains only elements that are also in a specified collection.</summary>
+            <param name="other">The collection to compare to the current set.</param><exception cref="T:System.ArgumentNullException"><paramref name="other"/> is null.</exception>
+        </member>
+        <member name="M:CogitoSharp.ConcurrentSet`1.ExceptWith(System.Collections.Generic.IEnumerable{`0})">
+            <summary>Removes all elements in the specified collection from the current set. </summary>
+            <param name="other">The collection of items to remove from the set.</param><exception cref="T:System.ArgumentNullException"><paramref name="other"/> is null.</exception>
+        </member>
+        <member name="M:CogitoSharp.ConcurrentSet`1.SymmetricExceptWith(System.Collections.Generic.IEnumerable{`0})">
+            <summary>Modifies the current set so that it contains only elements that are present either in the current set or in the specified collection, but not both.  </summary>
+            <param name="other">The collection to compare to the current set.</param><exception cref="T:System.ArgumentNullException"><paramref name="other"/> is null.</exception>
+        </member>
+        <member name="M:CogitoSharp.ConcurrentSet`1.IsSubsetOf(System.Collections.Generic.IEnumerable{`0})">
+            <summary>Determines whether a set is a subset of a specified collection. </summary>
+            <returns> true if the current set is a subset of <paramref name="other"/>; otherwise, false.</returns>
+            <param name="other">The collection to compare to the current set.</param><exception cref="T:System.ArgumentNullException"><paramref name="other"/> is null.</exception>
+        </member>
+        <member name="M:CogitoSharp.ConcurrentSet`1.IsSupersetOf(System.Collections.Generic.IEnumerable{`0})">
+            <summary>Determines whether the current set is a superset of a specified collection.</summary>
+            <returns>true if the current set is a superset of <paramref name="other"/>; otherwise, false.</returns>
+            <param name="other">The collection to compare to the current set.</param><exception cref="T:System.ArgumentNullException"><paramref name="other"/> is null.</exception>
+        </member>
+        <member name="M:CogitoSharp.ConcurrentSet`1.IsProperSupersetOf(System.Collections.Generic.IEnumerable{`0})">
+            <summary>Determines whether the current set is a correct superset of a specified collection.</summary>
+            <returns> true if the <see cref="T:System.Collections.Generic.ISet`1"/> object is a correct superset of <paramref name="other"/>; otherwise, false.</returns>
+            <param name="other">The collection to compare to the current set. </param><exception cref="T:System.ArgumentNullException"><paramref name="other"/> is null.</exception>
+        </member>
+        <member name="M:CogitoSharp.ConcurrentSet`1.IsProperSubsetOf(System.Collections.Generic.IEnumerable{`0})">
+            <summary>Determines whether the current set is a property (strict) subset of a specified collection.</summary>
+            <returns>true if the current set is a correct subset of <paramref name="other"/>; otherwise, false.</returns>
+            <param name="other">The collection to compare to the current set.</param><exception cref="T:System.ArgumentNullException"><paramref name="other"/> is null.</exception>
+        </member>
+        <member name="M:CogitoSharp.ConcurrentSet`1.Overlaps(System.Collections.Generic.IEnumerable{`0})">
+            <summary>Determines whether the current set overlaps with the specified collection.</summary>
+            <returns>true if the current set and <paramref name="other"/> share at least one common element; otherwise, false.</returns>
+            <param name="other">The collection to compare to the current set.</param><exception cref="T:System.ArgumentNullException"><paramref name="other"/> is null.</exception>
+        </member>
+        <member name="M:CogitoSharp.ConcurrentSet`1.SetEquals(System.Collections.Generic.IEnumerable{`0})">
+            <summary>Determines whether the current set and the specified collection contain the same elements.</summary>
+            <returns>true if the current set is equal to <paramref name="other"/>; otherwise, false.</returns>
+            <param name="other">The collection to compare to the current set.</param><exception cref="T:System.ArgumentNullException"><paramref name="other"/> is null.</exception>
+        </member>
+        <member name="M:CogitoSharp.ConcurrentSet`1.Add(`0)">
+            <summary>Adds an element to the current set and returns a value to indicate if the element was successfully added. </summary>
+            <returns>true if the element is added to the set; false if the element is already in the set.</returns>
+            <param name="item">The element to add to the set.</param>
+        </member>
+        <member name="M:CogitoSharp.ConcurrentSet`1.CopyTo(`0[],System.Int32)">
+            <summary>Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1"/> to an <see cref="T:System.Array"/>, starting at a particular <see cref="T:System.Array"/> index.</summary>
+            <param name="array">The one-dimensional <see cref="T:System.Array"/> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1"/>. The <see cref="T:System.Array"/> must have zero-based indexing.</param><param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param><exception cref="T:System.ArgumentNullException"><paramref name="array"/> is null.</exception><exception cref="T:System.ArgumentOutOfRangeException"><paramref name="arrayIndex"/> is less than 0.</exception><exception cref="T:System.ArgumentException"><paramref name="array"/> is multidimensional.-or-The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1"/> is greater than the available space from <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.-or-Type <paramref name="T"/> cannot be cast automatically to the type of the destination <paramref name="array"/>.</exception>
+        </member>
+        <member name="P:CogitoSharp.ConcurrentSet`1.Count">
+            <summary>Gets the number of elements in the set. </summary>
+        </member>
+        <member name="P:CogitoSharp.ConcurrentSet`1.IsReadOnly">
+            <summary> Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only. </summary>
+            <returns> true if the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only; otherwise, false. </returns>
+        </member>
+        <member name="P:CogitoSharp.ConcurrentSet`1.IsEmpty">
+            <summary> Gets a value that indicates if the set is empty. </summary>
+        </member>
         <member name="T:CogitoSharp.Core">
             <summary>Websocket handling, server connection, threading, all that goodness</summary>
         </member>
         <member name="M:CogitoSharp.Core.Main">
             <summary>The main entry point for the application.</summary>
         </member>
+        <member name="M:CogitoSharp.Core.DeserializeDatabase``1(System.String,System.String)">
+            <summary>
+            Function to Deserialize a ConcurrentSet T instance from BinarySerializer-produced files.
+            </summary>
+            <typeparam name="T">The inner type for the ConcurrentSet to deserialize, e.g. ConcurrentSet User</typeparam>
+            <param name="TargetObject">The object into which the deserialized data is transmitted.</param>
+            <param name="DataBaseFileName">The name of the BinaryFormatted database file to be deserialized. Expects a List T.</param>
+            <param name="ContainingFolder">Leave optional (null) to load from Config.AppSettings.DataPath (/data/); else, supply full path to containing folder</param>
+            <exception cref="T:System.ArgumentException">Thrown when the TargetObject's type and the data inside the file do not match.</exception>
+            <exception cref="!:"></exception>
+        </member>
         <member name="M:CogitoSharp.Core.getUser(System.String)">
-            <summary> Fetches the corresponding User instance from the program's List of users
+            <summary> Fetches the corresponding User instance from the program's users database; creates (and registers) and returns a new one if no match is found.
             </summary>
             <param name="username">Username (string) to look for</param>
             <returns>User instance</returns>
         </member>
         <member name="M:CogitoSharp.Core.getChannel(System.String)">
             <summary>
-            Fetches the corresponding channel instance from the List of all channels registered in CogitoSharp.Core
+            Fetches the corresponding channel instance from the List of all channels registered in CogitoSharp.Core; creates a new one (adding it to the central register) if no match is found.
             </summary>
             <param name="channel"></param>
             <returns>Channel Instance</returns>

@@ -123,5 +123,16 @@ namespace CogitoSharp.Properties {
                 this["PWEntropy"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.Collections.Specialized.StringCollection AutoJoinChannelNames {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["AutoJoinChannelNames"]));
+            }
+            set {
+                this["AutoJoinChannelNames"] = value;
+            }
+        }
     }
 }

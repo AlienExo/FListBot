@@ -18,5 +18,6 @@ C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\bin\Debug\HtmlAgility
 C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Debug\CogitoSharp.Gimmicks.RPAdDeployer.resources
 C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Debug\CogitoSharp.Gimmicks.CASIE.resources
 C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Debug\CogitoSharp.csprojResolveAssemblyReference.cache
-C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Debug\CogitoSharp.Debug.ConsoleTextBox.resources
-C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Debug\CogitoSharp.Scanner.resources
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Debug\CogitoSharp.ChannelList.resources
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Debug\CogitoSharp.Gimmicks.Scanner.resources
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Debug\CogitoSharp.Debug.CogitoConsole.resources

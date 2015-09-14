@@ -36,7 +36,7 @@ namespace CogitoSharp
 
 		private void sendButton_Click(object sender, EventArgs e){
 			IO.Message m = new IO.Message();
-			m.message = mainTextBox.Text;
+			m.Body = mainTextBox.Text;
 			Object parent = ((ChatTab)this.chatTabs.SelectedTab).parent;
 			if(parent == null) { mainTextBox.Text = ""; return; }
 			if ( parent.GetType() == typeof(User)) { m.sourceUser = (User)parent; }
@@ -155,8 +155,11 @@ namespace CogitoSharp
 	/// A Tab in the chat interface, representing an open conversation with a room or a single user
 	/// </summary>
 	internal class ChatTab : TabPage{
-		private TextBox ChatTabTextInput = new TextBox();
-		internal ChatRichTextBox ChannelMessages = new ChatRichTextBox();
+		//private TextBox ChatTabTextInput = new TextBox();
+
+		/// <summary> Contains the messages for the channel; contents are shoved into the channel's message box on tab change. </summary>
+		internal string[] messageBuffer = new string[Config.AppSettings.MessageBufferSize];
+
 		internal Object parent = null;
 		internal ChatUserList UserList = new ChatUserList();
 		private bool flashing = false;
@@ -167,21 +170,21 @@ namespace CogitoSharp
 		}
 
 		public ChatTab() {
-			this.ChatTabTextInput.AcceptsReturn = true;
-			this.ChannelMessages.ReadOnly = true;
-			this.ChannelMessages.Multiline = true;
+			//this.ChatTabTextInput.AcceptsReturn = true;
+			//this.ChannelMessages.ReadOnly = true;
+			//this.ChannelMessages.Multiline = true;
 			this.SuspendLayout();
-			this.Controls.Add(ChatTabTextInput);
-
-			ChannelMessages.Parent = this;
-			ChannelMessages.Dock = DockStyle.Fill;
-			ChannelMessages.Anchor = AnchorStyles.None;
-
-			ChatTabTextInput.Parent = this;
-			ChatTabTextInput.Dock = DockStyle.Bottom;
-			ChatTabTextInput.Anchor = AnchorStyles.Bottom;
+			//this.Controls.Add(ChatTabTextInput);
+			//
+			//ChannelMessages.Parent = this;
+			//ChannelMessages.Dock = DockStyle.Fill;
+			//ChannelMessages.Anchor = AnchorStyles.None;
+			//
+			//ChatTabTextInput.Parent = this;
+			//ChatTabTextInput.Dock = DockStyle.Bottom;
+			//ChatTabTextInput.Anchor = AnchorStyles.Bottom;
 			this.ResumeLayout();
-			ChatTabTextInput.BringToFront();
+			//ChatTabTextInput.BringToFront();
 
 			this.UserList.Items.Add(Core.OwnUser);
 		}
@@ -205,6 +208,26 @@ namespace CogitoSharp
 			this.parent = parent;
 			parent.GetAvatar();
 		}
+
+		internal void MessageReceived(CogitoSharp.IO.Message m, IO.Logging.LogFile targetLog){
+			string _m = m.ToString();
+			targetLog.LogRaw(_m);
+			if (this.messageBuffer.Length == Config.AppSettings.MessageBufferSize) { Array.Copy(this.messageBuffer, 1, this.messageBuffer, 0, this.messageBuffer.Length - 1); }
+			this.messageBuffer[this.messageBuffer.Length + 1] = _m;
+			if (!CogitoUI.chatUI.chatTabs.TabPages.Contains(this)) { CogitoUI.chatUI.chatTabs.TabPages.Add(this); }
+			//this.chanTab.Flash(); //TODO: Flash tab			
+		}
+
+		internal void AppendSystemMessage(string m, IO.Logging.LogFile targetLog)
+		{
+			string _m = String.Format("<{0}> -- {1}{2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), m, Environment.NewLine);
+			targetLog.LogRaw(_m);
+			if (this.messageBuffer.Length == Config.AppSettings.MessageBufferSize) { Array.Copy(this.messageBuffer, 1, this.messageBuffer, 0, this.messageBuffer.Length - 1); }
+			this.messageBuffer[this.messageBuffer.Length + 1] = _m;
+			//if (!CogitoUI.chatUI.chatTabs.TabPages.Contains(this)) { CogitoUI.chatUI.chatTabs.TabPages.Add(this); }
+			//this.chanTab.Flash(); //TODO: Flash tab			
+		}
+
 	}
 
 	//TODO Hack

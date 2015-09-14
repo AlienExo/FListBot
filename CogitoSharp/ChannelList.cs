@@ -26,6 +26,7 @@ namespace CogitoSharp
 				if (c._key == null) { this.listViewChannels.Groups[0].Items.Add(new ListViewItem(c.name)); }
 				else { this.listViewChannels.Groups[1].Items.Add(new ListViewItem(c.name)); }
 			}
+		this.Invalidate();
 		}
 	}
 }

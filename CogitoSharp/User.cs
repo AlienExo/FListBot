@@ -22,11 +22,13 @@ namespace CogitoSharp
 	enum Status : int { online = 0, crown, looking, idle, busy, dnd, away, offline}
 	/// <summary>User (synonymous with Character)</summary>
 	[Serializable]
-	public class User : IComparable{
+	public class User : IComparable, IDisposable{
 		[NonSerialized] private static int Count;
 		[NonSerialized] private readonly int UID = ++User.Count;
-		[NonSerialized] internal object UserLock;
+		[NonSerialized] internal object UserLock = new Object();
 		[NonSerialized] internal ChatTab userTab;
+		[NonSerialized] internal IO.Logging.LogFile userLog = null;
+		[NonSerialized] private bool disposed = false;
 
 		/// <summary> xXxSEPHIROTHxXx </summary>
 		public readonly string Name = null;
@@ -213,9 +215,18 @@ namespace CogitoSharp
 		}
 
 		internal void MessageReceived(IO.Message m){
+			if (this.userLog == null) { this.userLog = new IO.Logging.LogFile(this.Name); }
 			if (this.userTab == null) { this.userTab = new ChatTab(this); }
 			if (!CogitoUI.chatUI.chatTabs.TabPages.Contains(this.userTab)) { CogitoUI.chatUI.chatTabs.TabPages.Add(this.userTab); }
-			this.userTab.ChannelMessages.AppendText(m.ToString());
+			this.userTab.MessageReceived(m, this.userLog);
+		}
+
+		public virtual void Dispose(){
+			if (!disposed){
+				if (this.userTab != null) { this.userTab.Dispose(); }
+				if (this.userLog!= null) { this.userLog.Dispose(); }
+			}
+			this.disposed = true;
 		}
 	}
 }

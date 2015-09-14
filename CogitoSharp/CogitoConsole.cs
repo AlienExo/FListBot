@@ -31,8 +31,6 @@ namespace CogitoSharp.Debug
 			}
 			base.OnKeyPress(e);
 		}
-
-		
 	}
 
 	internal sealed class ConsoleTextBox : TextBox{
@@ -49,6 +47,8 @@ namespace CogitoSharp.Debug
 			{
 				if (!text.EndsWith(Environment.NewLine)) { text += Environment.NewLine; }
 				this.Text += text;
+				this.SelectionStart = this.Text.Length;
+	            this.ScrollToCaret();
 			}
 		}
 	}

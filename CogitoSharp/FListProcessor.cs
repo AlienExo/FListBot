@@ -9,6 +9,7 @@ using System.Web;
 
 using CogitoSharp.IO;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace CogitoSharp
 {
@@ -24,7 +25,7 @@ namespace CogitoSharp
 		/// <summary>Sends the client the current list of chatops.
 		/// Received: ADL { "ops": [string] }</summary>
 		internal static void ADL(SystemCommand c) {
-			List<string> AllOpsData = ((Newtonsoft.Json.Linq.JArray)c.Data["ops"]).ToObject<List<string>>();
+			List<string> AllOpsData = ((JArray)c.Data["ops"]).ToObject<List<string>>();
 			foreach (string op in AllOpsData){
 				User _op = Core.getUser(op);
 				Core.globalOps.Add(_op);
@@ -69,10 +70,10 @@ namespace CogitoSharp
 		//  CHA {"channels":[{"name":"Gay Males","mode":"both","characters":0}, [...] } ] }
 		internal static void CHA(SystemCommand c) {
 			try{
-				Newtonsoft.Json.Linq.JArray AllChannelData = Newtonsoft.Json.Linq.JArray.Parse(c.Data["channels"].ToString());
+				JArray AllChannelData = JArray.Parse(c.Data["channels"].ToString());
 				List<Dictionary<string, object>> _AllChannelData = AllChannelData.ToObject<List<Dictionary<string, object>>>();
 				foreach (Dictionary<string, object> currentChannel in _AllChannelData){
-					Channel ch = Core.getChannel(currentChannel["name"].ToString());
+					Channel ch = Core.getChannel(currentChannel["title"].ToString());
 					ch.mode = (ChannelMode)Enum.Parse(typeof(ChannelMode), currentChannel["mode"].ToString());
 				}
 				//Core.getChannel("Development").Join();
@@ -116,7 +117,6 @@ namespace CogitoSharp
 				DateTime Now = DateTime.Now;
 				fsw.Write(String.Format("{0}\t{1}\t{2}\tusers connected\r\n", Now.ToString("yyyy-MM-dd"), Now.ToString("HH:mm:ss"), c.Data["count"].ToString()));
 				fsw.Flush();
-				fsw.Close();
 			}
 		}
 
@@ -162,7 +162,7 @@ namespace CogitoSharp
 		internal static void FLN(SystemCommand c) {
 			User us = Core.getUser(c.Data["character"].ToString());
 			us.status = Status.offline;
-			((ChatTab)CogitoUI.chatUI.chatTabs.SelectedTab).ChannelMessages.AppendText("User " + us.Name + " has logged out.");
+			//((ChatTab)CogitoUI.chatUI.chatTabs.SelectedTab).AppendSystemMessage("User " + us.Name + " has logged out.", us.userLog);
 		}
 
 		/// <summary> Initial friends list.
@@ -172,8 +172,8 @@ namespace CogitoSharp
 		/// <summary> Server hello command. Tells which server version is running and who wrote it.
 		/// Received: HLO { "message": string }</summary>
 		internal static void HLO(SystemCommand c) {	
-			//new IO.SystemCommand("CHA").Send();
-			//new IO.SystemCommand("ORS").Send();
+			new IO.SystemCommand("CHA").Send();
+			new IO.SystemCommand("STA { \"status\": \"online\", \"statusmsg\": \"Running Cogito# v" + System.Windows.Forms.Application.ProductVersion + "\" }").Send();
 		}
 
 		/// <summary> Initial channel data. Received in response to JCH, along with CDS.
@@ -196,9 +196,9 @@ namespace CogitoSharp
 		///	Received: JCH { "channel": string, "character": object, "title": string }
 		///	Send  As: JCH { "channel": string } </summary>
 		internal static void JCH(SystemCommand c) { 
+			JObject JoinData = (JObject)c.Data["character"];
 			Channel ch = Core.getChannel(c.Data["channel"].ToString()); //"title" would be the channel's name, which in case of private channels can collide!
-			Dictionary<string, object> UserData = (Dictionary<string, object>)c.Data["character"];
-			User us = Core.getUser(UserData["identity"].ToString());
+			User us = Core.getUser(JoinData["identity"].ToString());
 			ch.Log(String.Format("User '{0}' joined Channel '{1}'", us.Name, ch.name));
 			ch.Users.Add(us); 
 			ch.chanTab.Text = ch.name + "(" + ch.Users.Count + ")";
@@ -241,10 +241,10 @@ namespace CogitoSharp
 					//Expected format e.g. ["Zeus Keraunos","Male","online",""]
 					//						Name		     Gender	Status  Statusmessage
 					User u = Core.getUser(currentUser[0]);
-					lock (u.UserLock){
-						u.Gender = currentUser[1];
-						u.status = (Status)Enum.Parse(typeof(Status), currentUser[2]);
-					}
+					//lock (u.UserLock){
+					u.Gender = currentUser[1];
+					u.status = (Status)Enum.Parse(typeof(Status), currentUser[2]);
+					//}
 				}
 			}
 			catch (InvalidCastException){ 
@@ -294,17 +294,20 @@ namespace CogitoSharp
 		/// Send  As: ORS</summary>
 		internal static void ORS(SystemCommand c) { 
 			try{
-				List<Dictionary<string, object>> channelItems = ((List<Dictionary<string, object>>)c.Data["channels"]);
-				List<Dictionary<string, object>>.Enumerator e = channelItems.GetEnumerator();
-				while (e.MoveNext()){
-					Dictionary<string, object> channelData = (Dictionary<string, object>)e.Current;
-					Channel currentChannel = Core.getChannel(HttpUtility.HtmlDecode(channelData["title"].ToString()));
-					currentChannel.key = channelData["name"].ToString();
-					Core.SystemLog.Log(String.Format("Setting Key for channel {0} to '{1}'\n", currentChannel.name, currentChannel.key));
+				Newtonsoft.Json.Linq.JArray AllChannelData = Newtonsoft.Json.Linq.JArray.Parse(c.Data["channels"].ToString());
+				if (AllChannelData.Count == 0) { return; } //Nothing to do here
+				List<Dictionary<string, object>> _AllChannelData = AllChannelData.ToObject<List<Dictionary<string, object>>>();
+				foreach (Dictionary<string, object> currentChannel in _AllChannelData){
+					Channel ch = Core.getChannel(currentChannel["title"].ToString());
+					ch.key = currentChannel["name"].ToString();
+					//Core.SystemLog.Log(String.Format("Setting Key for channel {0} to '{1}'\n", currentChannel.name, currentChannel.key));
 				}
 			}
-			catch (Exception ex){
-				Core.ErrorLog.Log(String.Format("Private Channel Parsing failed:\n\t{0}\n\t{1}", ex.Message, ex.InnerException));
+			catch (Exception ex){ Core.ErrorLog.Log(String.Format("Private Channel Parsing failed:\n\t{0}\n\t{1}\n\t{2}", ex.Message, ex.InnerException, ex.StackTrace)); }
+
+			//TDOO: allow user to make a list of favourite channels that are auto-joined, serialize as part of Account.bin
+			foreach (string s in Config.AppSettings.AutoJoin){
+				if (Core.channels.Count(n => n.name == s) > 0) { Core.channels.First(n => n.name == s).Join(); }
 			}
 		}
 
@@ -333,11 +336,13 @@ namespace CogitoSharp
 		{
 			Message message = new Message(c);
 			try{
-				if (message.sourceChannel == null){ message.sourceChannel.MessageReceived(message); }
-				else { message.sourceUser.MessageReceived(message); }
+				//if (message.sourceChannel != null){ message.sourceChannel.MessageReceived(message); } //Wait, shouldn't it be impossible for it to have a source channel since it's, well, a 
+				//else { 
+				message.sourceUser.MessageReceived(message); 
+				//}
 			}
 			catch (Exception ex){
-				Core.ErrorLog.Log(String.Format("Error trying to receive message: {0} {1} {2}", message.ToString(), ex.Message, ex.StackTrace));
+				Core.ErrorLog.Log(String.Format("Error parsing message from {0}: {1} {2} {3}", message.sourceUser.Name, message.ToString(), ex.Message, ex.StackTrace));
 			}
 		}
 
@@ -427,14 +432,7 @@ namespace CogitoSharp
 					
 					//TODO WHY IS THIS A BIG FAT PROGRAM BREAKER????
 					new IO.SystemCommand("ORS").Send();
-					new IO.SystemCommand("CHA").Send();
-					new IO.SystemCommand("STA { \"status\": \"online\", \"statusmsg\": \"Running Cogito# v" + System.Windows.Forms.Application.ProductVersion + "\" }").Send();
-					
-					//Core.websocket.Send("ORS");
-					//System.Threading.Thread.Sleep(IO.Message.chat_flood);
-					//Core.websocket.Send("CHA");
-					//System.Threading.Thread.Sleep(IO.Message.chat_flood);
-					//Core.websocket.Send("STA { \"status\": \"online\", \"statusmsg\": \"Running Cogito# v" + System.Windows.Forms.Application.ProductVersion + "\" }");
+
 					break;
 				
 				case "chat_max":

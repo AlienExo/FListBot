@@ -47,6 +47,7 @@ namespace CogitoSharp
 			internal const string TriggerPrefix = ".";
 			internal static string DefaultAvatarFile = DataPath + "DefaultAvatar.bmp";
 			internal const int MessageBufferSize = 256;
+			internal static string[] AutoJoin = {"Gay Human(oids)", "Fantastic Gay Beasts And Where To Find Them", "Manly Males of Extra Manly Manliness", "!<<Marvel-Verse>>!"};
 		}
 
 		internal static Dictionary<string, Delegate> AITriggers = new Dictionary<string, Delegate>();

@@ -1,0 +1,370 @@
+<2015-09-08 09:48:29> -- IDN {"character":"Bill Cypher"}
+<2015-09-08 09:48:29> -- VAR {"value":4096,"variable":"chat_max"}
+<2015-09-08 09:48:29> -- VAR {"value":50000,"variable":"priv_max"}
+<2015-09-08 09:48:29> -- VAR {"value":50000,"variable":"lfrp_max"}
+<2015-09-08 09:48:29> -- VAR {"value":600,"variable":"lfrp_flood"}
+<2015-09-08 09:48:29> -- VAR {"value":0.5,"variable":"msg_flood"}
+<2015-09-08 09:48:29> -- VAR {"value":"0","variable":"permissions"}
+<2015-09-08 09:48:29> -- VAR {"value":["frontpage","sex driven lfrp","story driven lfrp"],"variable":"icon_blacklist"}
+<2015-09-08 09:48:29> -- HLO {"message":"Welcome. Running F-Chat (0.8.6-Lua). Enjoy your stay."}
+<2015-09-08 09:48:29> -- CON {"count":4}
+<2015-09-08 09:48:29> -- FRL {"characters":[]}
+<2015-09-08 09:48:29> -- IGN {"characters":[],"action":"init"}
+<2015-09-08 09:48:29> -- ADL {"ops":["Aniko","Lutra Mustil","Kira"]}
+<2015-09-08 09:48:29> -- LIS {"characters":[["Zeus Keraunos","Male","online",""],["Dionysos Thyrsos","Male","online","Poor Uncle."],["Bill Cypher","None","online",""],["Uvaxstra","Male","online",""]]}
+<2015-09-08 09:48:29> -- NLN {"status":"online","gender":"None","identity":"Bill Cypher"}
+<2015-09-08 09:48:59> -- PIN
+<2015-09-08 09:56:02> -- IDN {"character":"Bill Cypher"}
+<2015-09-08 09:56:02> -- VAR {"value":4096,"variable":"chat_max"}
+<2015-09-08 09:56:02> -- VAR {"value":50000,"variable":"priv_max"}
+<2015-09-08 09:56:02> -- VAR {"value":50000,"variable":"lfrp_max"}
+<2015-09-08 09:56:02> -- VAR {"value":600,"variable":"lfrp_flood"}
+<2015-09-08 09:56:02> -- VAR {"value":0.5,"variable":"msg_flood"}
+<2015-09-08 09:56:02> -- VAR {"value":"0","variable":"permissions"}
+<2015-09-08 09:56:02> -- VAR {"value":["frontpage","sex driven lfrp","story driven lfrp"],"variable":"icon_blacklist"}
+<2015-09-08 09:56:02> -- HLO {"message":"Welcome. Running F-Chat (0.8.6-Lua). Enjoy your stay."}
+<2015-09-08 09:56:02> -- CON {"count":4}
+<2015-09-08 09:56:02> -- FRL {"characters":[]}
+<2015-09-08 09:56:03> -- IGN {"characters":[],"action":"init"}
+<2015-09-08 09:56:03> -- ADL {"ops":["Aniko","Lutra Mustil","Kira"]}
+<2015-09-08 09:56:03> -- LIS {"characters":[["Zeus Keraunos","Male","online",""],["Dionysos Thyrsos","Male","online","Poor Uncle."],["Bill Cypher","None","online",""],["Uvaxstra","Male","online",""]]}
+<2015-09-08 09:56:03> -- NLN {"status":"online","gender":"None","identity":"Bill Cypher"}
+<2015-09-08 09:56:32> -- PIN
+<2015-09-08 10:02:38> -- IDN {"character":"Bill Cypher"}
+<2015-09-08 10:02:38> -- VAR {"value":4096,"variable":"chat_max"}
+<2015-09-08 10:02:38> -- VAR {"value":50000,"variable":"priv_max"}
+<2015-09-08 10:02:38> -- VAR {"value":50000,"variable":"lfrp_max"}
+<2015-09-08 10:02:38> -- VAR {"value":600,"variable":"lfrp_flood"}
+<2015-09-08 10:02:38> -- VAR {"value":0.5,"variable":"msg_flood"}
+<2015-09-08 10:02:38> -- VAR {"value":"0","variable":"permissions"}
+<2015-09-08 10:02:38> -- VAR {"value":["frontpage","sex driven lfrp","story driven lfrp"],"variable":"icon_blacklist"}
+<2015-09-08 10:02:38> -- HLO {"message":"Welcome. Running F-Chat (0.8.6-Lua). Enjoy your stay."}
+<2015-09-08 10:02:38> -- CON {"count":4}
+<2015-09-08 10:02:38> -- FRL {"characters":[]}
+<2015-09-08 10:02:38> -- IGN {"characters":[],"action":"init"}
+<2015-09-08 10:02:38> -- ADL {"ops":["Aniko","Lutra Mustil","Kira"]}
+<2015-09-08 10:02:38> -- LIS {"characters":[["Zeus Keraunos","Male","online",""],["Dionysos Thyrsos","Male","online","Poor Uncle."],["Bill Cypher","None","online",""],["Uvaxstra","Male","online",""]]}
+<2015-09-08 10:02:38> -- NLN {"status":"online","gender":"None","identity":"Bill Cypher"}
+<2015-09-08 10:03:08> -- PIN
+<2015-09-08 10:03:38> -- PIN
+<2015-09-08 10:35:14> -- IDN {"character":"Bill Cypher"}
+<2015-09-08 10:35:15> -- VAR {"value":4096,"variable":"chat_max"}
+<2015-09-08 10:35:15> -- VAR {"value":50000,"variable":"priv_max"}
+<2015-09-08 10:35:15> -- VAR {"value":50000,"variable":"lfrp_max"}
+<2015-09-08 10:35:15> -- VAR {"value":600,"variable":"lfrp_flood"}
+<2015-09-08 10:35:15> -- VAR {"value":0.5,"variable":"msg_flood"}
+<2015-09-08 10:35:15> -- VAR {"value":"0","variable":"permissions"}
+<2015-09-08 10:35:15> -- VAR {"value":["frontpage","sex driven lfrp","story driven lfrp"],"variable":"icon_blacklist"}
+<2015-09-08 10:35:15> -- HLO {"message":"Welcome. Running F-Chat (0.8.6-Lua). Enjoy your stay."}
+<2015-09-08 10:35:15> -- CON {"count":4}
+<2015-09-08 10:35:15> -- FRL {"characters":[]}
+<2015-09-08 10:35:15> -- IGN {"characters":[],"action":"init"}
+<2015-09-08 10:35:15> -- ADL {"ops":["Aniko","Lutra Mustil","Kira"]}
+<2015-09-08 10:35:15> -- LIS {"characters":[["Zeus Keraunos","Male","online",""],["Dionysos Thyrsos","Male","online","Poor Uncle."],["Bill Cypher","None","online",""],["Uvaxstra","Male","online",""]]}
+<2015-09-08 10:35:15> -- NLN {"status":"online","gender":"None","identity":"Bill Cypher"}
+<2015-09-08 10:39:18> -- IDN {"character":"Bill Cypher"}
+<2015-09-08 10:39:18> -- VAR {"value":4096,"variable":"chat_max"}
+<2015-09-08 10:39:18> -- VAR {"value":50000,"variable":"priv_max"}
+<2015-09-08 10:39:18> -- VAR {"value":50000,"variable":"lfrp_max"}
+<2015-09-08 10:39:18> -- VAR {"value":600,"variable":"lfrp_flood"}
+<2015-09-08 10:39:18> -- VAR {"value":0.5,"variable":"msg_flood"}
+<2015-09-08 10:39:18> -- VAR {"value":"0","variable":"permissions"}
+<2015-09-08 10:39:18> -- VAR {"value":["frontpage","sex driven lfrp","story driven lfrp"],"variable":"icon_blacklist"}
+<2015-09-08 10:39:18> -- HLO {"message":"Welcome. Running F-Chat (0.8.6-Lua). Enjoy your stay."}
+<2015-09-08 10:39:18> -- CON {"count":4}
+<2015-09-08 10:39:18> -- FRL {"characters":[]}
+<2015-09-08 10:39:18> -- IGN {"characters":[],"action":"init"}
+<2015-09-08 10:39:18> -- ADL {"ops":["Aniko","Lutra Mustil","Kira"]}
+<2015-09-08 10:39:18> -- LIS {"characters":[["Zeus Keraunos","Male","online",""],["Dionysos Thyrsos","Male","online","Poor Uncle."],["Bill Cypher","None","online",""],["Uvaxstra","Male","online",""]]}
+<2015-09-08 10:39:18> -- NLN {"status":"online","gender":"None","identity":"Bill Cypher"}
+<2015-09-08 10:39:55> -- PIN
+<2015-09-08 10:40:28> -- PIN
+<2015-09-08 10:52:04> -- IDN {"character":"Bill Cypher"}
+<2015-09-08 10:52:04> -- VAR {"value":4096,"variable":"chat_max"}
+<2015-09-08 10:52:04> -- VAR {"value":50000,"variable":"priv_max"}
+<2015-09-08 10:52:04> -- VAR {"value":50000,"variable":"lfrp_max"}
+<2015-09-08 10:52:04> -- VAR {"value":600,"variable":"lfrp_flood"}
+<2015-09-08 10:52:04> -- VAR {"value":0.5,"variable":"msg_flood"}
+<2015-09-08 10:52:04> -- VAR {"value":"0","variable":"permissions"}
+<2015-09-08 10:52:04> -- VAR {"value":["frontpage","sex driven lfrp","story driven lfrp"],"variable":"icon_blacklist"}
+<2015-09-08 10:52:04> -- HLO {"message":"Welcome. Running F-Chat (0.8.6-Lua). Enjoy your stay."}
+<2015-09-08 10:52:04> -- CON {"count":4}
+<2015-09-08 10:52:04> -- FRL {"characters":[]}
+<2015-09-08 10:52:04> -- IGN {"characters":[],"action":"init"}
+<2015-09-08 10:52:04> -- ADL {"ops":["Aniko","Lutra Mustil","Kira"]}
+<2015-09-08 10:52:04> -- LIS {"characters":[["Zeus Keraunos","Male","online",""],["Dionysos Thyrsos","Male","online","Poor Uncle."],["Bill Cypher","None","online",""],["Uvaxstra","Male","online",""]]}
+<2015-09-08 10:52:04> -- NLN {"status":"online","gender":"None","identity":"Bill Cypher"}
+<2015-09-08 10:52:55> -- PIN
+<2015-09-08 10:53:03> -- PIN
+<2015-09-08 10:53:33> -- PIN
+<2015-09-08 10:54:03> -- PIN
+<2015-09-08 10:54:33> -- PIN
+<2015-09-08 11:13:27> -- IDN {"character":"Bill Cypher"}
+<2015-09-08 11:13:27> -- VAR {"value":4096,"variable":"chat_max"}
+<2015-09-08 11:13:27> -- VAR {"value":50000,"variable":"priv_max"}
+<2015-09-08 11:13:27> -- VAR {"value":50000,"variable":"lfrp_max"}
+<2015-09-08 11:13:27> -- VAR {"value":600,"variable":"lfrp_flood"}
+<2015-09-08 11:13:27> -- VAR {"value":0.5,"variable":"msg_flood"}
+<2015-09-08 11:13:27> -- VAR {"value":"0","variable":"permissions"}
+<2015-09-08 11:13:27> -- VAR {"value":["frontpage","sex driven lfrp","story driven lfrp"],"variable":"icon_blacklist"}
+<2015-09-08 11:13:27> -- HLO {"message":"Welcome. Running F-Chat (0.8.6-Lua). Enjoy your stay."}
+<2015-09-08 11:13:27> -- CON {"count":4}
+<2015-09-08 11:13:27> -- FRL {"characters":[]}
+<2015-09-08 11:13:27> -- IGN {"characters":[],"action":"init"}
+<2015-09-08 11:13:27> -- ADL {"ops":["Aniko","Lutra Mustil","Kira"]}
+<2015-09-08 11:13:27> -- LIS {"characters":[["Zeus Keraunos","Male","online",""],["Dionysos Thyrsos","Male","online","Poor Uncle."],["Bill Cypher","None","online",""],["Uvaxstra","Male","online",""]]}
+<2015-09-08 11:13:27> -- NLN {"status":"online","gender":"None","identity":"Bill Cypher"}
+<2015-09-08 11:15:50> -- IDN {"character":"Bill Cypher"}
+<2015-09-08 11:15:51> -- VAR {"value":4096,"variable":"chat_max"}
+<2015-09-08 11:15:51> -- VAR {"value":50000,"variable":"priv_max"}
+<2015-09-08 11:15:51> -- VAR {"value":50000,"variable":"lfrp_max"}
+<2015-09-08 11:15:51> -- VAR {"value":600,"variable":"lfrp_flood"}
+<2015-09-08 11:15:51> -- VAR {"value":0.5,"variable":"msg_flood"}
+<2015-09-08 11:15:51> -- VAR {"value":"0","variable":"permissions"}
+<2015-09-08 11:15:51> -- VAR {"value":["frontpage","sex driven lfrp","story driven lfrp"],"variable":"icon_blacklist"}
+<2015-09-08 11:15:51> -- HLO {"message":"Welcome. Running F-Chat (0.8.6-Lua). Enjoy your stay."}
+<2015-09-08 11:15:51> -- CON {"count":4}
+<2015-09-08 11:15:51> -- FRL {"characters":[]}
+<2015-09-08 11:15:51> -- IGN {"characters":[],"action":"init"}
+<2015-09-08 11:15:51> -- ADL {"ops":["Aniko","Lutra Mustil","Kira"]}
+<2015-09-08 11:15:51> -- LIS {"characters":[["Zeus Keraunos","Male","online",""],["Dionysos Thyrsos","Male","online","Poor Uncle."],["Bill Cypher","None","online",""],["Uvaxstra","Male","online",""]]}
+<2015-09-08 11:15:51> -- NLN {"status":"online","gender":"None","identity":"Bill Cypher"}
+<2015-09-08 11:16:56> -- IDN {"character":"Bill Cypher"}
+<2015-09-08 11:16:56> -- VAR {"value":4096,"variable":"chat_max"}
+<2015-09-08 11:16:56> -- VAR {"value":50000,"variable":"priv_max"}
+<2015-09-08 11:16:56> -- VAR {"value":50000,"variable":"lfrp_max"}
+<2015-09-08 11:16:56> -- VAR {"value":600,"variable":"lfrp_flood"}
+<2015-09-08 11:16:56> -- VAR {"value":0.5,"variable":"msg_flood"}
+<2015-09-08 11:16:56> -- VAR {"value":"0","variable":"permissions"}
+<2015-09-08 11:16:56> -- VAR {"value":["frontpage","sex driven lfrp","story driven lfrp"],"variable":"icon_blacklist"}
+<2015-09-08 11:16:56> -- HLO {"message":"Welcome. Running F-Chat (0.8.6-Lua). Enjoy your stay."}
+<2015-09-08 11:16:56> -- CON {"count":4}
+<2015-09-08 11:16:56> -- FRL {"characters":[]}
+<2015-09-08 11:16:56> -- IGN {"characters":[],"action":"init"}
+<2015-09-08 11:16:56> -- ADL {"ops":["Aniko","Lutra Mustil","Kira"]}
+<2015-09-08 11:16:56> -- LIS {"characters":[["Zeus Keraunos","Male","online",""],["Dionysos Thyrsos","Male","online","Poor Uncle."],["Bill Cypher","None","online",""],["Uvaxstra","Male","online",""]]}
+<2015-09-08 11:16:57> -- NLN {"status":"online","gender":"None","identity":"Bill Cypher"}
+<2015-09-08 11:19:24> -- IDN {"character":"Bill Cypher"}
+<2015-09-08 11:19:24> -- VAR {"value":4096,"variable":"chat_max"}
+<2015-09-08 11:19:24> -- VAR {"value":50000,"variable":"priv_max"}
+<2015-09-08 11:19:24> -- VAR {"value":50000,"variable":"lfrp_max"}
+<2015-09-08 11:19:24> -- VAR {"value":600,"variable":"lfrp_flood"}
+<2015-09-08 11:19:24> -- VAR {"value":0.5,"variable":"msg_flood"}
+<2015-09-08 11:19:24> -- VAR {"value":"0","variable":"permissions"}
+<2015-09-08 11:19:24> -- VAR {"value":["frontpage","sex driven lfrp","story driven lfrp"],"variable":"icon_blacklist"}
+<2015-09-08 11:19:24> -- HLO {"message":"Welcome. Running F-Chat (0.8.6-Lua). Enjoy your stay."}
+<2015-09-08 11:19:24> -- CON {"count":4}
+<2015-09-08 11:19:24> -- FRL {"characters":[]}
+<2015-09-08 11:19:24> -- IGN {"characters":[],"action":"init"}
+<2015-09-08 11:19:24> -- ADL {"ops":["Aniko","Lutra Mustil","Kira"]}
+<2015-09-08 11:19:24> -- LIS {"characters":[["Zeus Keraunos","Male","online",""],["Dionysos Thyrsos","Male","online","Poor Uncle."],["Bill Cypher","None","online",""],["Uvaxstra","Male","online",""]]}
+<2015-09-08 11:19:24> -- NLN {"status":"online","gender":"None","identity":"Bill Cypher"}
+<2015-09-08 11:25:48> -- IDN {"character":"Bill Cypher"}
+<2015-09-08 11:25:49> -- VAR {"value":4096,"variable":"chat_max"}
+<2015-09-08 11:25:49> -- VAR {"value":50000,"variable":"priv_max"}
+<2015-09-08 11:25:49> -- VAR {"value":50000,"variable":"lfrp_max"}
+<2015-09-08 11:25:49> -- VAR {"value":600,"variable":"lfrp_flood"}
+<2015-09-08 11:25:49> -- VAR {"value":0.5,"variable":"msg_flood"}
+<2015-09-08 11:25:49> -- VAR {"value":"0","variable":"permissions"}
+<2015-09-08 11:25:49> -- VAR {"value":["frontpage","sex driven lfrp","story driven lfrp"],"variable":"icon_blacklist"}
+<2015-09-08 11:25:49> -- HLO {"message":"Welcome. Running F-Chat (0.8.6-Lua). Enjoy your stay."}
+<2015-09-08 11:25:49> -- CON {"count":4}
+<2015-09-08 11:25:49> -- FRL {"characters":[]}
+<2015-09-08 11:25:49> -- IGN {"characters":[],"action":"init"}
+<2015-09-08 11:25:49> -- ADL {"ops":["Aniko","Lutra Mustil","Kira"]}
+<2015-09-08 11:25:49> -- LIS {"characters":[["Zeus Keraunos","Male","online",""],["Dionysos Thyrsos","Male","online","Poor Uncle."],["Bill Cypher","None","online",""],["Uvaxstra","Male","online",""]]}
+<2015-09-08 11:25:49> -- NLN {"status":"online","gender":"None","identity":"Bill Cypher"}
+<2015-09-08 11:25:49> -- ORS {"channels":[]}
+<2015-09-08 11:25:49> -- CHA {"channels":[{"name":"Gay Males","mode":"both","characters":0},{"name":"Cuntboys","mode":"both","characters":0},{"name":"Medical Play","mode":"both","characters":0},{"name":"German OOC","mode":"both","characters":0},{"name":"Femdom","mode":"both","characters":0},{"name":"Artists / Writers","mode":"chat","characters":0},{"name":"Humans/Humanoids","mode":"both","characters":0},{"name":"Furries","mode":"both","characters":0},{"name":"Frontpage","mode":"chat","characters":0},{"name":"Lesbians","mode":"both","characters":0},{"name":"RP Bar","mode":"both","characters":0},{"name":"Footplay","mode":"both","characters":0},{"name":"Digimon","mode":"both","characters":0},{"name":"RP Pokefurs","mode":"chat","characters":0},{"name":"Sex Driven LFRP","mode":"ads","characters":0},{"name":"Domination/Submission","mode":"both","characters":0},{"name":"Sadism/Masochism","mode":"both","characters":0},{"name":"Avians","mode":"chat","characters":0},{"name":"Development","mode":"chat","characters":0},{"name":"Sci-fi","mode":"both","characters":0},{"name":"Macro","mode":"both","characters":0},{"name":"Vore RP","mode":"chat","characters":0},{"name":"Hyper Endowed","mode":"both","characters":0},{"name":"World of Warcraft","mode":"both","characters":0},{"name":"The Slob Den","mode":"both","characters":0},{"name":"Canon Characters","mode":"both","characters":0},{"name":"Equestria ","mode":"both","characters":0},{"name":"Cum Lovers","mode":"both","characters":0},{"name":"Obscene Boundaries","mode":"both","characters":0},{"name":"RP Dark City","mode":"both","characters":0},{"name":"Sergals and Sergal lovers","mode":"both","characters":0},{"name":"Ageplay","mode":"both","characters":0},{"name":"Custom Kinks Sharing","mode":"both","characters":0},{"name":"RP Nudist Camp","mode":"both","characters":0},{"name":"Gay Furry Males","mode":"both","characters":0},{"name":"Love and Affection","mode":"both","characters":0},{"name":"Helpdesk","mode":"chat","characters":0},{"name":"Straight Roleplay","mode":"both","characters":0},{"name":"Ass Play","mode":"both","characters":0},{"name":"Force/Non-Con","mode":"both","characters":0},{"name":"Fantasy","mode":"both","characters":0},{"name":"Pregnancy and Impregnation","mode":"both","characters":0},{"name":"Mind Control","mode":"both","characters":0},{"name":"Size Difference","mode":"both","characters":0},{"name":"Gay Canon Males","mode":"both","characters":0},{"name":"Cum Inflation","mode":"both","characters":0},{"name":"Fat and Pudgy","mode":"both","characters":0},{"name":"Micro/Macro","mode":"both","characters":0},{"name":"Femboy","mode":"both","characters":0},{"name":"Muscle Bound","mode":"both","characters":0},{"name":"Transformation","mode":"both","characters":0},{"name":"Warhammer General","mode":"both","characters":0},{"name":"Literate Roleplayers","mode":"both","characters":0},{"name":"Hermaphrodites","mode":"both","characters":0},{"name":"Politics","mode":"both","characters":0},{"name":"All in the Family","mode":"both","characters":0},{"name":"Canon Characters OOC","mode":"both","characters":0},{"name":"Pokefurs","mode":"both","characters":0},{"name":"Latex","mode":"both","characters":0},{"name":"Xenophiles","mode":"chat","characters":0},{"name":"Monster's Lair","mode":"both","characters":0},{"name":"Gamers","mode":"chat","characters":0},{"name":"German IC","mode":"both","characters":0},{"name":"Bondage","mode":"both","characters":0},{"name":"German Furry","mode":"both","characters":0},{"name":"Inflation","mode":"both","characters":0},{"name":"Watersports","mode":"both","characters":0},{"name":"Vore","mode":"both","characters":0},{"name":"Diapers/Infantilism","mode":"both","characters":0},{"name":"Dragons","mode":"both","characters":0},{"name":"Scat Play","mode":"both","characters":0},{"name":"Non-Sex Driven LFRP","mode":"ads","characters":0},{"name":"Ferals / Bestiality","mode":"both","characters":0},{"name":"Transgender","mode":"both","characters":0},{"name":"Growth","mode":"both","characters":0},{"name":"F-chat Desktop Client","mode":"chat","characters":0},{"name":"Aquatics","mode":"chat","characters":0}]}
+<2015-09-08 11:28:04> -- IDN {"character":"Bill Cypher"}
+<2015-09-08 11:28:04> -- VAR {"value":4096,"variable":"chat_max"}
+<2015-09-08 11:28:04> -- VAR {"value":50000,"variable":"priv_max"}
+<2015-09-08 11:28:04> -- VAR {"value":50000,"variable":"lfrp_max"}
+<2015-09-08 11:28:04> -- VAR {"value":600,"variable":"lfrp_flood"}
+<2015-09-08 11:28:04> -- VAR {"value":0.5,"variable":"msg_flood"}
+<2015-09-08 11:28:05> -- VAR {"value":"0","variable":"permissions"}
+<2015-09-08 11:28:05> -- VAR {"value":["frontpage","sex driven lfrp","story driven lfrp"],"variable":"icon_blacklist"}
+<2015-09-08 11:28:05> -- HLO {"message":"Welcome. Running F-Chat (0.8.6-Lua). Enjoy your stay."}
+<2015-09-08 11:28:05> -- CON {"count":4}
+<2015-09-08 11:28:05> -- FRL {"characters":[]}
+<2015-09-08 11:28:05> -- IGN {"characters":[],"action":"init"}
+<2015-09-08 11:28:05> -- ADL {"ops":["Aniko","Lutra Mustil","Kira"]}
+<2015-09-08 11:28:05> -- LIS {"characters":[["Zeus Keraunos","Male","online",""],["Dionysos Thyrsos","Male","online","Poor Uncle."],["Bill Cypher","None","online",""],["Uvaxstra","Male","online",""]]}
+<2015-09-08 11:28:05> -- NLN {"status":"online","gender":"None","identity":"Bill Cypher"}
+<2015-09-08 11:28:05> -- ORS {"channels":[]}
+<2015-09-08 11:28:05> -- CHA {"channels":[{"name":"Gay Males","mode":"both","characters":0},{"name":"Cuntboys","mode":"both","characters":0},{"name":"Medical Play","mode":"both","characters":0},{"name":"German OOC","mode":"both","characters":0},{"name":"Femdom","mode":"both","characters":0},{"name":"Artists / Writers","mode":"chat","characters":0},{"name":"Humans/Humanoids","mode":"both","characters":0},{"name":"Furries","mode":"both","characters":0},{"name":"Frontpage","mode":"chat","characters":0},{"name":"Lesbians","mode":"both","characters":0},{"name":"RP Bar","mode":"both","characters":0},{"name":"Footplay","mode":"both","characters":0},{"name":"Digimon","mode":"both","characters":0},{"name":"RP Pokefurs","mode":"chat","characters":0},{"name":"Sex Driven LFRP","mode":"ads","characters":0},{"name":"Domination/Submission","mode":"both","characters":0},{"name":"Sadism/Masochism","mode":"both","characters":0},{"name":"Avians","mode":"chat","characters":0},{"name":"Development","mode":"chat","characters":0},{"name":"Sci-fi","mode":"both","characters":0},{"name":"Macro","mode":"both","characters":0},{"name":"Vore RP","mode":"chat","characters":0},{"name":"Hyper Endowed","mode":"both","characters":0},{"name":"World of Warcraft","mode":"both","characters":0},{"name":"The Slob Den","mode":"both","characters":0},{"name":"Canon Characters","mode":"both","characters":0},{"name":"Equestria ","mode":"both","characters":0},{"name":"Cum Lovers","mode":"both","characters":0},{"name":"Obscene Boundaries","mode":"both","characters":0},{"name":"RP Dark City","mode":"both","characters":0},{"name":"Sergals and Sergal lovers","mode":"both","characters":0},{"name":"Ageplay","mode":"both","characters":0},{"name":"Custom Kinks Sharing","mode":"both","characters":0},{"name":"RP Nudist Camp","mode":"both","characters":0},{"name":"Gay Furry Males","mode":"both","characters":0},{"name":"Love and Affection","mode":"both","characters":0},{"name":"Helpdesk","mode":"chat","characters":0},{"name":"Straight Roleplay","mode":"both","characters":0},{"name":"Ass Play","mode":"both","characters":0},{"name":"Force/Non-Con","mode":"both","characters":0},{"name":"Fantasy","mode":"both","characters":0},{"name":"Pregnancy and Impregnation","mode":"both","characters":0},{"name":"Mind Control","mode":"both","characters":0},{"name":"Size Difference","mode":"both","characters":0},{"name":"Gay Canon Males","mode":"both","characters":0},{"name":"Cum Inflation","mode":"both","characters":0},{"name":"Fat and Pudgy","mode":"both","characters":0},{"name":"Micro/Macro","mode":"both","characters":0},{"name":"Femboy","mode":"both","characters":0},{"name":"Muscle Bound","mode":"both","characters":0},{"name":"Transformation","mode":"both","characters":0},{"name":"Warhammer General","mode":"both","characters":0},{"name":"Literate Roleplayers","mode":"both","characters":0},{"name":"Hermaphrodites","mode":"both","characters":0},{"name":"Politics","mode":"both","characters":0},{"name":"All in the Family","mode":"both","characters":0},{"name":"Canon Characters OOC","mode":"both","characters":0},{"name":"Pokefurs","mode":"both","characters":0},{"name":"Latex","mode":"both","characters":0},{"name":"Xenophiles","mode":"chat","characters":0},{"name":"Monster's Lair","mode":"both","characters":0},{"name":"Gamers","mode":"chat","characters":0},{"name":"German IC","mode":"both","characters":0},{"name":"Bondage","mode":"both","characters":0},{"name":"German Furry","mode":"both","characters":0},{"name":"Inflation","mode":"both","characters":0},{"name":"Watersports","mode":"both","characters":0},{"name":"Vore","mode":"both","characters":0},{"name":"Diapers/Infantilism","mode":"both","characters":0},{"name":"Dragons","mode":"both","characters":0},{"name":"Scat Play","mode":"both","characters":0},{"name":"Non-Sex Driven LFRP","mode":"ads","characters":0},{"name":"Ferals / Bestiality","mode":"both","characters":0},{"name":"Transgender","mode":"both","characters":0},{"name":"Growth","mode":"both","characters":0},{"name":"F-chat Desktop Client","mode":"chat","characters":0},{"name":"Aquatics","mode":"chat","characters":0}]}
+<2015-09-08 11:28:34> -- PIN
+<2015-09-08 11:29:04> -- PIN
+<2015-09-08 11:38:51> -- IDN {"character":"Bill Cypher"}
+<2015-09-08 11:38:51> -- VAR {"value":4096,"variable":"chat_max"}
+<2015-09-08 11:38:51> -- VAR {"value":50000,"variable":"priv_max"}
+<2015-09-08 11:38:51> -- VAR {"value":50000,"variable":"lfrp_max"}
+<2015-09-08 11:38:51> -- VAR {"value":600,"variable":"lfrp_flood"}
+<2015-09-08 11:38:51> -- VAR {"value":0.5,"variable":"msg_flood"}
+<2015-09-08 11:38:52> -- VAR {"value":"0","variable":"permissions"}
+<2015-09-08 11:38:52> -- VAR {"value":["frontpage","sex driven lfrp","story driven lfrp"],"variable":"icon_blacklist"}
+<2015-09-08 11:38:52> -- HLO {"message":"Welcome. Running F-Chat (0.8.6-Lua). Enjoy your stay."}
+<2015-09-08 11:38:52> -- CON {"count":4}
+<2015-09-08 11:38:52> -- FRL {"characters":[]}
+<2015-09-08 11:38:52> -- IGN {"characters":[],"action":"init"}
+<2015-09-08 11:38:52> -- ADL {"ops":["Aniko","Lutra Mustil","Kira"]}
+<2015-09-08 11:38:52> -- LIS {"characters":[["Zeus Keraunos","Male","online",""],["Dionysos Thyrsos","Male","online","Poor Uncle."],["Bill Cypher","None","online",""],["Uvaxstra","Male","online",""]]}
+<2015-09-08 11:38:52> -- NLN {"status":"online","gender":"None","identity":"Bill Cypher"}
+<2015-09-08 11:38:52> -- ORS {"channels":[]}
+<2015-09-08 11:38:52> -- CHA {"channels":[{"name":"Gay Males","mode":"both","characters":0},{"name":"Cuntboys","mode":"both","characters":0},{"name":"Medical Play","mode":"both","characters":0},{"name":"German OOC","mode":"both","characters":0},{"name":"Femdom","mode":"both","characters":0},{"name":"Artists / Writers","mode":"chat","characters":0},{"name":"Humans/Humanoids","mode":"both","characters":0},{"name":"Furries","mode":"both","characters":0},{"name":"Frontpage","mode":"chat","characters":0},{"name":"Lesbians","mode":"both","characters":0},{"name":"RP Bar","mode":"both","characters":0},{"name":"Footplay","mode":"both","characters":0},{"name":"Digimon","mode":"both","characters":0},{"name":"RP Pokefurs","mode":"chat","characters":0},{"name":"Sex Driven LFRP","mode":"ads","characters":0},{"name":"Domination/Submission","mode":"both","characters":0},{"name":"Sadism/Masochism","mode":"both","characters":0},{"name":"Avians","mode":"chat","characters":0},{"name":"Development","mode":"chat","characters":0},{"name":"Sci-fi","mode":"both","characters":0},{"name":"Macro","mode":"both","characters":0},{"name":"Vore RP","mode":"chat","characters":0},{"name":"Hyper Endowed","mode":"both","characters":0},{"name":"World of Warcraft","mode":"both","characters":0},{"name":"The Slob Den","mode":"both","characters":0},{"name":"Canon Characters","mode":"both","characters":0},{"name":"Equestria ","mode":"both","characters":0},{"name":"Cum Lovers","mode":"both","characters":0},{"name":"Obscene Boundaries","mode":"both","characters":0},{"name":"RP Dark City","mode":"both","characters":0},{"name":"Sergals and Sergal lovers","mode":"both","characters":0},{"name":"Ageplay","mode":"both","characters":0},{"name":"Custom Kinks Sharing","mode":"both","characters":0},{"name":"RP Nudist Camp","mode":"both","characters":0},{"name":"Gay Furry Males","mode":"both","characters":0},{"name":"Love and Affection","mode":"both","characters":0},{"name":"Helpdesk","mode":"chat","characters":0},{"name":"Straight Roleplay","mode":"both","characters":0},{"name":"Ass Play","mode":"both","characters":0},{"name":"Force/Non-Con","mode":"both","characters":0},{"name":"Fantasy","mode":"both","characters":0},{"name":"Pregnancy and Impregnation","mode":"both","characters":0},{"name":"Mind Control","mode":"both","characters":0},{"name":"Size Difference","mode":"both","characters":0},{"name":"Gay Canon Males","mode":"both","characters":0},{"name":"Cum Inflation","mode":"both","characters":0},{"name":"Fat and Pudgy","mode":"both","characters":0},{"name":"Micro/Macro","mode":"both","characters":0},{"name":"Femboy","mode":"both","characters":0},{"name":"Muscle Bound","mode":"both","characters":0},{"name":"Transformation","mode":"both","characters":0},{"name":"Warhammer General","mode":"both","characters":0},{"name":"Literate Roleplayers","mode":"both","characters":0},{"name":"Hermaphrodites","mode":"both","characters":0},{"name":"Politics","mode":"both","characters":0},{"name":"All in the Family","mode":"both","characters":0},{"name":"Canon Characters OOC","mode":"both","characters":0},{"name":"Pokefurs","mode":"both","characters":0},{"name":"Latex","mode":"both","characters":0},{"name":"Xenophiles","mode":"chat","characters":0},{"name":"Monster's Lair","mode":"both","characters":0},{"name":"Gamers","mode":"chat","characters":0},{"name":"German IC","mode":"both","characters":0},{"name":"Bondage","mode":"both","characters":0},{"name":"German Furry","mode":"both","characters":0},{"name":"Inflation","mode":"both","characters":0},{"name":"Watersports","mode":"both","characters":0},{"name":"Vore","mode":"both","characters":0},{"name":"Diapers/Infantilism","mode":"both","characters":0},{"name":"Dragons","mode":"both","characters":0},{"name":"Scat Play","mode":"both","characters":0},{"name":"Non-Sex Driven LFRP","mode":"ads","characters":0},{"name":"Ferals / Bestiality","mode":"both","characters":0},{"name":"Transgender","mode":"both","characters":0},{"name":"Growth","mode":"both","characters":0},{"name":"F-chat Desktop Client","mode":"chat","characters":0},{"name":"Aquatics","mode":"chat","characters":0}]}
+<2015-09-08 11:39:21> -- PIN
+<2015-09-08 15:17:50> -- IDN {"character":"Bill Cypher"}
+<2015-09-08 15:17:51> -- VAR {"value":4096,"variable":"chat_max"}
+<2015-09-08 15:17:51> -- VAR {"value":50000,"variable":"priv_max"}
+<2015-09-08 15:17:51> -- VAR {"value":50000,"variable":"lfrp_max"}
+<2015-09-08 15:17:51> -- VAR {"value":600,"variable":"lfrp_flood"}
+<2015-09-08 15:17:51> -- VAR {"value":0.5,"variable":"msg_flood"}
+<2015-09-08 15:17:51> -- VAR {"value":"0","variable":"permissions"}
+<2015-09-08 15:17:51> -- VAR {"value":["frontpage","sex driven lfrp","story driven lfrp"],"variable":"icon_blacklist"}
+<2015-09-08 15:17:51> -- HLO {"message":"Welcome. Running F-Chat (0.8.6-Lua). Enjoy your stay."}
+<2015-09-08 15:17:51> -- CON {"count":4}
+<2015-09-08 15:17:51> -- FRL {"characters":[]}
+<2015-09-08 15:17:51> -- IGN {"characters":[],"action":"init"}
+<2015-09-08 15:17:51> -- ADL {"ops":["Aniko","Lutra Mustil","Kira"]}
+<2015-09-08 15:17:51> -- LIS {"characters":[["Zeus Keraunos","Male","online",""],["Dionysos Thyrsos","Male","online","Poor Uncle."],["Bill Cypher","None","online",""],["Uvaxstra","Male","online",""]]}
+<2015-09-08 15:17:51> -- NLN {"status":"online","gender":"None","identity":"Bill Cypher"}
+<2015-09-08 15:17:56> -- ORS {"channels":[]}
+<2015-09-08 15:17:57> -- CHA {"channels":[{"name":"Gay Males","mode":"both","characters":0},{"name":"Cuntboys","mode":"both","characters":0},{"name":"Medical Play","mode":"both","characters":0},{"name":"German OOC","mode":"both","characters":0},{"name":"Femdom","mode":"both","characters":0},{"name":"Artists / Writers","mode":"chat","characters":0},{"name":"Humans/Humanoids","mode":"both","characters":0},{"name":"Furries","mode":"both","characters":0},{"name":"Frontpage","mode":"chat","characters":0},{"name":"Lesbians","mode":"both","characters":0},{"name":"RP Bar","mode":"both","characters":0},{"name":"Footplay","mode":"both","characters":0},{"name":"Digimon","mode":"both","characters":0},{"name":"RP Pokefurs","mode":"chat","characters":0},{"name":"Sex Driven LFRP","mode":"ads","characters":0},{"name":"Domination/Submission","mode":"both","characters":0},{"name":"Sadism/Masochism","mode":"both","characters":0},{"name":"Avians","mode":"chat","characters":0},{"name":"Development","mode":"chat","characters":0},{"name":"Sci-fi","mode":"both","characters":0},{"name":"Macro","mode":"both","characters":0},{"name":"Vore RP","mode":"chat","characters":0},{"name":"Hyper Endowed","mode":"both","characters":0},{"name":"World of Warcraft","mode":"both","characters":0},{"name":"The Slob Den","mode":"both","characters":0},{"name":"Canon Characters","mode":"both","characters":0},{"name":"Equestria ","mode":"both","characters":0},{"name":"Cum Lovers","mode":"both","characters":0},{"name":"Obscene Boundaries","mode":"both","characters":0},{"name":"RP Dark City","mode":"both","characters":0},{"name":"Sergals and Sergal lovers","mode":"both","characters":0},{"name":"Ageplay","mode":"both","characters":0},{"name":"Custom Kinks Sharing","mode":"both","characters":0},{"name":"RP Nudist Camp","mode":"both","characters":0},{"name":"Gay Furry Males","mode":"both","characters":0},{"name":"Love and Affection","mode":"both","characters":0},{"name":"Helpdesk","mode":"chat","characters":0},{"name":"Straight Roleplay","mode":"both","characters":0},{"name":"Ass Play","mode":"both","characters":0},{"name":"Force/Non-Con","mode":"both","characters":0},{"name":"Fantasy","mode":"both","characters":0},{"name":"Pregnancy and Impregnation","mode":"both","characters":0},{"name":"Mind Control","mode":"both","characters":0},{"name":"Size Difference","mode":"both","characters":0},{"name":"Gay Canon Males","mode":"both","characters":0},{"name":"Cum Inflation","mode":"both","characters":0},{"name":"Fat and Pudgy","mode":"both","characters":0},{"name":"Micro/Macro","mode":"both","characters":0},{"name":"Femboy","mode":"both","characters":0},{"name":"Muscle Bound","mode":"both","characters":0},{"name":"Transformation","mode":"both","characters":0},{"name":"Warhammer General","mode":"both","characters":0},{"name":"Literate Roleplayers","mode":"both","characters":0},{"name":"Hermaphrodites","mode":"both","characters":0},{"name":"Politics","mode":"both","characters":0},{"name":"All in the Family","mode":"both","characters":0},{"name":"Canon Characters OOC","mode":"both","characters":0},{"name":"Pokefurs","mode":"both","characters":0},{"name":"Latex","mode":"both","characters":0},{"name":"Xenophiles","mode":"chat","characters":0},{"name":"Monster's Lair","mode":"both","characters":0},{"name":"Gamers","mode":"chat","characters":0},{"name":"German IC","mode":"both","characters":0},{"name":"Bondage","mode":"both","characters":0},{"name":"German Furry","mode":"both","characters":0},{"name":"Inflation","mode":"both","characters":0},{"name":"Watersports","mode":"both","characters":0},{"name":"Vore","mode":"both","characters":0},{"name":"Diapers/Infantilism","mode":"both","characters":0},{"name":"Dragons","mode":"both","characters":0},{"name":"Scat Play","mode":"both","characters":0},{"name":"Non-Sex Driven LFRP","mode":"ads","characters":0},{"name":"Ferals / Bestiality","mode":"both","characters":0},{"name":"Transgender","mode":"both","characters":0},{"name":"Growth","mode":"both","characters":0},{"name":"F-chat Desktop Client","mode":"chat","characters":0},{"name":"Aquatics","mode":"chat","characters":0}]}
+<2015-09-08 15:18:20> -- PIN
+<2015-09-08 15:18:55> -- PIN
+<2015-09-08 15:41:20> -- IDN {"character":"Bill Cypher"}
+<2015-09-08 15:41:20> -- VAR {"value":4096,"variable":"chat_max"}
+<2015-09-08 15:41:20> -- VAR {"value":50000,"variable":"priv_max"}
+<2015-09-08 15:41:20> -- VAR {"value":50000,"variable":"lfrp_max"}
+<2015-09-08 15:41:20> -- VAR {"value":600,"variable":"lfrp_flood"}
+<2015-09-08 15:41:21> -- VAR {"value":0.5,"variable":"msg_flood"}
+<2015-09-08 15:41:21> -- VAR {"value":"0","variable":"permissions"}
+<2015-09-08 15:41:21> -- VAR {"value":["frontpage","sex driven lfrp","story driven lfrp"],"variable":"icon_blacklist"}
+<2015-09-08 15:41:21> -- HLO {"message":"Welcome. Running F-Chat (0.8.6-Lua). Enjoy your stay."}
+<2015-09-08 15:41:21> -- CON {"count":4}
+<2015-09-08 15:41:21> -- FRL {"characters":[]}
+<2015-09-08 15:41:21> -- IGN {"characters":[],"action":"init"}
+<2015-09-08 15:41:21> -- ADL {"ops":["Aniko","Lutra Mustil","Kira"]}
+<2015-09-08 15:41:21> -- LIS {"characters":[["Zeus Keraunos","Male","online",""],["Dionysos Thyrsos","Male","online","Poor Uncle."],["Bill Cypher","None","online",""],["Uvaxstra","Male","online",""]]}
+<2015-09-08 15:41:21> -- NLN {"status":"online","gender":"None","identity":"Bill Cypher"}
+<2015-09-08 15:41:27> -- >> ORS
+<2015-09-08 15:41:27> -- ORS {"channels":[]}
+<2015-09-08 15:41:28> -- >> CHA
+<2015-09-08 15:41:28> -- CHA {"channels":[{"name":"Gay Males","mode":"both","characters":0},{"name":"Cuntboys","mode":"both","characters":0},{"name":"Medical Play","mode":"both","characters":0},{"name":"German OOC","mode":"both","characters":0},{"name":"Femdom","mode":"both","characters":0},{"name":"Artists / Writers","mode":"chat","characters":0},{"name":"Humans/Humanoids","mode":"both","characters":0},{"name":"Furries","mode":"both","characters":0},{"name":"Frontpage","mode":"chat","characters":0},{"name":"Lesbians","mode":"both","characters":0},{"name":"RP Bar","mode":"both","characters":0},{"name":"Footplay","mode":"both","characters":0},{"name":"Digimon","mode":"both","characters":0},{"name":"RP Pokefurs","mode":"chat","characters":0},{"name":"Sex Driven LFRP","mode":"ads","characters":0},{"name":"Domination/Submission","mode":"both","characters":0},{"name":"Sadism/Masochism","mode":"both","characters":0},{"name":"Avians","mode":"chat","characters":0},{"name":"Development","mode":"chat","characters":0},{"name":"Sci-fi","mode":"both","characters":0},{"name":"Macro","mode":"both","characters":0},{"name":"Vore RP","mode":"chat","characters":0},{"name":"Hyper Endowed","mode":"both","characters":0},{"name":"World of Warcraft","mode":"both","characters":0},{"name":"The Slob Den","mode":"both","characters":0},{"name":"Canon Characters","mode":"both","characters":0},{"name":"Equestria ","mode":"both","characters":0},{"name":"Cum Lovers","mode":"both","characters":0},{"name":"Obscene Boundaries","mode":"both","characters":0},{"name":"RP Dark City","mode":"both","characters":0},{"name":"Sergals and Sergal lovers","mode":"both","characters":0},{"name":"Ageplay","mode":"both","characters":0},{"name":"Custom Kinks Sharing","mode":"both","characters":0},{"name":"RP Nudist Camp","mode":"both","characters":0},{"name":"Gay Furry Males","mode":"both","characters":0},{"name":"Love and Affection","mode":"both","characters":0},{"name":"Helpdesk","mode":"chat","characters":0},{"name":"Straight Roleplay","mode":"both","characters":0},{"name":"Ass Play","mode":"both","characters":0},{"name":"Force/Non-Con","mode":"both","characters":0},{"name":"Fantasy","mode":"both","characters":0},{"name":"Pregnancy and Impregnation","mode":"both","characters":0},{"name":"Mind Control","mode":"both","characters":0},{"name":"Size Difference","mode":"both","characters":0},{"name":"Gay Canon Males","mode":"both","characters":0},{"name":"Cum Inflation","mode":"both","characters":0},{"name":"Fat and Pudgy","mode":"both","characters":0},{"name":"Micro/Macro","mode":"both","characters":0},{"name":"Femboy","mode":"both","characters":0},{"name":"Muscle Bound","mode":"both","characters":0},{"name":"Transformation","mode":"both","characters":0},{"name":"Warhammer General","mode":"both","characters":0},{"name":"Literate Roleplayers","mode":"both","characters":0},{"name":"Hermaphrodites","mode":"both","characters":0},{"name":"Politics","mode":"both","characters":0},{"name":"All in the Family","mode":"both","characters":0},{"name":"Canon Characters OOC","mode":"both","characters":0},{"name":"Pokefurs","mode":"both","characters":0},{"name":"Latex","mode":"both","characters":0},{"name":"Xenophiles","mode":"chat","characters":0},{"name":"Monster's Lair","mode":"both","characters":0},{"name":"Gamers","mode":"chat","characters":0},{"name":"German IC","mode":"both","characters":0},{"name":"Bondage","mode":"both","characters":0},{"name":"German Furry","mode":"both","characters":0},{"name":"Inflation","mode":"both","characters":0},{"name":"Watersports","mode":"both","characters":0},{"name":"Vore","mode":"both","characters":0},{"name":"Diapers/Infantilism","mode":"both","characters":0},{"name":"Dragons","mode":"both","characters":0},{"name":"Scat Play","mode":"both","characters":0},{"name":"Non-Sex Driven LFRP","mode":"ads","characters":0},{"name":"Ferals / Bestiality","mode":"both","characters":0},{"name":"Transgender","mode":"both","characters":0},{"name":"Growth","mode":"both","characters":0},{"name":"F-chat Desktop Client","mode":"chat","characters":0},{"name":"Aquatics","mode":"chat","characters":0}]}
+<2015-09-08 15:41:28> -- >> STA {"status":"online","statusmsg":"Running Cogito# v0.8.1.12"}
+<2015-09-08 15:41:29> -- STA {"status":"online","character":"Bill Cypher","statusmsg":"Running Cogito# v0.8.1.12"}
+<2015-09-08 15:41:51> -- PIN
+<2015-09-08 15:42:20> -- PIN
+<2015-09-08 15:42:50> -- PIN
+<2015-09-08 15:43:20> -- PIN
+<2015-09-09 11:07:27> -- IDN {"character":"Bill Cypher"}
+<2015-09-09 11:07:27> -- VAR {"value":4096,"variable":"chat_max"}
+<2015-09-09 11:07:27> -- VAR {"value":50000,"variable":"priv_max"}
+<2015-09-09 11:07:27> -- VAR {"value":50000,"variable":"lfrp_max"}
+<2015-09-09 11:07:27> -- VAR {"value":600,"variable":"lfrp_flood"}
+<2015-09-09 11:07:27> -- VAR {"value":0.5,"variable":"msg_flood"}
+<2015-09-09 11:07:27> -- VAR {"value":"0","variable":"permissions"}
+<2015-09-09 11:07:27> -- VAR {"value":["frontpage","sex driven lfrp","story driven lfrp"],"variable":"icon_blacklist"}
+<2015-09-09 11:07:27> -- HLO {"message":"Welcome. Running F-Chat (0.8.6-Lua). Enjoy your stay."}
+<2015-09-09 11:07:27> -- CON {"count":7}
+<2015-09-09 11:07:27> -- FRL {"characters":[]}
+<2015-09-09 11:07:27> -- IGN {"characters":[],"action":"init"}
+<2015-09-09 11:07:28> -- ADL {"ops":["Aniko","Lutra Mustil","Kira"]}
+<2015-09-09 11:07:28> -- LIS {"characters":[["Hades Aidoneus","Male","online",""],["Zeus Keraunos","Male","online",""],["Dionysos Thyrsos","Male","online","Poor Uncle."],["Thoth Caduseus","Male","online",""],["Bill Cypher","None","online",""],["Randall Hicks","Male","online",""],["Uvaxstra","Male","online",""]]}
+<2015-09-09 11:07:28> -- NLN {"status":"online","gender":"None","identity":"Bill Cypher"}
+<2015-09-09 11:07:34> -- >> ORS
+<2015-09-09 11:07:34> -- ORS {"channels":[]}
+<2015-09-09 11:07:35> -- >> CHA
+<2015-09-09 11:07:35> -- CHA {"channels":[{"name":"Gay Males","mode":"both","characters":0},{"name":"Cuntboys","mode":"both","characters":0},{"name":"Medical Play","mode":"both","characters":0},{"name":"German OOC","mode":"both","characters":0},{"name":"Femdom","mode":"both","characters":0},{"name":"Artists / Writers","mode":"chat","characters":0},{"name":"Humans/Humanoids","mode":"both","characters":0},{"name":"Furries","mode":"both","characters":0},{"name":"Frontpage","mode":"chat","characters":0},{"name":"Lesbians","mode":"both","characters":0},{"name":"RP Bar","mode":"both","characters":0},{"name":"Footplay","mode":"both","characters":0},{"name":"Digimon","mode":"both","characters":0},{"name":"RP Pokefurs","mode":"chat","characters":0},{"name":"Sex Driven LFRP","mode":"ads","characters":0},{"name":"Domination/Submission","mode":"both","characters":0},{"name":"Sadism/Masochism","mode":"both","characters":0},{"name":"Avians","mode":"chat","characters":0},{"name":"Development","mode":"chat","characters":0},{"name":"Sci-fi","mode":"both","characters":0},{"name":"Macro","mode":"both","characters":0},{"name":"Vore RP","mode":"chat","characters":0},{"name":"Hyper Endowed","mode":"both","characters":0},{"name":"World of Warcraft","mode":"both","characters":0},{"name":"The Slob Den","mode":"both","characters":0},{"name":"Canon Characters","mode":"both","characters":0},{"name":"Equestria ","mode":"both","characters":0},{"name":"Cum Lovers","mode":"both","characters":0},{"name":"Obscene Boundaries","mode":"both","characters":0},{"name":"RP Dark City","mode":"both","characters":0},{"name":"Sergals and Sergal lovers","mode":"both","characters":0},{"name":"Ageplay","mode":"both","characters":0},{"name":"Custom Kinks Sharing","mode":"both","characters":0},{"name":"RP Nudist Camp","mode":"both","characters":0},{"name":"Gay Furry Males","mode":"both","characters":0},{"name":"Love and Affection","mode":"both","characters":0},{"name":"Helpdesk","mode":"chat","characters":0},{"name":"Straight Roleplay","mode":"both","characters":0},{"name":"Ass Play","mode":"both","characters":0},{"name":"Force/Non-Con","mode":"both","characters":0},{"name":"Fantasy","mode":"both","characters":0},{"name":"Pregnancy and Impregnation","mode":"both","characters":0},{"name":"Mind Control","mode":"both","characters":0},{"name":"Size Difference","mode":"both","characters":0},{"name":"Gay Canon Males","mode":"both","characters":0},{"name":"Cum Inflation","mode":"both","characters":0},{"name":"Fat and Pudgy","mode":"both","characters":0},{"name":"Micro/Macro","mode":"both","characters":0},{"name":"Femboy","mode":"both","characters":0},{"name":"Muscle Bound","mode":"both","characters":0},{"name":"Transformation","mode":"both","characters":0},{"name":"Warhammer General","mode":"both","characters":0},{"name":"Literate Roleplayers","mode":"both","characters":0},{"name":"Hermaphrodites","mode":"both","characters":0},{"name":"Politics","mode":"both","characters":0},{"name":"All in the Family","mode":"both","characters":0},{"name":"Canon Characters OOC","mode":"both","characters":0},{"name":"Pokefurs","mode":"both","characters":0},{"name":"Latex","mode":"both","characters":0},{"name":"Xenophiles","mode":"chat","characters":0},{"name":"Monster's Lair","mode":"both","characters":0},{"name":"Gamers","mode":"chat","characters":0},{"name":"German IC","mode":"both","characters":0},{"name":"Bondage","mode":"both","characters":0},{"name":"German Furry","mode":"both","characters":0},{"name":"Inflation","mode":"both","characters":0},{"name":"Watersports","mode":"both","characters":0},{"name":"Vore","mode":"both","characters":0},{"name":"Diapers/Infantilism","mode":"both","characters":0},{"name":"Dragons","mode":"both","characters":0},{"name":"Scat Play","mode":"both","characters":0},{"name":"Non-Sex Driven LFRP","mode":"ads","characters":0},{"name":"Ferals / Bestiality","mode":"both","characters":0},{"name":"Transgender","mode":"both","characters":0},{"name":"Growth","mode":"both","characters":0},{"name":"F-chat Desktop Client","mode":"chat","characters":0},{"name":"Aquatics","mode":"chat","characters":0}]}
+<2015-09-09 11:07:36> -- >> STA {"status":"online","statusmsg":"Running Cogito# v0.8.1.12"}
+<2015-09-09 11:07:36> -- STA {"status":"online","character":"Bill Cypher","statusmsg":"Running Cogito# v0.8.1.12"}
+<2015-09-09 11:07:57> -- PIN
+<2015-09-09 11:08:30> -- PIN
+<2015-09-09 12:25:55> -- IDN {"character":"Bill Cypher"}
+<2015-09-09 12:30:43> -- IDN {"character":"Bill Cypher"}
+<2015-09-09 13:25:12> -- IDN {"character":"Bill Cypher"}
+<2015-09-13 11:49:50> -- IDN {"character":"Bill Cypher"}
+<2015-09-13 11:49:50> -- VAR {"value":4096,"variable":"chat_max"}
+<2015-09-13 11:49:50> -- VAR {"value":50000,"variable":"priv_max"}
+<2015-09-13 11:49:50> -- VAR {"value":50000,"variable":"lfrp_max"}
+<2015-09-13 11:49:50> -- VAR {"value":600,"variable":"lfrp_flood"}
+<2015-09-13 11:49:51> -- VAR {"value":0.5,"variable":"msg_flood"}
+<2015-09-13 11:49:51> -- VAR {"value":"0","variable":"permissions"}
+<2015-09-13 11:49:51> -- VAR {"value":["frontpage","sex driven lfrp","story driven lfrp"],"variable":"icon_blacklist"}
+<2015-09-13 11:49:51> -- HLO {"message":"Welcome. Running F-Chat (0.8.6-Lua). Enjoy your stay."}
+<2015-09-13 11:49:51> -- CON {"count":10}
+<2015-09-13 11:49:51> -- FRL {"characters":[]}
+<2015-09-13 11:49:51> -- IGN {"characters":[],"action":"init"}
+<2015-09-13 11:49:51> -- ADL {"ops":["Aniko","Lutra Mustil","Kira"]}
+<2015-09-13 11:49:57> -- >> ORS
+<2015-09-13 11:49:58> -- >> CHA
+<2015-09-13 11:49:58> -- CHA {"channels":[{"name":"Gay Males","mode":"both","characters":0},{"name":"Cuntboys","mode":"both","characters":0},{"name":"Medical Play","mode":"both","characters":0},{"name":"German OOC","mode":"both","characters":0},{"name":"Femdom","mode":"both","characters":0},{"name":"Artists / Writers","mode":"chat","characters":0},{"name":"Humans/Humanoids","mode":"both","characters":0},{"name":"Furries","mode":"both","characters":0},{"name":"Frontpage","mode":"chat","characters":0},{"name":"Lesbians","mode":"both","characters":0},{"name":"RP Bar","mode":"both","characters":0},{"name":"Footplay","mode":"both","characters":0},{"name":"Digimon","mode":"both","characters":0},{"name":"RP Pokefurs","mode":"chat","characters":0},{"name":"Sex Driven LFRP","mode":"ads","characters":0},{"name":"Domination/Submission","mode":"both","characters":0},{"name":"Sadism/Masochism","mode":"both","characters":0},{"name":"Avians","mode":"chat","characters":0},{"name":"Development","mode":"chat","characters":0},{"name":"Sci-fi","mode":"both","characters":0},{"name":"Macro","mode":"both","characters":0},{"name":"Vore RP","mode":"chat","characters":0},{"name":"Hyper Endowed","mode":"both","characters":0},{"name":"World of Warcraft","mode":"both","characters":0},{"name":"The Slob Den","mode":"both","characters":0},{"name":"Canon Characters","mode":"both","characters":0},{"name":"Equestria ","mode":"both","characters":0},{"name":"Cum Lovers","mode":"both","characters":0},{"name":"Obscene Boundaries","mode":"both","characters":0},{"name":"RP Dark City","mode":"both","characters":0},{"name":"Sergals and Sergal lovers","mode":"both","characters":0},{"name":"Ageplay","mode":"both","characters":0},{"name":"Custom Kinks Sharing","mode":"both","characters":0},{"name":"RP Nudist Camp","mode":"both","characters":0},{"name":"Gay Furry Males","mode":"both","characters":0},{"name":"Love and Affection","mode":"both","characters":0},{"name":"Helpdesk","mode":"chat","characters":0},{"name":"Straight Roleplay","mode":"both","characters":0},{"name":"Ass Play","mode":"both","characters":0},{"name":"Force/Non-Con","mode":"both","characters":0},{"name":"Fantasy","mode":"both","characters":0},{"name":"Pregnancy and Impregnation","mode":"both","characters":0},{"name":"Mind Control","mode":"both","characters":0},{"name":"Size Difference","mode":"both","characters":0},{"name":"Gay Canon Males","mode":"both","characters":0},{"name":"Cum Inflation","mode":"both","characters":0},{"name":"Fat and Pudgy","mode":"both","characters":0},{"name":"Micro/Macro","mode":"both","characters":0},{"name":"Femboy","mode":"both","characters":0},{"name":"Muscle Bound","mode":"both","characters":0},{"name":"Transformation","mode":"both","characters":0},{"name":"Warhammer General","mode":"both","characters":0},{"name":"Literate Roleplayers","mode":"both","characters":0},{"name":"Hermaphrodites","mode":"both","characters":0},{"name":"Politics","mode":"both","characters":0},{"name":"All in the Family","mode":"both","characters":0},{"name":"Canon Characters OOC","mode":"both","characters":0},{"name":"Pokefurs","mode":"both","characters":0},{"name":"Latex","mode":"both","characters":0},{"name":"Xenophiles","mode":"chat","characters":0},{"name":"Monster's Lair","mode":"both","characters":0},{"name":"Gamers","mode":"chat","characters":0},{"name":"German IC","mode":"both","characters":0},{"name":"Bondage","mode":"both","characters":0},{"name":"German Furry","mode":"both","characters":0},{"name":"Inflation","mode":"both","characters":0},{"name":"Watersports","mode":"both","characters":0},{"name":"Vore","mode":"both","characters":0},{"name":"Diapers/Infantilism","mode":"both","characters":0},{"name":"Dragons","mode":"both","characters":0},{"name":"Scat Play","mode":"both","characters":0},{"name":"Non-Sex Driven LFRP","mode":"ads","characters":0},{"name":"Ferals / Bestiality","mode":"both","characters":0},{"name":"Transgender","mode":"both","characters":0},{"name":"Growth","mode":"both","characters":0},{"name":"F-chat Desktop Client","mode":"chat","characters":0},{"name":"Aquatics","mode":"chat","characters":0}]}
+<2015-09-13 11:49:59> -- >> STA {"status":"online","statusmsg":"Running Cogito# v0.8.1.12"}
+<2015-09-13 11:50:02> -- TPN {"status":"typing","character":"Hank Thompson"}
+<2015-09-13 11:50:02> -- PRI {"character":"Hank Thompson","message":"Test","recipient":"bill cypher"}
+<2015-09-13 11:50:20> -- PIN
+<2015-09-13 11:50:34> -- TPN {"status":"typing","character":"Hank Thompson"}
+<2015-09-13 11:50:34> -- PRI {"character":"Hank Thompson","message":"what","recipient":"bill cypher"}
+<2015-09-13 11:50:50> -- PIN
+<2015-09-13 11:51:20> -- PIN
+<2015-09-13 11:51:50> -- PIN
+<2015-09-13 11:53:05> -- IDN {"character":"Bill Cypher"}
+<2015-09-13 11:53:06> -- VAR {"value":4096,"variable":"chat_max"}
+<2015-09-13 11:53:06> -- VAR {"value":50000,"variable":"priv_max"}
+<2015-09-13 11:53:06> -- VAR {"value":50000,"variable":"lfrp_max"}
+<2015-09-13 11:53:06> -- VAR {"value":600,"variable":"lfrp_flood"}
+<2015-09-13 11:53:06> -- VAR {"value":0.5,"variable":"msg_flood"}
+<2015-09-13 11:53:06> -- VAR {"value":"0","variable":"permissions"}
+<2015-09-13 11:53:06> -- VAR {"value":["frontpage","sex driven lfrp","story driven lfrp"],"variable":"icon_blacklist"}
+<2015-09-13 11:53:06> -- HLO {"message":"Welcome. Running F-Chat (0.8.6-Lua). Enjoy your stay."}
+<2015-09-13 11:53:06> -- CON {"count":10}
+<2015-09-13 11:53:06> -- FRL {"characters":[]}
+<2015-09-13 11:53:06> -- IGN {"characters":[],"action":"init"}
+<2015-09-13 11:53:06> -- ADL {"ops":["Aniko","Lutra Mustil","Kira"]}
+<2015-09-13 11:53:12> -- >> ORS
+<2015-09-13 11:53:13> -- >> CHA
+<2015-09-13 11:53:13> -- CHA {"channels":[{"name":"Gay Males","mode":"both","characters":0},{"name":"Cuntboys","mode":"both","characters":0},{"name":"Medical Play","mode":"both","characters":0},{"name":"German OOC","mode":"both","characters":0},{"name":"Femdom","mode":"both","characters":0},{"name":"Artists / Writers","mode":"chat","characters":0},{"name":"Humans/Humanoids","mode":"both","characters":0},{"name":"Furries","mode":"both","characters":0},{"name":"Frontpage","mode":"chat","characters":0},{"name":"Lesbians","mode":"both","characters":0},{"name":"RP Bar","mode":"both","characters":0},{"name":"Footplay","mode":"both","characters":0},{"name":"Digimon","mode":"both","characters":0},{"name":"RP Pokefurs","mode":"chat","characters":0},{"name":"Sex Driven LFRP","mode":"ads","characters":0},{"name":"Domination/Submission","mode":"both","characters":0},{"name":"Sadism/Masochism","mode":"both","characters":0},{"name":"Avians","mode":"chat","characters":0},{"name":"Development","mode":"chat","characters":0},{"name":"Sci-fi","mode":"both","characters":0},{"name":"Macro","mode":"both","characters":0},{"name":"Vore RP","mode":"chat","characters":0},{"name":"Hyper Endowed","mode":"both","characters":0},{"name":"World of Warcraft","mode":"both","characters":0},{"name":"The Slob Den","mode":"both","characters":0},{"name":"Canon Characters","mode":"both","characters":0},{"name":"Equestria ","mode":"both","characters":0},{"name":"Cum Lovers","mode":"both","characters":0},{"name":"Obscene Boundaries","mode":"both","characters":0},{"name":"RP Dark City","mode":"both","characters":0},{"name":"Sergals and Sergal lovers","mode":"both","characters":0},{"name":"Ageplay","mode":"both","characters":0},{"name":"Custom Kinks Sharing","mode":"both","characters":0},{"name":"RP Nudist Camp","mode":"both","characters":0},{"name":"Gay Furry Males","mode":"both","characters":0},{"name":"Love and Affection","mode":"both","characters":0},{"name":"Helpdesk","mode":"chat","characters":0},{"name":"Straight Roleplay","mode":"both","characters":0},{"name":"Ass Play","mode":"both","characters":0},{"name":"Force/Non-Con","mode":"both","characters":0},{"name":"Fantasy","mode":"both","characters":0},{"name":"Pregnancy and Impregnation","mode":"both","characters":0},{"name":"Mind Control","mode":"both","characters":0},{"name":"Size Difference","mode":"both","characters":0},{"name":"Gay Canon Males","mode":"both","characters":0},{"name":"Cum Inflation","mode":"both","characters":0},{"name":"Fat and Pudgy","mode":"both","characters":0},{"name":"Micro/Macro","mode":"both","characters":0},{"name":"Femboy","mode":"both","characters":0},{"name":"Muscle Bound","mode":"both","characters":0},{"name":"Transformation","mode":"both","characters":0},{"name":"Warhammer General","mode":"both","characters":0},{"name":"Literate Roleplayers","mode":"both","characters":0},{"name":"Hermaphrodites","mode":"both","characters":0},{"name":"Politics","mode":"both","characters":0},{"name":"All in the Family","mode":"both","characters":0},{"name":"Canon Characters OOC","mode":"both","characters":0},{"name":"Pokefurs","mode":"both","characters":0},{"name":"Latex","mode":"both","characters":0},{"name":"Xenophiles","mode":"chat","characters":0},{"name":"Monster's Lair","mode":"both","characters":0},{"name":"Gamers","mode":"chat","characters":0},{"name":"German IC","mode":"both","characters":0},{"name":"Bondage","mode":"both","characters":0},{"name":"German Furry","mode":"both","characters":0},{"name":"Inflation","mode":"both","characters":0},{"name":"Watersports","mode":"both","characters":0},{"name":"Vore","mode":"both","characters":0},{"name":"Diapers/Infantilism","mode":"both","characters":0},{"name":"Dragons","mode":"both","characters":0},{"name":"Scat Play","mode":"both","characters":0},{"name":"Non-Sex Driven LFRP","mode":"ads","characters":0},{"name":"Ferals / Bestiality","mode":"both","characters":0},{"name":"Transgender","mode":"both","characters":0},{"name":"Growth","mode":"both","characters":0},{"name":"F-chat Desktop Client","mode":"chat","characters":0},{"name":"Aquatics","mode":"chat","characters":0}]}
+<2015-09-13 11:53:14> -- >> STA {"status":"online","statusmsg":"Running Cogito# v0.8.1.12"}
+<2015-09-13 11:53:14> -- TPN {"status":"typing","character":"Hank Thompson"}
+<2015-09-13 11:53:15> -- PRI {"character":"Hank Thompson","message":"fart","recipient":"bill cypher"}
+<2015-09-13 11:56:40> -- IDN {"character":"Bill Cypher"}
+<2015-09-13 11:56:40> -- VAR {"value":4096,"variable":"chat_max"}
+<2015-09-13 11:56:40> -- VAR {"value":50000,"variable":"priv_max"}
+<2015-09-13 11:56:40> -- VAR {"value":50000,"variable":"lfrp_max"}
+<2015-09-13 11:56:40> -- VAR {"value":600,"variable":"lfrp_flood"}
+<2015-09-13 11:56:40> -- VAR {"value":0.5,"variable":"msg_flood"}
+<2015-09-13 11:56:40> -- VAR {"value":"0","variable":"permissions"}
+<2015-09-13 11:56:40> -- VAR {"value":["frontpage","sex driven lfrp","story driven lfrp"],"variable":"icon_blacklist"}
+<2015-09-13 11:56:40> -- HLO {"message":"Welcome. Running F-Chat (0.8.6-Lua). Enjoy your stay."}
+<2015-09-13 11:56:40> -- CON {"count":10}
+<2015-09-13 11:56:40> -- FRL {"characters":[]}
+<2015-09-13 11:56:40> -- IGN {"characters":[],"action":"init"}
+<2015-09-13 11:56:40> -- ADL {"ops":["Aniko","Lutra Mustil","Kira"]}
+<2015-09-13 11:56:45> -- TPN {"status":"typing","character":"Hank Thompson"}
+<2015-09-13 11:56:46> -- PRI {"character":"Hank Thompson","message":"more farts","recipient":"bill cypher"}
+<2015-09-13 11:56:47> -- >> ORS
+<2015-09-13 11:56:47> -- >> CHA
+<2015-09-13 11:56:48> -- CHA {"channels":[{"name":"Gay Males","mode":"both","characters":0},{"name":"Cuntboys","mode":"both","characters":0},{"name":"Medical Play","mode":"both","characters":0},{"name":"German OOC","mode":"both","characters":0},{"name":"Femdom","mode":"both","characters":0},{"name":"Artists / Writers","mode":"chat","characters":0},{"name":"Humans/Humanoids","mode":"both","characters":0},{"name":"Furries","mode":"both","characters":0},{"name":"Frontpage","mode":"chat","characters":0},{"name":"Lesbians","mode":"both","characters":0},{"name":"RP Bar","mode":"both","characters":0},{"name":"Footplay","mode":"both","characters":0},{"name":"Digimon","mode":"both","characters":0},{"name":"RP Pokefurs","mode":"chat","characters":0},{"name":"Sex Driven LFRP","mode":"ads","characters":0},{"name":"Domination/Submission","mode":"both","characters":0},{"name":"Sadism/Masochism","mode":"both","characters":0},{"name":"Avians","mode":"chat","characters":0},{"name":"Development","mode":"chat","characters":0},{"name":"Sci-fi","mode":"both","characters":0},{"name":"Macro","mode":"both","characters":0},{"name":"Vore RP","mode":"chat","characters":0},{"name":"Hyper Endowed","mode":"both","characters":0},{"name":"World of Warcraft","mode":"both","characters":0},{"name":"The Slob Den","mode":"both","characters":0},{"name":"Canon Characters","mode":"both","characters":0},{"name":"Equestria ","mode":"both","characters":0},{"name":"Cum Lovers","mode":"both","characters":0},{"name":"Obscene Boundaries","mode":"both","characters":0},{"name":"RP Dark City","mode":"both","characters":0},{"name":"Sergals and Sergal lovers","mode":"both","characters":0},{"name":"Ageplay","mode":"both","characters":0},{"name":"Custom Kinks Sharing","mode":"both","characters":0},{"name":"RP Nudist Camp","mode":"both","characters":0},{"name":"Gay Furry Males","mode":"both","characters":0},{"name":"Love and Affection","mode":"both","characters":0},{"name":"Helpdesk","mode":"chat","characters":0},{"name":"Straight Roleplay","mode":"both","characters":0},{"name":"Ass Play","mode":"both","characters":0},{"name":"Force/Non-Con","mode":"both","characters":0},{"name":"Fantasy","mode":"both","characters":0},{"name":"Pregnancy and Impregnation","mode":"both","characters":0},{"name":"Mind Control","mode":"both","characters":0},{"name":"Size Difference","mode":"both","characters":0},{"name":"Gay Canon Males","mode":"both","characters":0},{"name":"Cum Inflation","mode":"both","characters":0},{"name":"Fat and Pudgy","mode":"both","characters":0},{"name":"Micro/Macro","mode":"both","characters":0},{"name":"Femboy","mode":"both","characters":0},{"name":"Muscle Bound","mode":"both","characters":0},{"name":"Transformation","mode":"both","characters":0},{"name":"Warhammer General","mode":"both","characters":0},{"name":"Literate Roleplayers","mode":"both","characters":0},{"name":"Hermaphrodites","mode":"both","characters":0},{"name":"Politics","mode":"both","characters":0},{"name":"All in the Family","mode":"both","characters":0},{"name":"Canon Characters OOC","mode":"both","characters":0},{"name":"Pokefurs","mode":"both","characters":0},{"name":"Latex","mode":"both","characters":0},{"name":"Xenophiles","mode":"chat","characters":0},{"name":"Monster's Lair","mode":"both","characters":0},{"name":"Gamers","mode":"chat","characters":0},{"name":"German IC","mode":"both","characters":0},{"name":"Bondage","mode":"both","characters":0},{"name":"German Furry","mode":"both","characters":0},{"name":"Inflation","mode":"both","characters":0},{"name":"Watersports","mode":"both","characters":0},{"name":"Vore","mode":"both","characters":0},{"name":"Diapers/Infantilism","mode":"both","characters":0},{"name":"Dragons","mode":"both","characters":0},{"name":"Scat Play","mode":"both","characters":0},{"name":"Non-Sex Driven LFRP","mode":"ads","characters":0},{"name":"Ferals / Bestiality","mode":"both","characters":0},{"name":"Transgender","mode":"both","charact<2015-09-13 11:56:48> -- >> STA {"status":"online","statusmsg":"Running Cogito# v0.8.1.12"}
+ers":0},{"name":"Growth","mode":"both","characters":0},{"name":"F-chat Desktop Client","mode":"chat","characters":0},{"name":"Aquatics","mode":"chat","characters":0}]}
+<2015-09-13 11:57:10> -- PIN
+<2015-09-13 11:57:18> -- TPN {"status":"typing","character":"Hank Thompson"}
+<2015-09-13 11:57:19> -- PRI {"character":"Hank Thompson","message":"big rilla butts","recipient":"bill cypher"}
+<2015-09-13 11:57:40> -- PIN
+<2015-09-13 12:28:18> -- IDN {"character":"Bill Cypher"}
+<2015-09-13 12:28:18> -- VAR {"value":4096,"variable":"chat_max"}
+<2015-09-13 12:28:18> -- VAR {"value":50000,"variable":"priv_max"}
+<2015-09-13 12:28:18> -- VAR {"value":50000,"variable":"lfrp_max"}
+<2015-09-13 12:28:18> -- VAR {"value":600,"variable":"lfrp_flood"}
+<2015-09-13 12:28:18> -- VAR {"value":0.5,"variable":"msg_flood"}
+<2015-09-13 12:28:18> -- VAR {"value":"0","variable":"permissions"}
+<2015-09-13 12:28:19> -- VAR {"value":["frontpage","sex driven lfrp","story driven lfrp"],"variable":"icon_blacklist"}
+<2015-09-13 12:28:19> -- HLO {"message":"Welcome. Running F-Chat (0.8.6-Lua). Enjoy your stay."}
+<2015-09-13 12:28:19> -- CON {"count":10}
+<2015-09-13 12:28:19> -- FRL {"characters":[]}
+<2015-09-13 12:28:19> -- IGN {"characters":[],"action":"init"}
+<2015-09-13 12:28:19> -- ADL {"ops":["Aniko","Lutra Mustil","Kira"]}
+<2015-09-13 12:28:25> -- >> ORS
+<2015-09-13 12:28:26> -- >> CHA
+<2015-09-13 12:28:26> -- CHA {"channels":[{"name":"Gay Males","mode":"both","characters":0},{"name":"Cuntboys","mode":"both","characters":0},{"name":"Medical Play","mode":"both","characters":0},{"name":"German OOC","mode":"both","characters":0},{"name":"Femdom","mode":"both","characters":0},{"name":"Artists / Writers","mode":"chat","characters":0},{"name":"Humans/Humanoids","mode":"both","characters":0},{"name":"Furries","mode":"both","characters":0},{"name":"Frontpage","mode":"chat","characters":0},{"name":"Lesbians","mode":"both","characters":0},{"name":"RP Bar","mode":"both","characters":0},{"name":"Footplay","mode":"both","characters":0},{"name":"Digimon","mode":"both","characters":0},{"name":"RP Pokefurs","mode":"chat","characters":0},{"name":"Sex Driven LFRP","mode":"ads","characters":0},{"name":"Domination/Submission","mode":"both","characters":0},{"name":"Sadism/Masochism","mode":"both","characters":0},{"name":"Avians","mode":"chat","characters":0},{"name":"Development","mode":"chat","characters":0},{"name":"Sci-fi","mode":"both","characters":0},{"name":"Macro","mode":"both","characters":0},{"name":"Vore RP","mode":"chat","characters":0},{"name":"Hyper Endowed","mode":"both","characters":0},{"name":"World of Warcraft","mode":"both","characters":0},{"name":"The Slob Den","mode":"both","characters":0},{"name":"Canon Characters","mode":"both","characters":0},{"name":"Equestria ","mode":"both","characters":0},{"name":"Cum Lovers","mode":"both","characters":0},{"name":"Obscene Boundaries","mode":"both","characters":0},{"name":"RP Dark City","mode":"both","characters":0},{"name":"Sergals and Sergal lovers","mode":"both","characters":0},{"name":"Ageplay","mode":"both","characters":0},{"name":"Custom Kinks Sharing","mode":"both","characters":0},{"name":"RP Nudist Camp","mode":"both","characters":0},{"name":"Gay Furry Males","mode":"both","characters":0},{"name":"Love and Affection","mode":"both","characters":0},{"name":"Helpdesk","mode":"chat","characters":0},{"name":"Straight Roleplay","mode":"both","characters":0},{"name":"Ass Play","mode":"both","characters":0},{"name":"Force/Non-Con","mode":"both","characters":0},{"name":"Fantasy","mode":"both","characters":0},{"name":"Pregnancy and Impregnation","mode":"both","characters":0},{"name":"Mind Control","mode":"both","characters":0},{"name":"Size Difference","mode":"both","characters":0},{"name":"Gay Canon Males","mode":"both","characters":0},{"name":"Cum Inflation","mode":"both","characters":0},{"name":"Fat and Pudgy","mode":"both","characters":0},{"name":"Micro/Macro","mode":"both","characters":0},{"name":"Femboy","mode":"both","characters":0},{"name":"Muscle Bound","mode":"both","characters":0},{"name":"Transformation","mode":"both","characters":0},{"name":"Warhammer General","mode":"both","characters":0},{"name":"Literate Roleplayers","mode":"both","characters":0},{"name":"Hermaphrodites","mode":"both","characters":0},{"name":"Politics","mode":"both","characters":0},{"name":"All in the Family","mode":"both","characters":0},{"name":"Canon Characters OOC","mode":"both","characters":0},{"name":"Pokefurs","mode":"both","characters":0},{"name":"Latex","mode":"both","characters":0},{"name":"Xenophiles","mode":"chat","characters":0},{"name":"Monster's Lair","mode":"both","characters":0},{"name":"Gamers","mode":"chat","characters":0},{"name":"German IC","mode":"both","characters":0},{"name":"Bondage","mode":"both","characters":0},{"name":"German Furry","mode":"both","characters":0},{"name":"Inflation","mode":"both","characters":0},{"name":"Watersports","mode":"both","characters":0},{"name":"Vore","mode":"both","characters":0},{"name":"Diapers/Infantilism","mode":"both","characters":0},{"name":"Dragons","mode":"both","characters":0},{"name":"Scat Play","mode":"both","characters":0},{"name":"Non-Sex Driven LFRP","mode":"ads","characters":0},{"name":"Ferals / Bestiality","mode":"both","characters":0},{"name":"Transgender","mode":"both","characters":0},{"name":"Growth","mode":"both","characters":0},{"name":"F-chat Desktop Client","mode":"chat","characters":0},{"name":"Aquatics","mode":"chat","characters":0}]}
+<2015-09-13 12:28:26> -- >> STA {"status":"online","statusmsg":"Running Cogito# v0.8.1.12"}
+<2015-09-13 12:29:10> -- PIN

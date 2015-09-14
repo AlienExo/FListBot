@@ -12,14 +12,16 @@ namespace CogitoSharp.Utils
 	/// </summary>
 	public static class Math
 	{
-		static string[] ones = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen"};
-		static string[] tens = {"teen", "twenty", "thirty", "fourty", "fifty"};
-		static string[] units = {"", "", "hundred", "million", "billion"};
-		static string[] HighScientificUnits = {"kilo", "mega", "giga", "tera", "peta", "exa", "zetta", "yotta"};
-		static string[] LowScientificUnits = {"milli", "micro", "nano", "pico", "femto", "atto", "zetto", "yocto"};
-		const float Inches_to_cm = 2.54f;
-		const float Fl_Oz_to_ml = 29.5735296f;
-		const float Pounds_to_gram = 453.59237f;
+		private static string[] ones				= {"", "one ", "two ", "three ", "four ", "five ", "six ", "seven ", "eight ", "nine ", "ten ", "eleven ", "twelve ", "thirteen ", "fourteen ", "fifteen ", "sixteen ", "seventeen ", "eighteen ", "nineteen "};
+		private static string[] _ones				= {"zero ", "one ", "two ", "three ", "four ", "five ", "six ", "seven ", "eight ", "nine "};
+		private static string[] tens				= {"", "teen ", "twenty ", "thirty ", "fourty ", "fifty ", "sixty ", "seventy ", "eighty ", "ninety "};
+		private static string[] units				= {"", "", "thousand ", "million ", "billion "};
+
+		private static string[] HighScientificUnits = {"kilo ", "mega ", "giga ", "tera ", "peta ", "exa ", "zetta ", "yotta "};
+		private static string[] LowScientificUnits	= {"milli ", "micro ", "nano ", "pico ", "femto ", "atto ", "zetto ", "yocto "};
+		public const float Inches_to_cm		= 2.54f;
+		public const float Fl_Oz_to_ml		= 29.5735296f;
+		public const float Pounds_to_gram	= 453.59237f;
 
 		/// <summary>
 		/// Returns a float[] filled with values for a 'dampened spring' animation.
@@ -60,16 +62,50 @@ namespace CogitoSharp.Utils
 		/// <typeparam name="T">The type of number suppled</typeparam>
 		/// <param name="number">The number</param>
 		/// <returns>A string with the number in spoken form.</returns>
-		public static string numberToSentence<T>(ref T number) where T : IFormattable {
-			string[] _numStr = number.ToString().Split();
-			string[] output = new string[_numStr.Length];
-			for (int i = 0; i < _numStr.Length; i++){
-				if (_numStr[i] == "."){ output[i] = "point"; }
-				else{  }
-			}
-			throw new NotImplementedException("Function has not been implemented");
-		}
+		public static string numberToSentence<T>(T number) where T : IFormattable {
+			if (float.Parse(number.ToString()) == 0f) {return "zero";}
+			string[] _numStr = number.ToString().Split('.');
+			string output = "";
 
+			string[] __numStr = StringManipulation.Chunk(_numStr[0], 3, false);
+			for (int j = 0; j < __numStr.Length; j++){
+				string chunk = __numStr[j];
+				for (int k = 0; k < chunk.Length; k++){
+					int current = int.Parse(chunk[k].ToString());
+					int pos = chunk.Length - k;
+					switch (pos){
+						case 1:
+							output += ones[current];
+							break;
+
+						case 2:
+							int _current = int.Parse(chunk.Substring(k));
+							if (_current <= 19) { output += ones[_current]; k++; }
+							else { output += tens[current]; }
+							break;
+
+						case 3:
+							output += ones[current];
+							output += "hundred ";
+							break;
+					}
+				}
+				output += (__numStr.Length > 1) ? units[__numStr.Length - j] : "";
+			}
+			if (_numStr.Length > 1) {
+				output += "point ";
+				foreach (char c in _numStr[1]){ output += _ones[int.Parse(c.ToString())]; }
+			}
+			
+			return output.TrimEnd(" ".ToCharArray());
+		}
+		
+		//public static string numberToSentence<T>(string numberStr) where T : IFormattable{
+		//	float number = float.Parse(RegularExpressions.Numbers.Match(numberStr).Groups[0].Value);
+		//	_number = (T)number;
+		//	numberToSentence<T>();
+		//}
+		
 		/// <summary>
 		/// Returns a random element from the IEnumerable T
 		/// </summary>
@@ -217,10 +253,8 @@ namespace CogitoSharp.Utils
 			} //if
 			else{
 				string _str = ReverseString(str);
-				Console.WriteLine(_str);
 				string[] result = Enumerable.Range(0, chunks)
 					.Select(i => ReverseString(_str.Substring(i * chunkSize, (i * chunkSize + chunkSize <= str.Length) ? chunkSize : str.Length - i * chunkSize))).Reverse().ToArray<string>(); 
-				Console.WriteLine(result);
 				return result;
 			} //else
 		} //Chunk

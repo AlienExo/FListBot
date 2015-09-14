@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Collections.Concurrent;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -201,12 +203,158 @@ namespace CogitoSharp
 		}
 	}
 
+	[Serializable]
+	public class ConcurrentSet<T> : IEnumerable<T>, ISet<T>, ICollection<T>
+	{
+		private readonly ConcurrentDictionary<T, byte> _dictionary = new ConcurrentDictionary<T, byte>();
+
+		/// <summary> Returns an enumerator that iterates through the collection. </summary>
+		/// <returns> A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection. </returns>
+		public IEnumerator<T> GetEnumerator(){ return _dictionary.Keys.GetEnumerator(); }
+
+		/// <summary> Returns an enumerator that iterates through a collection. </summary>
+		/// <returns> An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection. </returns>
+		IEnumerator IEnumerable.GetEnumerator(){ return GetEnumerator(); }
+
+		/// <summary> Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1"/>. </summary>
+		/// <returns> true if <paramref name="item"/> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1"/>; otherwise, false. This method also returns false if <paramref name="item"/> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1"/>. </returns>
+		/// <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param><exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</exception>
+		public bool Remove(T item){ return TryRemove(item); }
+
+		/// <summary>Gets the number of elements in the set. </summary>
+		public int Count{ get { return _dictionary.Count; } }
+		
+		/// <summary> Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only. </summary>
+		/// <returns> true if the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only; otherwise, false. </returns>
+		public bool IsReadOnly { get { return false; } }
+
+		/// <summary> Gets a value that indicates if the set is empty. </summary>
+		public bool IsEmpty{ get { return _dictionary.IsEmpty; } }
+
+		public ICollection<T> Values{ get { return _dictionary.Keys; } }
+
+		/// <summary>Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1"/>. </summary>
+		/// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
+		/// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</exception>
+		void ICollection<T>.Add(T item){
+			if (!Add(item))
+				throw new ArgumentException("Item already exists in set.");
+		}
+
+		/// <summary> Modifies the current set so that it contains all elements that are present in both the current set and in the specified collection. </summary>
+		/// <param name="other">The collection to compare to the current set.</param><exception cref="T:System.ArgumentNullException"><paramref name="other"/> is null.</exception>
+		public void UnionWith(IEnumerable<T> other){
+			foreach (var item in other)
+				TryAdd(item);
+		}
+
+		/// <summary>Modifies the current set so that it contains only elements that are also in a specified collection.</summary>
+		/// <param name="other">The collection to compare to the current set.</param><exception cref="T:System.ArgumentNullException"><paramref name="other"/> is null.</exception>
+		public void IntersectWith(IEnumerable<T> other){
+			var enumerable = other as IList<T> ?? other.ToArray();
+			foreach (var item in this)
+			{
+				if (!enumerable.Contains(item))
+					TryRemove(item);
+			}
+		}
+
+		/// <summary>Removes all elements in the specified collection from the current set. </summary>
+		/// <param name="other">The collection of items to remove from the set.</param><exception cref="T:System.ArgumentNullException"><paramref name="other"/> is null.</exception>
+		public void ExceptWith(IEnumerable<T> other){
+			foreach (var item in other)
+				TryRemove(item);
+		}
+
+		/// <summary>Modifies the current set so that it contains only elements that are present either in the current set or in the specified collection, but not both.  </summary>
+		/// <param name="other">The collection to compare to the current set.</param><exception cref="T:System.ArgumentNullException"><paramref name="other"/> is null.</exception>
+		public void SymmetricExceptWith(IEnumerable<T> other){
+			throw new NotImplementedException();
+		}
+
+		/// <summary>Determines whether a set is a subset of a specified collection. </summary>
+		/// <returns> true if the current set is a subset of <paramref name="other"/>; otherwise, false.</returns>
+		/// <param name="other">The collection to compare to the current set.</param><exception cref="T:System.ArgumentNullException"><paramref name="other"/> is null.</exception>
+		public bool IsSubsetOf(IEnumerable<T> other){
+			var enumerable = other as IList<T> ?? other.ToArray();
+			return this.AsParallel().All(enumerable.Contains);
+		}
+
+		/// <summary>Determines whether the current set is a superset of a specified collection.</summary>
+		/// <returns>true if the current set is a superset of <paramref name="other"/>; otherwise, false.</returns>
+		/// <param name="other">The collection to compare to the current set.</param><exception cref="T:System.ArgumentNullException"><paramref name="other"/> is null.</exception>
+		public bool IsSupersetOf(IEnumerable<T> other){
+			return other.AsParallel().All(Contains);
+		}
+
+		/// <summary>Determines whether the current set is a correct superset of a specified collection.</summary>
+		/// <returns> true if the <see cref="T:System.Collections.Generic.ISet`1"/> object is a correct superset of <paramref name="other"/>; otherwise, false.</returns>
+		/// <param name="other">The collection to compare to the current set. </param><exception cref="T:System.ArgumentNullException"><paramref name="other"/> is null.</exception>
+		public bool IsProperSupersetOf(IEnumerable<T> other){
+			var enumerable = other as IList<T> ?? other.ToArray();
+			return this.Count != enumerable.Count && IsSupersetOf(enumerable);
+		}
+
+		/// <summary>Determines whether the current set is a property (strict) subset of a specified collection.</summary>
+		/// <returns>true if the current set is a correct subset of <paramref name="other"/>; otherwise, false.</returns>
+		/// <param name="other">The collection to compare to the current set.</param><exception cref="T:System.ArgumentNullException"><paramref name="other"/> is null.</exception>
+		public bool IsProperSubsetOf(IEnumerable<T> other){
+			var enumerable = other as IList<T> ?? other.ToArray();
+			return Count != enumerable.Count && IsSubsetOf(enumerable);
+		}
+
+		/// <summary>Determines whether the current set overlaps with the specified collection.</summary>
+		/// <returns>true if the current set and <paramref name="other"/> share at least one common element; otherwise, false.</returns>
+		/// <param name="other">The collection to compare to the current set.</param><exception cref="T:System.ArgumentNullException"><paramref name="other"/> is null.</exception>
+		public bool Overlaps(IEnumerable<T> other){
+			return other.AsParallel().Any(Contains);
+		}
+
+		/// <summary>Determines whether the current set and the specified collection contain the same elements.</summary>
+		/// <returns>true if the current set is equal to <paramref name="other"/>; otherwise, false.</returns>
+		/// <param name="other">The collection to compare to the current set.</param><exception cref="T:System.ArgumentNullException"><paramref name="other"/> is null.</exception>
+		public bool SetEquals(IEnumerable<T> other){
+			var enumerable = other as IList<T> ?? other.ToArray();
+			return Count == enumerable.Count && enumerable.AsParallel().All(Contains);
+		}
+
+		/// <summary>Adds an element to the current set and returns a value to indicate if the element was successfully added. </summary>
+		/// <returns>true if the element is added to the set; false if the element is already in the set.</returns>
+		/// <param name="item">The element to add to the set.</param>
+		public bool Add(T item){
+			return TryAdd(item);
+		}
+
+		public void Clear(){
+			_dictionary.Clear();
+		}
+
+		public bool Contains(T item){
+			return _dictionary.ContainsKey(item);
+		}
+
+		/// <summary>Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1"/> to an <see cref="T:System.Array"/>, starting at a particular <see cref="T:System.Array"/> index.</summary>
+		/// <param name="array">The one-dimensional <see cref="T:System.Array"/> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1"/>. The <see cref="T:System.Array"/> must have zero-based indexing.</param><param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param><exception cref="T:System.ArgumentNullException"><paramref name="array"/> is null.</exception><exception cref="T:System.ArgumentOutOfRangeException"><paramref name="arrayIndex"/> is less than 0.</exception><exception cref="T:System.ArgumentException"><paramref name="array"/> is multidimensional.-or-The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1"/> is greater than the available space from <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.-or-Type <paramref name="T"/> cannot be cast automatically to the type of the destination <paramref name="array"/>.</exception>
+		public void CopyTo(T[] array, int arrayIndex){
+			Values.CopyTo(array, arrayIndex);
+		}
+
+		public T[] ToArray(){ return _dictionary.Keys.ToArray(); }
+
+		public bool TryAdd(T item){ return _dictionary.TryAdd(item, default(byte)); }
+
+		public bool TryRemove(T item){ 
+			byte donotcare;
+			return _dictionary.TryRemove(item, out donotcare);
+		}
+	}
+
 	/// <summary>Websocket handling, server connection, threading, all that goodness</summary>
     internal static class Core{
 
 		internal static WebSocket websocket = null;
-		internal static volatile HashSet<User> allGlobalUsers = new HashSet<User>();
-        internal static volatile HashSet<Channel> channels = new HashSet<Channel>();
+		internal static volatile ConcurrentSet<User> allGlobalUsers = new ConcurrentSet<User>();
+		internal static volatile ConcurrentSet<Channel> channels = new ConcurrentSet<Channel>();
 		internal static List<User> globalOps = new List<User>();
 		internal static Bitmap DefaultAvatar = null;
 
@@ -228,7 +376,7 @@ namespace CogitoSharp
 				} 
 			}
 			catch (Exception ex){
-				Core.ErrorLog.Log(String.Format("Sending message failed:\n\t{0}\n\t{1}\t{2}", ex.Message, ex.InnerException));
+				Core.ErrorLog.Log(String.Format("Sending message failed:\n\t{0}\n\t{1}\t{2}", ex.Message, ex.InnerException, ex.StackTrace));
 			}
 
 		}
@@ -283,37 +431,36 @@ namespace CogitoSharp
 				Properties.Settings.Default.userAutoComplete = new AutoCompleteStringCollection();
 				Properties.Settings.Default.Save();
 			}
-
+			Utils.StringManipulation.Chunk("1234567890", 3, false);
 			Application.Run(cogitoUI);
         }
 
 		/// <summary>
-		/// Function to Deserialize a HashSet T instance from BinarySerializer-produced files.
+		/// Function to Deserialize a ConcurrentSet T instance from BinarySerializer-produced files.
 		/// </summary>
-		/// <typeparam name="T">The inner type for the HashSet to deserialize, e.g. HashSet User</typeparam>
+		/// <typeparam name="T">The inner type for the ConcurrentSet to deserialize, e.g. ConcurrentSet User</typeparam>
 		/// <param name="TargetObject">The object into which the deserialized data is transmitted.</param>
 		/// <param name="DataBaseFileName">The name of the BinaryFormatted database file to be deserialized. Expects a List T.</param>
 		/// <param name="ContainingFolder">Leave optional (null) to load from Config.AppSettings.DataPath (/data/); else, supply full path to containing folder</param>
 		/// <exception cref="System.ArgumentException">Thrown when the TargetObject's type and the data inside the file do not match.</exception>
 		/// <exception cref=""></exception>
-		private static HashSet<T> DeserializeDatabase<T>(string DataBaseFileName, string ContainingFolder = null){
+		private static ConcurrentSet<T> DeserializeDatabase<T>(string DataBaseFileName, string ContainingFolder = null)
+		{
 			SystemLog.Log("Loading " + typeof(T).Name + " Database...");
-			HashSet<T> TargetObject = new HashSet<T>();
+			ConcurrentSet<T> TargetObject = new ConcurrentSet<T>();
 			try
 			{
 				ContainingFolder = ContainingFolder ?? Config.AppSettings.DataPath;
 				Stream s = File.OpenRead(Path.Combine(ContainingFolder, DataBaseFileName));
 				BinaryFormatter bf = new BinaryFormatter();
-				try{ TargetObject = (HashSet<T>)bf.Deserialize(s); }
+				try { TargetObject = (ConcurrentSet<T>)bf.Deserialize(s); }
 				catch (System.Runtime.Serialization.SerializationException ex) { 
-					Core.ErrorLog.Log(String.Format("Could not deserialize database: {0} {1}", ex.Message, ex.StackTrace)); 
-					TargetObject = new HashSet<T>();
+					Core.ErrorLog.Log(String.Format("Could not deserialize database: {0} {1}", ex.Message, ex.StackTrace));
+					TargetObject = new ConcurrentSet<T>();
 					}
-				catch (Exception e) {
-					Core.ErrorLog.Log(String.Format("Error whilst deserializing database: {0} {1}", e.Message, e.StackTrace));
-					throw new System.ArgumentException("Could not deserialize to type HashSet<" + typeof(T).Name +">."); }
+				catch (Exception e) { Core.ErrorLog.Log(String.Format("Error whilst deserializing database: {0} {1}", e.Message, e.StackTrace)); }
 				s.Close();
-				SystemLog.Log("Deserialized " + typeof(T).Name + " Database and loaded " + ((HashSet<T>)TargetObject).Count() + " entries.");
+				SystemLog.Log("Deserialized " + typeof(T).Name + " Database and loaded " + ((ConcurrentSet<T>)TargetObject).Count() + " entries.");
 			}
 			catch (FileNotFoundException) { } //Do Nothing ¯\_(ツ)_/¯
 			catch (DirectoryNotFoundException) { Directory.CreateDirectory(Config.AppSettings.DataPath); }

@@ -1,0 +1,136 @@
+<2015-09-13 15:16:24> -- IDN {"character":"Cogito"}
+<2015-09-13 15:16:24> -- VAR {"value":4096,"variable":"chat_max"}
+<2015-09-13 15:16:24> -- VAR {"value":50000,"variable":"priv_max"}
+<2015-09-13 15:16:24> -- VAR {"value":50000,"variable":"lfrp_max"}
+<2015-09-13 15:16:24> -- VAR {"value":600,"variable":"lfrp_flood"}
+<2015-09-13 15:16:24> -- VAR {"value":0.5,"variable":"msg_flood"}
+<2015-09-13 15:16:24> -- VAR {"value":"0","variable":"permissions"}
+<2015-09-13 15:16:24> -- VAR {"value":["frontpage","sex driven lfrp","story driven lfrp"],"variable":"icon_blacklist"}
+<2015-09-13 15:16:24> -- HLO {"message":"Welcome. Running F-Chat (0.8.6-Lua). Enjoy your stay."}
+<2015-09-13 15:16:25> -- CON {"count":4236}
+<2015-09-13 15:16:25> -- FRL {"characters":[]}
+<2015-09-13 15:16:25> -- IGN {"characters":[],"action":"init"}
+<2015-09-13 15:16:25> -- ADL {"ops":["Korgin VerAkhul","DEVILS NEVER CRY","Noah Campbell","Gadot","Lothar","Hound of Tindalos","Susannah","Johnathan One","Chromatic","Remilia Zeebach","Ottie","Vecna","Glitter","Streak the Bobcat","Dave the Pangolin","Lutra Mustil","Mortolk","Snow","Voice","Barbarian","SystemsAdministrator","Snow Villiers","Lurue","Overlord Prinny","Aniko","DasaDevil","Natsudra","Gooby","Wonder Woman"]}
+<2015-09-13 15:16:31> -- >> ORS
+<2015-09-13 15:16:32> -- >> CHA
+<2015-09-13 15:16:33> -- FLN {"character":"Anita Von Schaft"}
+<2015-09-13 15:16:33> -- CHA {"channels":[{"name":"All in the Family","mode":"both","characters":231},{"name":"Dragons","mode":"both","characters":235},{"name":"Aquatics","mode":"chat","characters":48},{"name":"Gamers","mode":"chat","characters":164},{"name":"Watersports","mode":"both","characters":128},{"name":"Love and Affection","mode":"both","characters":209},{"name":"Muscle Bound","mode":"both","characters":133},{"name":"Politics","mode":"both","characters":12},{"name":"Literate Roleplayers","mode":"both","characters":227},{"name":"Vore","mode":"both","characters":218},{"name":"Artists / Writers","mode":"both","characters":84},{"name":"Gay Furry Males","mode":"both","characters":139},{"name":"RP Bar","mode":"both","characters":110},{"name":"German Furry","mode":"both","characters":71},{"name":"Story Driven LFRP","mode":"ads","characters":411},{"name":"Cuntboys","mode":"both","characters":73},{"name":"Custom Kinks Sharing","mode":"both","characters":31},{"name":"Xenophiles","mode":"both","characters":96},{"name":"Monster's Lair","mode":"both","characters":274},{"name":"Fantasy","mode":"both","characters":313},{"name":"Ferals / Bestiality","mode":"both","characters":301},{"name":"Femdom","mode":"both","characters":176},{"name":"Hyper Endowed","mode":"both","characters":221},{"name":"Transgender","mode":"both","characters":58},{"name":"Lesbians","mode":"both","characters":157},{"name":"Straight Roleplay","mode":"both","characters":114},{"name":"Canon Characters","mode":"chat","characters":302},{"name":"Ass Play","mode":"both","characters":218},{"name":"German IC","mode":"both","characters":90},{"name":"Avians","mode":"both","characters":76},{"name":"Femboy","mode":"both","characters":204},{"name":"RP Dark City","mode":"both","characters":82},{"name":"Growth","mode":"both","characters":85},{"name":"Fat and Pudgy","mode":"both","characters":141},{"name":"Vore RP","mode":"chat","characters":73},{"name":"Force/Non-Con","mode":"both","characters":274},{"name":"The Slob Den","mode":"both","characters":68},{"name":"Inflation","mode":"both","characters":98},{"name":"Obscene Boundaries","mode":"both","characters":123},{"name":"Frontpage","mode":"chat","characters":180},{"name":"Micro/Macro","mode":"both","characters":112},{"name":"Scat Play","mode":"both","characters":103},{"name":"Humans/Humanoids","mode":"both","characters":135},{"name":"Domination/Submission","mode":"both","characters":316},{"name":"Diapers/Infantilism","mode":"both","characters":79},{"name":"Sadism/Masochism","mode":"both","characters":111},{"name":"Cum Lovers","mode":"both","characters":238},{"name":"Canon Characters OOC","mode":"both","characters":240},{"name":"Ageplay","mode":"both","characters":413},{"name":"Sex Driven LFRP","mode":"ads","characters":1357},{"name":"Cum Inflation","mode":"both","characters":177},{"name":"Mind Control","mode":"both","characters":171},{"name":"Medical Play","mode":"both","characters":44},{"name":"Furries","mode":"both","characters":206},{"name":"Macro","mode":"both","characters":62},{"name":"Pregnancy and Impregnation","mode":"both","characters":267},{"name":"Warhammer General","mode":"both","characters":31},{"name":"Latex","mode":"both","characters":121},{"name":"Transformation","mode":"both","characters":194},{"name":"Helpdesk","mode":"chat","characters":36},{"name":"Sci-fi","mode":"both","characters":190},{"name":"Footplay","mode":"both","characters":129},{"name":"Gay Males","mode":"both","characters":139},{"name":"German OOC","mode":"both","characters":214},{"name":"Pokefurs","mode":"both","characters":180},{"name":"RP Nudist Camp","mode":"both","characters":50},{"name":"Gay Canon Males","mode":"both","characters":60},{"name":"F-chat Desktop Client","mode":"chat","characters":24},{"name":"Development","mode":"chat","characters":14},{"name":"Size Difference","mode":"both","characters":196},{"name":"Equestria ","mode":"both","characters":129},{"name":"Hermaphrodites","mode":"both","characters":246},{"name":"Digimon","mode":"both","characters":64},{"name":"Bondage","mode":"both","characters":209},{"name":"World of Warcraft","mode":"both","characters":201}]}
+<2015-09-13 15:16:33> -- >> STA {"status":"online","statusmsg":"Running Cogito# v0.8.1.12"}
+<2015-09-13 15:16:33> -- FLN {"character":"Asahina Yukimura"}
+<2015-09-13 15:16:34> -- FLN {"character":"Erebus Grey"}
+<2015-09-13 15:16:34> -- FLN {"character":"Rawa Samaraka"}
+<2015-09-13 15:16:35> -- FLN {"character":"Fraulein Wolf"}
+<2015-09-13 15:16:36> -- FLN {"character":"Xander Cage"}
+<2015-09-13 15:16:40> -- FLN {"character":"Khell"}
+<2015-09-13 15:16:41> -- FLN {"character":"Zuxa Leilani"}
+<2015-09-13 15:16:42> -- FLN {"character":"Doctor Mara"}
+<2015-09-13 15:16:42> -- FLN {"character":"Tershena"}
+<2015-09-13 15:16:43> -- FLN {"character":"Mia Mably"}
+<2015-09-13 15:16:43> -- FLN {"character":"Zekei"}
+<2015-09-13 15:16:45> -- FLN {"character":"Maya Rose"}
+<2015-09-13 15:16:50> -- FLN {"character":"Aisha Smith"}
+<2015-09-13 15:16:53> -- FLN {"character":"Typh-bro"}
+<2015-09-13 15:16:54> -- PIN
+<2015-09-13 15:16:58> -- FLN {"character":"Ty Typhlosion"}
+<2015-09-13 15:16:58> -- FLN {"character":"PhantomDark"}
+<2015-09-13 15:17:02> -- FLN {"character":"The Ward"}
+<2015-09-13 15:17:04> -- FLN {"character":"Mushussu"}
+<2015-09-13 15:17:06> -- FLN {"character":"Fanyi"}
+<2015-09-13 15:17:07> -- FLN {"character":"Raske"}
+<2015-09-13 15:17:09> -- FLN {"character":"Alygosa-"}
+<2015-09-13 15:17:14> -- FLN {"character":"Marcus Smithson"}
+<2015-09-13 15:17:19> -- FLN {"character":"ChrysalisTheDeceiver"}
+<2015-09-13 15:17:20> -- FLN {"character":"Chef Bon Bon"}
+<2015-09-13 15:17:22> -- FLN {"character":"Heat the Arcanine"}
+<2015-09-13 15:17:24> -- PIN
+<2015-09-13 15:17:28> -- >> JCH {"channel":"ADH-8320afae25c2a9659590"}
+<2015-09-13 15:17:29> -- JCH {"title":"Gay Human(oids)","channel":"ADH-8320afae25c2a9659590","character":{"identity":"Cogito"}}
+<2015-09-13 15:17:29> -- COL {"oplist":["Cedric","Dregan Stouthilt","Kame Kammaii","Lemongrab","Vegeta","Evil Gadget","Valorin","Shuuhei Amagasa","Pom"],"channel":"ADH-8320afae25c2a9659590"}
+<2015-09-13 15:17:29> -- ICH {"channel":"ADH-8320afae25c2a9659590","mode":"chat","users":[{"identity":"Mistral Winterseed"},{"identity":"Lemongrab"},{"identity":"Nuvo Vindi"},{"identity":"Ricardo Sanchez"},{"identity":"Ralph Thomsson"},{"identity":"Chris Forge"},{"identity":"Rin Matsuoka -"},{"identity":"Bareback Daddy"},{"identity":"rahne"},{"identity":"Devin Otter"},{"identity":"Cogito"}]}
+<2015-09-13 15:17:29> -- CDS {"description":"[color=red][b]◄◁◄|| Welcome! To #Gay Human(oids)||►▷►[/b][/color]\nThis is a room for adult male characters who enjoy Male Humanoids. Pretty simple! :V [b]All genders/characters 17+ are welcome to lurk and chat. RP is reserved for male-genders.[/b]\n\nWhile we do have a few rules the main purpose is to enjoy yourself and meet like minded players to roleplay your various characters with.\n\n[color=red]|| ＲＵＬＥＳ ||[/color]\n[color=red]♂[/color] You must be 17+  and your character must look an adult to be in this room. No exceptions.\n\n[color=red]♂[/color] While any gender, any character over the age of 17 that looks like an adult is allowed to lurk and chat in the channel, only [b]MALE-GENDERS[/b] (That's males, Cuntboys, Male-herms and Female-to-Male Transgenders) may do public RP. Little joke RP is OK between all genders but serious RP is only for males. Also, while femboys are allowed if your femboy has no masculine features what-so-ever, they are not allowed to post. Your character must have SOME masculine traits outside of a penis. If you post seriously on a fem-gender or a female-esq femboy you will be warned. If you do it again. You will be kicked/banned.\n\n[color=red]♂[/color] You must be playing a fictional character. No real life people. Living or dead.\n\n[color=red]♂[/color] Please tag any link images if they are NSFW or contain a kink that is not general. This is common respect.\n\n[color=red]♂[/color] Furries are more than welcome if they are willing to play with humanoids. Furries may not engage in serious RP with another furry without a humanoid involved. This defeats the purpose of the room.\n\n[color=red]♂[/color]  All serious RP must consist of a semi-para or better. We have a moderate literacy rule in effect. One-liners are allowed for silly stuff but if your RP goes on for more than ten minutes as short 1-2 liners you will be asked to step it up or move it to a PM.\n\n[color=red]♂[/color] If a mod asks you to move a hard kink out of the main room. You move it.\n\n[color=red]♂[/color] You may post one Ad an hour after you have permission from a moderator to do so. You must give a mod a preview of your ad and it must be on theme with the room and be more than 'I want dicks'. Failure to do so will result in a kick. Failure to do so multiple times will get you banned from the room. \n\n[color=red]♂[/color]Please keep the shitposting to a minimum. If the room is quiet do not fill it with constant yawning or small shits actions. Start up an actual conversation or make an actual post. \n\n[color=red]♂[/color] No drama and no insulting other people's characters just because they don't get your dick hard. If you have something negative to say about someone's character keep it to yourself or you will be banned. We do not tolerate this sort of shit. This room was founded on getting away from hate for playing what you want.\n\nAll rules fall under a warn/kick/ban policy. If your character does not meet the requirements of the room they will just be kicked. We do not owe you an explanation. You will be given 5 minutes to read the rules and if you don't leave on your own accord you will be kicked. Nothing personal! We just have a  character type requirement. :)\n\n[color=red]♂ ) Room Setting:[/color] Room setting is a Bar and Grill type all universe thing. It literally exists between the folds of time and space so any sort of male character can be in here. Canons, Originals, Fan characters. Just muck up and have a drink.\n\n[color=red][b]ＳＴＡＦＦ[/b][/color]\n♥ Owner – [icon]Cedric[/icon]\n♥  Co-Owner - [icon]Shuuhei Amagasa[/icon]\n♦ Moderators - [icon]Dregan Stouthilt[/icon][icon]Noah Campbell[/icon][icon]Valorin[/icon] [icon]Vegeta[/icon]\n\nOther fun rooms:\n[session=The Chatatorium]ADH-292688c23780482e7f34[/session]  - To talk, vent or just make new friends.\n[session=Fantastic Gay Beasts And Where To Find Them]ADH-276e174be94e3223fb57[/session] Male Genders Only. 16+\n[session=Highly Fantastical Fun: A High Fantasy Room]ADH-c01b96e7ea950194185e[/session] All Genders. 18+ Fantasy room.\n[session=The Chub Hub]ADH-32b697a5d7701dabe596[/session] for chubby males and those that enjoy them.\n[session=Just Talk]ADH-2bc92dfc940fb5a762cc[/session] OOC chat room for just that. Just Talking.\n[session=Childhood Ruiners Anonymous]ADH-0f36f179aee79b59b275[/session] - Rule 34 Room. All genders/All Ages.\n[session=New York Sewers]ADH-d49aec159c446f70b9d0[/session] - TMNT room.\n\n \n[color=red][u][b]Do not whine or complain if the room is quiet. The room does not exist to entertain you. Want some excitement? Pull out your balls 'n' start some up.[/b][/u][/color]","channel":"ADH-8320afae25c2a9659590"}
+<2015-09-13 15:17:30> -- FLN {"character":"Amelia McHannon"}
+<2015-09-13 15:17:30> -- FLN {"character":"Karen Star"}
+<2015-09-13 15:17:30> -- FLN {"character":"Nite the Dragon"}
+<2015-09-13 15:17:36> -- FLN {"character":"Rajhin"}
+<2015-09-13 15:17:38> -- FLN {"character":"Jail Bait"}
+<2015-09-13 15:17:39> -- FLN {"character":"Camilla Lesley"}
+<2015-09-13 15:17:39> -- FLN {"character":"Nelisa"}
+<2015-09-13 15:17:39> -- FLN {"character":"Iris Floss"}
+<2015-09-13 15:17:40> -- FLN {"character":"Isha"}
+<2015-09-13 15:17:44> -- FLN {"character":"Suzhu Jihnol"}
+<2015-09-13 15:17:46> -- FLN {"character":"Tiffany Snowdrop"}
+<2015-09-13 15:17:49> -- FLN {"character":"Lavinia Pardalis"}
+<2015-09-13 15:17:53> -- FLN {"character":"Kaeil"}
+<2015-09-13 15:17:54> -- PIN
+<2015-09-13 15:18:03> -- FLN {"character":"ADAR God of the End"}
+<2015-09-13 15:18:08> -- FLN {"character":"Targar Donnerfaust"}
+<2015-09-13 15:18:09> -- FLN {"character":"Amanda Xatau"}
+<2015-09-13 15:18:14> -- FLN {"character":"Sandra Suhkov"}
+<2015-09-13 15:18:17> -- FLN {"character":"Emma---Watson"}
+<2015-09-13 15:18:19> -- FLN {"character":"Joey Adams"}
+<2015-09-13 15:18:22> -- FLN {"character":"Farion Garabor"}
+<2015-09-13 15:18:24> -- FLN {"character":"Liram"}
+<2015-09-13 15:18:24> -- PIN
+<2015-09-13 15:18:26> -- FLN {"character":"Kradre"}
+<2015-09-13 15:18:27> -- JCH {"title":"Gay Human(oids)","channel":"ADH-8320afae25c2a9659590","character":{"identity":"Exo"}}
+<2015-09-13 15:18:30> -- FLN {"character":"Relm Arrowny"}
+<2015-09-13 15:18:30> -- FLN {"character":"Peteishere"}
+<2015-09-13 15:18:35> -- FLN {"character":"Snorlaxxx"}
+<2015-09-13 15:18:36> -- FLN {"character":"Bethany Saryn"}
+<2015-09-13 15:18:37> -- FLN {"character":"Caroline Roth"}
+<2015-09-13 15:18:42> -- FLN {"character":"Chubby Puppy"}
+<2015-09-13 15:18:42> -- FLN {"character":"Joey Adams"}
+<2015-09-13 15:18:44> -- FLN {"character":"Damian Faust"}
+<2015-09-13 15:18:45> -- FLN {"character":"Samuel Powers"}
+<2015-09-13 15:18:48> -- FLN {"character":"Vivii"}
+<2015-09-13 15:18:49> -- FLN {"character":"Jenna Tailsko Prower"}
+<2015-09-13 15:18:49> -- FLN {"character":"Divine Girl"}
+<2015-09-13 15:18:52> -- FLN {"character":"Tershena"}
+<2015-09-13 15:18:54> -- FLN {"character":"Ailla Swiftwing"}
+<2015-09-13 15:18:54> -- PIN
+<2015-09-13 15:18:59> -- FLN {"character":"Ronald the Rhino"}
+<2015-09-13 15:19:00> -- FLN {"character":"Vesper Twinsouled"}
+<2015-09-13 15:19:00> -- FLN {"character":"Super Girl"}
+<2015-09-13 15:19:05> -- FLN {"character":"Reyna Slambrough"}
+<2015-09-13 15:19:08> -- FLN {"character":"Lily Starr"}
+<2015-09-13 15:19:12> -- FLN {"character":"Alice Shadowscale"}
+<2015-09-13 15:19:13> -- FLN {"character":"David Blackthorne"}
+<2015-09-13 15:19:14> -- FLN {"character":"Varilon"}
+<2015-09-13 15:19:17> -- FLN {"character":"Garret Jefferies"}
+<2015-09-13 15:19:18> -- FLN {"character":"Caroline Roth"}
+<2015-09-13 15:19:18> -- FLN {"character":"Conquerante Balorea"}
+<2015-09-13 15:19:20> -- FLN {"character":"Adrian Coontouk"}
+<2015-09-13 15:19:21> -- FLN {"character":"Talia Emberrose"}
+<2015-09-13 15:19:25> -- PIN
+<2015-09-13 15:19:25> -- FLN {"character":"Tibserai"}
+<2015-09-13 15:19:29> -- FLN {"character":"Exiled Ones"}
+<2015-09-13 15:19:34> -- FLN {"character":"ivel"}
+<2015-09-13 15:19:43> -- FLN {"character":"Blossy"}
+<2015-09-13 15:19:46> -- FLN {"character":"Spazy the ram"}
+<2015-09-13 15:19:47> -- FLN {"character":"Horsegirl Zuri"}
+<2015-09-13 15:19:47> -- FLN {"character":"Hyakia"}
+<2015-09-13 15:19:47> -- FLN {"character":"Kalistra Weissklaue"}
+<2015-09-13 15:19:47> -- FLN {"character":"Alan Runehand"}
+<2015-09-13 15:19:49> -- FLN {"character":"Mecka"}
+<2015-09-13 15:19:54> -- PIN
+<2015-09-13 15:19:55> -- FLN {"character":"BIGJORDAN"}
+<2015-09-13 15:19:57> -- FLN {"character":"Theresa Landry"}
+<2015-09-13 15:20:00> -- FLN {"character":"Ursula"}
+<2015-09-13 15:20:01> -- FLN {"character":"Xaiannia"}
+<2015-09-13 15:20:03> -- FLN {"character":"Gareth Marcus"}
+<2015-09-13 15:20:04> -- FLN {"character":"Kaibo Coldwind"}
+<2015-09-13 15:20:07> -- JCH {"title":"Gay Human(oids)","channel":"ADH-8320afae25c2a9659590","character":{"identity":"The Meat Market"}}
+<2015-09-13 15:20:07> -- FLN {"character":"Jokaru"}
+<2015-09-13 15:20:08> -- FLN {"character":"Lilith - Sasha"}
+<2015-09-13 15:20:11> -- FLN {"character":"Orin Sparks"}
+<2015-09-13 15:20:13> -- FLN {"character":"Sarah dMeisha"}
+<2015-09-13 15:20:14> -- FLN {"character":"Danielle Yuri"}
+<2015-09-13 15:20:19> -- FLN {"character":"GJow"}
+<2015-09-13 15:20:22> -- FLN {"character":"Ayat"}
+<2015-09-13 15:20:24> -- FLN {"character":"Marhyan"}
+<2015-09-13 15:20:24> -- PIN
+<2015-09-13 15:20:27> -- FLN {"character":"Isiltir"}
+<2015-09-13 15:20:28> -- FLN {"character":"Orin Sparks"}
+<2015-09-13 15:20:37> -- FLN {"character":"Ourania Isiliyathir"}
+<2015-09-13 15:20:43> -- FLN {"character":"Void_User"}
+<2015-09-13 15:20:46> -- FLN {"character":"KK Bowser"}

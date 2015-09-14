@@ -36,8 +36,6 @@ namespace CogitoSharp
 		/// <summary>Channel name, in human-readable format</summary>
 		internal string name;
 
-		/// <summary> Contains the messages for the channel; contents are shoved into the channel's message box on tab change. </summary>
-		string[] channelBuffer = new string[Config.AppSettings.MessageBufferSize];
 
 		/// <summary> Channel mode - chat only, ads only, both. </summary>
 		internal ChannelMode mode = ChannelMode.both;
@@ -75,7 +73,7 @@ namespace CogitoSharp
 			c.Send();
 			if (CogitoUI.chatUI.InvokeRequired){
 				ChatUI.AddChatTabCallback a = new ChatUI.AddChatTabCallback(CogitoUI.chatUI.chatTabs.TabPages.Add);
-				CogitoUI.chatUI.Invoke(a, new object[] { this.chanTab });
+				CogitoUI.chatUI.Invoke(a, new object[] { CogitoUI.chatUI });
 			}
 			else { CogitoUI.chatUI.chatTabs.TabPages.Add(this.chanTab); }
 			this.ChannelLog = new IO.Logging.LogFile(this.name);
@@ -91,7 +89,7 @@ namespace CogitoSharp
 			if (CogitoUI.chatUI.InvokeRequired)
 			{
 				ChatUI.RemoveChatTabCallback _a = new ChatUI.RemoveChatTabCallback(CogitoUI.chatUI.chatTabs.TabPages.Add);
-				CogitoUI.chatUI.Invoke(_a, new object[] { this.chanTab });
+				CogitoUI.chatUI.Invoke(_a, new object[] { CogitoUI.chatUI });
 			}
 			else { CogitoUI.chatUI.chatTabs.TabPages.Remove(this.chanTab); }
 			this.ChannelLog.Dispose();
@@ -121,10 +119,10 @@ namespace CogitoSharp
 		internal void MessageReceived(CogitoSharp.IO.Message m){
 			string _m = m.ToString();
 			this.ChannelLog.LogRaw(_m);
-			if (this.channelBuffer.Length == Config.AppSettings.MessageBufferSize){ Array.Copy(this.channelBuffer, 1, this.channelBuffer, 0, this.channelBuffer.Length - 1);  }
-			this.channelBuffer[this.channelBuffer.Length + 1] = m.ToString();
+			if (this.chanTab.messageBuffer.Length == Config.AppSettings.MessageBufferSize) { Array.Copy(this.chanTab.messageBuffer, 1, this.chanTab.messageBuffer, 0, this.chanTab.messageBuffer.Length - 1); }
+			this.chanTab.messageBuffer[this.chanTab.messageBuffer.Length + 1] = m.ToString();
 			if (!CogitoUI.chatUI.chatTabs.TabPages.Contains(this.chanTab)) { CogitoUI.chatUI.chatTabs.TabPages.Add(this.chanTab); }
-			//TODO: Flash tab			
+			//this.chanTab.Flash(); //TODO: Flash tab			
 		}
 
 		/// <summary>Generic destrutor, closes associated TabPage</summary>

@@ -25,6 +25,10 @@ namespace CogitoSharp
 
 		private void characterSelectButton_Click(object sender, EventArgs e)
 		{
+			if ((DateTime.Now - Account.LoginKey.ticketTaken) >= Config.AppSettings.ticketLifetime) { 
+				string _dummy;
+				Account.login(this.loginUserField.Text, this.loginPasswordField.Text, out _dummy);
+			}
 			Account.characterSelect((string)this.characterSelectBox.SelectedItem);
 			this.Hide();
 			Core.OwnUser = new User((string)this.characterSelectBox.SelectedItem); //set the ref needed for the GUI to construct; else it fails with 0 items due to ~scroll bars~
@@ -84,7 +88,6 @@ namespace CogitoSharp
 							Properties.Settings.Default.PWEntropy = System.Convert.ToBase64String(entropy);
 							Properties.Settings.Default.PWLen = encryptedPW.Length;
 							Properties.Settings.Default.Save();
-							fs.Close();
 						}
 					}
 

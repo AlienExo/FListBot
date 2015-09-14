@@ -4,8 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Timers;
+using System.Web;
 using System.Windows.Forms;
 using Newtonsoft.Json;
+using DNA.Text;
 
 using CogitoSharp;
 
@@ -33,7 +35,7 @@ namespace CogitoSharp.IO
 
 		public SystemCommand(string rawmessage){
 			this.OpCode = rawmessage.Substring(0, 3);
-			if (rawmessage.Length > 4) { this.Data = JsonConvert.DeserializeObject<Dictionary<string, object>>(rawmessage.Substring(4)); }
+			if (rawmessage.Length > 4) { this.Data = JsonConvert.DeserializeObject<Dictionary<string, object>>(HttpUtility.HtmlDecode(rawmessage.Substring(4))); }
 			else { this.Data = null; }
 		}
 
@@ -57,27 +59,29 @@ namespace CogitoSharp.IO
 		/// <summary> Minimum number of milliseconds to wait in between sending chat messages (flood avoidance)</summary>
 		internal static int chat_flood = 550;
 		
-		internal string message{
+		internal string Body{
 			get { return this.Data["message"].ToString(); }
-			set{ this.Data["message"] = value; }
+			set{ this.Data["message"] = (string)DNA.Text.TextEngine.BBCode(value); }
 		}
 
 		internal string[] args { 
-			get { return this.message.Split(' '); } 
-			set	{ this.args = value; this.message = string.Join(" ", this.args); }
+			get { return this.Body.Split(' '); } 
+			set	{ this.args = value; this.Body = string.Join(" ", this.args); }
 			}
 
-		public Message(SystemCommand s)	: base(){
+		public Message(SystemCommand s){
 			this.OpCode = s.OpCode;
+			this.Data = s.Data;
 			this.sourceUser = this.Data.ContainsKey("character") ? Core.getUser((string)this.Data["character"]) : null;
 			this.sourceChannel = this.Data.ContainsKey("channel") ? Core.getChannel((string)this.Data["channel"]) : null;
 			this.Data = s.Data;
+			this.Body = this.Data["message"].ToString();
 		}
 
 		public Message(string messageBody, Message parentMessage) : base(parentMessage) { 
 			this.sourceUser = parentMessage.sourceUser;
 			this.sourceChannel = parentMessage.sourceChannel;	
-			this.message = messageBody;	
+			this.Body = messageBody;	
 		}
 
 		public Message() : base() { }
@@ -95,16 +99,16 @@ namespace CogitoSharp.IO
 
 			//This should, in theory, make sure we don't send any too-long messages.
 			//y u no autosplit your buffer
-			int MessageLength = System.Text.Encoding.UTF8.GetByteCount(this.message);
+			int MessageLength = System.Text.Encoding.UTF8.GetByteCount(this.Body);
 			int MaxLength = this.OpCode == "MSG" ? Message.chat_max : Message.priv_max;
 			if (MessageLength > MaxLength) {
 				List<Message> messages = new List<Message>();
 				Message subMessage = new Message("", this);
 				messages.Add(this);
 				for (int i = 0; MessageLength > MaxLength; i++){
-					subMessage.message.Insert(subMessage.message.Length, this.message[this.message.Length - i].ToString());
-					this.message = this.message.Substring(0, this.message.Length - 1);
-					MessageLength = System.Text.Encoding.UTF8.GetByteCount(this.message);
+					subMessage.Body.Insert(subMessage.Body.Length, this.Body[this.Body.Length - i].ToString());
+					this.Body = this.Body.Substring(0, this.Body.Length - 1);
+					MessageLength = System.Text.Encoding.UTF8.GetByteCount(this.Body);
 					messages.Add(subMessage);
 				}
 				messages.ForEach(x => x.Send()); //If we did this recursively, the last subMessage would send first,[ chunks | to reversed  | leading ]
@@ -112,7 +116,7 @@ namespace CogitoSharp.IO
 			base.Send();
 		}
 
-		internal int getByteLength(){ return (System.Text.Encoding.UTF8.GetByteCount(this.message)); }
+		internal int getByteLength(){ return (System.Text.Encoding.UTF8.GetByteCount(this.Body)); }
 
 		/// <summary>
 		/// Replies to the message by posting to the same user/channel where the Message originated
@@ -196,10 +200,10 @@ namespace CogitoSharp.IO
 			protected virtual void Dispose(bool disposing){
 				if (!this.disposed){
 					if (disposing){
+						this.logger.Dispose();
+						this.flushTimer.Dispose();
 						// Free other state (managed objects).
 					}
-					this.flushTimer.Stop();
-					this.flushTimer.Dispose();
 					this.disposed = true;
 				}
 			}

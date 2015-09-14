@@ -14,7 +14,9 @@ C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Release\CogitoSha
 C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Release\CogitoSharp.csproj.GenerateResource.Cache
 C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Release\CogitoSharp.exe
 C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Release\CogitoSharp.pdb
-C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Release\CogitoSharp.FriendsList.resources
 C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Release\CogitoSharp.Gimmicks.RPAdDeployer.resources
 C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Release\CogitoSharp.Gimmicks.CASIE.resources
-C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Release\CogitoSharp.Debug.ConsoleTextBox.resources
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Release\CogitoSharp.ChannelList.resources
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Release\CogitoSharp.Debug.CogitoConsole.resources
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Release\CogitoSharp.Gimmicks.Scanner.resources
+C:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\obj\Release\CogitoSharp.csprojResolveAssemblyReference.cache

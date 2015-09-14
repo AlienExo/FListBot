@@ -1,0 +1,113 @@
+<2015-09-08 09:56:37> -- Error in Websocket: An exception has occurred while receiving a message. WebSocketSharp.WebSocketException: The header part of a frame cannot be read from the data source.
+   bei WebSocketSharp.WebSocketFrame.<>c__DisplayClass7.<ReadAsync>b__6(Byte[] header)
+   bei WebSocketSharp.Ext.<>c__DisplayClass6.<ReadBytesAsync>b__5(IAsyncResult ar)
+<2015-09-08 10:35:28> -- Error in Websocket: An exception has occurred while receiving a message. WebSocketSharp.WebSocketException: The header part of a frame cannot be read from the data source.
+   bei WebSocketSharp.WebSocketFrame.<>c__DisplayClass7.<ReadAsync>b__6(Byte[] header)
+   bei WebSocketSharp.Ext.<>c__DisplayClass6.<ReadBytesAsync>b__5(IAsyncResult ar)
+<2015-09-08 10:40:34> -- Error in Websocket: An exception has occurred while receiving a message. WebSocketSharp.WebSocketException: The header part of a frame cannot be read from the data source.
+   bei WebSocketSharp.WebSocketFrame.<>c__DisplayClass7.<ReadAsync>b__6(Byte[] header)
+   bei WebSocketSharp.Ext.<>c__DisplayClass6.<ReadBytesAsync>b__5(IAsyncResult ar)
+<2015-09-08 11:15:51> -- Error in Websocket: An exception has occurred while receiving a message. WebSocketSharp.WebSocketException: The header part of a frame cannot be read from the data source.
+   bei WebSocketSharp.WebSocketFrame.<>c__DisplayClass7.<ReadAsync>b__6(Byte[] header)
+   bei WebSocketSharp.Ext.<>c__DisplayClass6.<ReadBytesAsync>b__5(IAsyncResult ar)
+<2015-09-08 11:16:57> -- Error in Websocket: An exception has occurred while receiving a message. WebSocketSharp.WebSocketException: The header part of a frame cannot be read from the data source.
+   bei WebSocketSharp.WebSocketFrame.<>c__DisplayClass7.<ReadAsync>b__6(Byte[] header)
+   bei WebSocketSharp.Ext.<>c__DisplayClass6.<ReadBytesAsync>b__5(IAsyncResult ar)
+<2015-09-08 11:19:25> -- Error in Websocket: An exception has occurred while receiving a message. WebSocketSharp.WebSocketException: The header part of a frame cannot be read from the data source.
+   bei WebSocketSharp.WebSocketFrame.<>c__DisplayClass7.<ReadAsync>b__6(Byte[] header)
+   bei WebSocketSharp.Ext.<>c__DisplayClass6.<ReadBytesAsync>b__5(IAsyncResult ar)
+<2015-09-08 11:25:51> -- Error in Websocket: An exception has occurred while receiving a message. WebSocketSharp.WebSocketException: The header part of a frame cannot be read from the data source.
+   bei WebSocketSharp.WebSocketFrame.<>c__DisplayClass7.<ReadAsync>b__6(Byte[] header)
+   bei WebSocketSharp.Ext.<>c__DisplayClass6.<ReadBytesAsync>b__5(IAsyncResult ar)
+<2015-09-08 11:25:51> -- Error whilst parsing channel list: Ungültiger threadübergreifender Vorgang: Der Zugriff auf das Steuerelement  erfolgte von einem anderen Thread als dem Thread, für den es erstellt wurde.
+<2015-09-08 15:18:06> -- Private Channel Parsing failed:
+	Der Objektverweis wurde nicht auf eine Objektinstanz festgelegt.
+	
+<2015-09-08 15:41:36> -- Private Channel Parsing failed:
+	Der Objektverweis wurde nicht auf eine Objektinstanz festgelegt.
+	
+<2015-09-09 11:07:03> -- Error whilst decrypting stored password: Die Daten sind unzulässig.
+     bei System.Security.Cryptography.ProtectedData.Unprotect(Byte[] encryptedData, Byte[] optionalEntropy, DataProtectionScope scope)
+   bei CogitoSharp.LoginForm.loginForm_Load(Object sender, EventArgs e) in c:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\Login.cs:Zeile 114.
+<2015-09-09 11:07:44> -- Private Channel Parsing failed:
+	Der Objektverweis wurde nicht auf eine Objektinstanz festgelegt.
+	
+<2015-09-09 12:25:41> -- Error whilst decrypting stored password: Die Daten sind unzulässig.
+     bei System.Security.Cryptography.ProtectedData.Unprotect(Byte[] encryptedData, Byte[] optionalEntropy, DataProtectionScope scope)
+   bei CogitoSharp.LoginForm.loginForm_Load(Object sender, EventArgs e) in c:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\Login.cs:Zeile 114.
+<2015-09-09 12:25:55> -- Error in Websocket: An exception has occurred during an OnMessage event. System.InvalidOperationException: Ungültiger threadübergreifender Vorgang: Der Zugriff auf das Steuerelement console erfolgte von einem anderen Thread als dem Thread, für den es erstellt wurde.
+   bei System.Windows.Forms.Control.get_Handle()
+   bei System.Windows.Forms.TextBoxBase.GetSelectionStartAndLength(Int32& start, Int32& length)
+   bei System.Windows.Forms.TextBoxBase.AppendText(String text)
+   bei CogitoSharp.IO.Logging.LogFile.Log(String s) in c:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\IO.cs:Zeile 142.
+   bei CogitoSharp.Core.OnWebsocketMessage(Object sender, MessageEventArgs e) in c:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\Program.cs:Zeile 344.
+   bei WebSocketSharp.Ext.Emit[TEventArgs](EventHandler`1 eventHandler, Object sender, TEventArgs e)
+   bei WebSocketSharp.WebSocket.<>c__DisplayClass19.<startReceiving>b__17(WebSocketFrame frame)
+<2015-09-09 12:25:56> -- Error in Websocket: An exception has occurred while receiving a message. WebSocketSharp.WebSocketException: The header part of a frame cannot be read from the data source.
+   bei WebSocketSharp.WebSocketFrame.<>c__DisplayClass7.<ReadAsync>b__6(Byte[] header)
+   bei WebSocketSharp.Ext.<>c__DisplayClass6.<ReadBytesAsync>b__5(IAsyncResult ar)
+<2015-09-09 12:30:43> -- Error in Websocket: An exception has occurred during an OnMessage event. System.InvalidOperationException: Ungültiger threadübergreifender Vorgang: Der Zugriff auf das Steuerelement console erfolgte von einem anderen Thread als dem Thread, für den es erstellt wurde.
+   bei System.Windows.Forms.Control.get_Handle()
+   bei System.Windows.Forms.TextBoxBase.GetSelectionStartAndLength(Int32& start, Int32& length)
+   bei System.Windows.Forms.TextBoxBase.AppendText(String text)
+   bei CogitoSharp.IO.Logging.LogFile.Log(String s) in c:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\IO.cs:Zeile 142.
+   bei CogitoSharp.Core.OnWebsocketMessage(Object sender, MessageEventArgs e) in c:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\Program.cs:Zeile 344.
+   bei WebSocketSharp.Ext.Emit[TEventArgs](EventHandler`1 eventHandler, Object sender, TEventArgs e)
+   bei WebSocketSharp.WebSocket.<>c__DisplayClass19.<startReceiving>b__17(WebSocketFrame frame)
+<2015-09-09 12:30:43> -- Error in Websocket: An exception has occurred while receiving a message. WebSocketSharp.WebSocketException: The header part of a frame cannot be read from the data source.
+   bei WebSocketSharp.WebSocketFrame.<>c__DisplayClass7.<ReadAsync>b__6(Byte[] header)
+   bei WebSocketSharp.Ext.<>c__DisplayClass6.<ReadBytesAsync>b__5(IAsyncResult ar)
+<2015-09-09 13:25:12> -- Error in Websocket: An exception has occurred during an OnMessage event. System.InvalidOperationException: Ungültiger threadübergreifender Vorgang: Der Zugriff auf das Steuerelement console erfolgte von einem anderen Thread als dem Thread, für den es erstellt wurde.
+   bei System.Windows.Forms.Control.get_Handle()
+   bei System.Windows.Forms.TextBoxBase.GetSelectionStartAndLength(Int32& start, Int32& length)
+   bei System.Windows.Forms.TextBoxBase.AppendText(String text)
+   bei CogitoSharp.IO.Logging.LogFile.Log(String s) in c:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\IO.cs:Zeile 142.
+   bei CogitoSharp.Core.OnWebsocketMessage(Object sender, MessageEventArgs e) in c:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\Program.cs:Zeile 344.
+   bei WebSocketSharp.Ext.Emit[TEventArgs](EventHandler`1 eventHandler, Object sender, TEventArgs e)
+   bei WebSocketSharp.WebSocket.<>c__DisplayClass19.<startReceiving>b__17(WebSocketFrame frame)
+<2015-09-09 13:25:13> -- Error in Websocket: An exception has occurred while receiving a message. WebSocketSharp.WebSocketException: The header part of a frame cannot be read from the data source.
+   bei WebSocketSharp.WebSocketFrame.<>c__DisplayClass7.<ReadAsync>b__6(Byte[] header)
+   bei WebSocketSharp.Ext.<>c__DisplayClass6.<ReadBytesAsync>b__5(IAsyncResult ar)
+<2015-09-13 11:50:04> -- Invocation of Method LIS failed:
+	Ein Aufrufziel hat einen Ausnahmefehler verursacht.
+	System.ArgumentNullException: Der Wert darf nicht NULL sein.
+   bei System.Threading.Monitor.Enter(Object obj)
+   bei CogitoSharp.FListProcessor.LIS(SystemCommand c) in c:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\FListProcessor.cs:Zeile 245.	System.Collections.Generic.Dictionary`2[System.String,System.Object]
+<2015-09-13 11:50:06> -- Private Channel Parsing failed:
+	Das Objekt des Typs "Newtonsoft.Json.Linq.JArray" kann nicht in Typ "System.Collections.Generic.List`1[System.Collections.Generic.Dictionary`2[System.String,System.Object]]" umgewandelt werden.
+	
+<2015-09-13 11:50:10> -- Invocation of Method PRI failed:
+	Ein Aufrufziel hat einen Ausnahmefehler verursacht.
+	System.NullReferenceException: Der Objektverweis wurde nicht auf eine Objektinstanz festgelegt.
+   bei CogitoSharp.IO.Message.ToString() in c:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\IO.cs:Zeile 126.
+   bei CogitoSharp.FListProcessor.PRI(SystemCommand c) in c:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\FListProcessor.cs:Zeile 340.	System.Collections.Generic.Dictionary`2[System.String,System.Object]
+<2015-09-13 11:50:36> -- Invocation of Method PRI failed:
+	Ein Aufrufziel hat einen Ausnahmefehler verursacht.
+	System.NullReferenceException: Der Objektverweis wurde nicht auf eine Objektinstanz festgelegt.
+   bei CogitoSharp.IO.Message.ToString() in c:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\IO.cs:Zeile 126.
+   bei CogitoSharp.FListProcessor.PRI(SystemCommand c) in c:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\FListProcessor.cs:Zeile 340.	System.Collections.Generic.Dictionary`2[System.String,System.Object]
+<2015-09-13 11:53:19> -- Invocation of Method LIS failed:
+	Ein Aufrufziel hat einen Ausnahmefehler verursacht.
+	System.ArgumentNullException: Der Wert darf nicht NULL sein.
+   bei System.Threading.Monitor.Enter(Object obj)
+   bei CogitoSharp.FListProcessor.LIS(SystemCommand c) in c:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\FListProcessor.cs:Zeile 245.	System.Collections.Generic.Dictionary`2[System.String,System.Object]
+<2015-09-13 11:53:21> -- Private Channel Parsing failed:
+	Das Objekt des Typs "Newtonsoft.Json.Linq.JArray" kann nicht in Typ "System.Collections.Generic.List`1[System.Collections.Generic.Dictionary`2[System.String,System.Object]]" umgewandelt werden.
+	
+<2015-09-13 11:56:54> -- Invocation of Method LIS failed:
+	Ein Aufrufziel hat einen Ausnahmefehler verursacht.
+	System.ArgumentNullException: Der Wert darf nicht NULL sein.
+   bei System.Threading.Monitor.Enter(Object obj)
+   bei CogitoSharp.FListProcessor.LIS(SystemCommand c) in c:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\FListProcessor.cs:Zeile 245.	System.Collections.Generic.Dictionary`2[System.String,System.Object]
+<2015-09-13 11:56:59> -- Error trying to receive message: <2015-09-13 11:56:59> -- Hank Thompson: more farts
+ Der Objektverweis wurde nicht auf eine Objektinstanz festgelegt.    bei CogitoSharp.FListProcessor.PRI(SystemCommand c) in c:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\FListProcessor.cs:Zeile 336.
+<2015-09-13 11:56:59> -- Private Channel Parsing failed:
+	Das Objekt des Typs "Newtonsoft.Json.Linq.JArray" kann nicht in Typ "System.Collections.Generic.List`1[System.Collections.Generic.Dictionary`2[System.String,System.Object]]" umgewandelt werden.
+	
+<2015-09-13 11:57:20> -- Error trying to receive message: <2015-09-13 11:57:20> -- Hank Thompson: big rilla butts
+ Der Objektverweis wurde nicht auf eine Objektinstanz festgelegt.    bei CogitoSharp.FListProcessor.PRI(SystemCommand c) in c:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\FListProcessor.cs:Zeile 336.
+<2015-09-13 12:28:32> -- Invocation of Method LIS failed:
+	Ein Aufrufziel hat einen Ausnahmefehler verursacht.
+	System.ArgumentNullException: Der Wert darf nicht NULL sein.
+   bei System.Threading.Monitor.Enter(Object obj)
+   bei CogitoSharp.FListProcessor.LIS(SystemCommand c) in c:\Users\User\Projects\CogitoSharp\CogitoSharp\CogitoSharp\FListProcessor.cs:Zeile 245.	System.Collections.Generic.Dictionary`2[System.String,System.Object]
