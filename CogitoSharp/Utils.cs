@@ -10,8 +10,17 @@ namespace CogitoSharp.Utils
 	/// <summary>
 	/// Mathematical utility functions
 	/// </summary>
-	public class Math
+	public static class Math
 	{
+		static string[] ones = {"one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen"};
+		static string[] tens = {"teen", "twenty", "thirty", "fourty", "fifty"};
+		static string[] units = {"", "", "hundred", "million", "billion"};
+		static string[] HighScientificUnits = {"kilo", "mega", "giga", "tera", "peta", "exa", "zetta", "yotta"};
+		static string[] LowScientificUnits = {"milli", "micro", "nano", "pico", "femto", "atto", "zetto", "yocto"};
+		const float Inches_to_cm = 2.54f;
+		const float Fl_Oz_to_ml = 29.5735296f;
+		const float Pounds_to_gram = 453.59237f;
+
 		/// <summary>
 		/// Returns a float[] filled with values for a 'dampened spring' animation.
 		/// </summary>
@@ -21,7 +30,7 @@ namespace CogitoSharp.Utils
 		/// <param name="tension">Tension of the spring, default 0.7f</param>
 		/// <param name="precision">Number of data points to generate; the higher the number, the smoother the curve. Default: 50</param>
 		/// <returns>A float[] with values describing the oscillation of the dampened spring.</returns>
-		protected internal static float[] dampenedSpringDelta(int start = 0, float amplitude = 1f, float damping = 0.2f, float tension = 0.7f, int precision = 50)
+		public static float[] dampenedSpringDelta(int start = 0, float amplitude = 1f, float damping = 0.2f, float tension = 0.7f, int precision = 50)
 		{
 			//dampened spring oscillation is preferable to straight-up sin wave.
 			float position = -1f;
@@ -51,7 +60,13 @@ namespace CogitoSharp.Utils
 		/// <typeparam name="T">The type of number suppled</typeparam>
 		/// <param name="number">The number</param>
 		/// <returns>A string with the number in spoken form.</returns>
-		protected internal static string numberToSentence<T>(ref T number) where T : IFormattable {
+		public static string numberToSentence<T>(ref T number) where T : IFormattable {
+			string[] _numStr = number.ToString().Split();
+			string[] output = new string[_numStr.Length];
+			for (int i = 0; i < _numStr.Length; i++){
+				if (_numStr[i] == "."){ output[i] = "point"; }
+				else{  }
+			}
 			throw new NotImplementedException("Function has not been implemented");
 		}
 
@@ -61,7 +76,7 @@ namespace CogitoSharp.Utils
 		/// <typeparam name="T">The type of collection from which to get the item. Must implement IEnumerable</typeparam>
 		/// <param name="source">The collection from which to randomly choose an item</param>
 		/// <returns>A random item from object source</returns>
-		protected internal static T RandomChoice<T>(IEnumerable<T> source){	
+		public static T RandomChoice<T>(IEnumerable<T> source){	
 			Random rnd = new Random();
 			IList<T> list = source as IList<T>;
 			if (list != null){ return list[rnd.Next(list.Count + 1)]; }
@@ -92,7 +107,19 @@ namespace CogitoSharp.Utils
 			MeasurementUnit UnitType;
 		}
 
-		protected internal static T parseNumberFromWords<T>(string numberSentence){
+		public static T parseNumberFromWords<T>(string numberSentence){
+			Regex Number = new Regex(@"\d{0,9}\.{0,1}\d{0,9}");
+			string numberMatch = Number.Match(numberSentence).Groups[0].Value;
+			try { double.Parse(numberMatch); }
+			catch (Exception){
+				throw;
+			}
+			numberSentence = numberSentence.Replace('-', ' ');
+			numberSentence = numberSentence.Replace("ty", "");
+			string[] splitNumberSentence = numberSentence.Split(' ');
+			foreach (string s in splitNumberSentence){
+				 
+			}
 			throw new NotImplementedException();
 		}
 
@@ -105,7 +132,7 @@ namespace CogitoSharp.Utils
 		/// <param name="TextToAnalyze">The text string from which data is supposed to be parsed</param>
 		/// <param name="MeasureToParseAs">If known, the type of measurement to be parsed.</param>
 		/// <returns> A Measurement<!--<T>--> instance with the result as type T and the unit in a string"/> A Measurement with numeric type T</returns>
-		protected internal static Measurement<T> parseNumberFromDescription<T>(string TextToAnalyze, MeasurementUnit MeasureToParseAs = MeasurementUnit.Unknown){
+		public static Measurement<T> parseNumberFromDescription<T>(string TextToAnalyze, MeasurementUnit MeasureToParseAs = MeasurementUnit.Unknown){
 			throw new NotImplementedException("METHOD ISN'T DONE YET");
 			Measurement<T> Result = new Measurement<T>();
 			string[] RangeIndicators = { "-", "/", " to ", " and " };
@@ -142,6 +169,8 @@ namespace CogitoSharp.Utils
 				break;
 			}
 
+			//TODO: If regex doesn't find anything, try Parse Number From Words
+
 			return Result;
 			//Imperial Length - inches, in, feet, f, ' "
 			//Imperial Weight - 
@@ -155,9 +184,45 @@ namespace CogitoSharp.Utils
 		}
 	}// class Math
 
-	class RegularExpressions{
+	public static class RegularExpressions{
 		internal static Regex ProfileHTMLTags = new Regex(@"<span class=.*>(.*):</span>(.*)");
 		internal static Regex AgeSearch = new Regex(@"\d{1, 9}");
 		internal static Regex Numbers = new Regex(@"\d{1,5}\.?\d{0,2}");
 	}
+
+	public static class StringManipulation{
+
+		/// <summary> Reverses a string into a string and not a char[] nightmare. What the eff, C#.</summary>
+		/// <param name="s">String to be reversed</param>
+		/// <returns>desrever eb ot gnirtS</returns>
+		public static string ReverseString(string s){
+			char[] arr = s.ToCharArray();
+			Array.Reverse(arr);
+			return new string(arr);
+		} //ReverseString
+
+		/// <summary> Devides a string str into an IEnumerable with chunkSize elements in it</summary>
+		/// <param name="str">The string to chunk</param>
+		/// <param name="chunkSize">The number of chunks to divide into</param>
+		/// <param name="forward">Determines if chunking is forward or reverse, e.g. XXXXXXXX into chunks of 3 can be "XXX XXX XX"(fwd) or "XX XXX XXX"(rev). Default is true.</param>
+		/// <returns>An IEnumerable containing the chunks</returns>
+		public static string[] Chunk(string str, int chunkSize, bool fwd = true){
+			if (str == null){ return new string[0]; }
+			float _chunks = ((float)str.Length/chunkSize);
+			int chunks = (int)System.Math.Ceiling(_chunks);
+			if (fwd == true) { 
+				string[] result = Enumerable.Range(0, chunks)
+					.Select(i => str.Substring(i * chunkSize, (i * chunkSize + chunkSize <= str.Length) ? chunkSize : str.Length - i * chunkSize)).ToArray<string>(); 
+				return result;
+			} //if
+			else{
+				string _str = ReverseString(str);
+				Console.WriteLine(_str);
+				string[] result = Enumerable.Range(0, chunks)
+					.Select(i => ReverseString(_str.Substring(i * chunkSize, (i * chunkSize + chunkSize <= str.Length) ? chunkSize : str.Length - i * chunkSize))).Reverse().ToArray<string>(); 
+				Console.WriteLine(result);
+				return result;
+			} //else
+		} //Chunk
+	} //StringManipulation
 }
