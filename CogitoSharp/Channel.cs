@@ -24,17 +24,19 @@ namespace CogitoSharp
 		/// <summary> When true, also alerts Mods when a character whose age cannot be parsed joins. </summary>
 		internal bool alertNoAge = false;
 		
+		internal bool isFavorite = false;
+		
 		/// <summary>Keys are the UUID for private channels; channel title for normal. Always use .key for channel-specific commands.</summary>
 		[NonSerialized] internal string _key;
 
-		internal string key
+		internal string Key
 		{
-			get { return this._key ?? this.name; }
+			get { return this._key ?? this.Name; }
 			set { this._key = value;}
 		}
 
 		/// <summary>Channel name, in human-readable format</summary>
-		internal string name;
+		internal string Name;
 
 
 		/// <summary> Channel mode - chat only, ads only, both. </summary>
@@ -53,7 +55,7 @@ namespace CogitoSharp
 
 		[NonSerialized] internal HashSet<User> Users = new HashSet<User>();
 
-		[NonSerialized] private CogitoSharp.IO.Logging.LogFile ChannelLog = null;
+		[NonSerialized] internal CogitoSharp.IO.Logging.LogFile ChannelLog = null;
 		
 		/// <summary>
 		/// Implementation of IDispose - removes tab page and disposes of Log to ensure buffer is flushed
@@ -66,35 +68,8 @@ namespace CogitoSharp
 			this.disposed = true;
 		}
 
-		public void Join(){
-			IO.SystemCommand c = new IO.SystemCommand();
-			c.OpCode = "JCH";
-			c.Data["channel"] = this.key;
-			c.Send();
-			if (CogitoUI.chatUI.InvokeRequired){
-				ChatUI.AddChatTabCallback a = new ChatUI.AddChatTabCallback(CogitoUI.chatUI.chatTabs.TabPages.Add);
-				CogitoUI.chatUI.Invoke(a, new object[] { CogitoUI.chatUI });
-			}
-			else { CogitoUI.chatUI.chatTabs.TabPages.Add(this.chanTab); }
-			this.ChannelLog = new IO.Logging.LogFile(this.name);
-			this.isJoined = true;
-			CogitoUI.chatUI.Refresh();
-		}
-
-		public void Leave(){
-			IO.SystemCommand c = new IO.SystemCommand();
-			c.OpCode = "LCH";
-			c.Data["channel"] = this.key;
-			c.Send();
-			if (CogitoUI.chatUI.InvokeRequired)
-			{
-				ChatUI.RemoveChatTabCallback _a = new ChatUI.RemoveChatTabCallback(CogitoUI.chatUI.chatTabs.TabPages.Add);
-				CogitoUI.chatUI.Invoke(_a, new object[] { CogitoUI.chatUI });
-			}
-			else { CogitoUI.chatUI.chatTabs.TabPages.Remove(this.chanTab); }
-			this.ChannelLog.Dispose();
-			this.isJoined = false;
-		}
+		internal void Join() { CogitoUI.chatUI.chatTabs.channelJoined(this); }
+		internal void Leave(){ CogitoUI.chatUI.chatTabs.channelLeft(this); }
 
 		/// <summary>
 		/// Constructor, used with Public (e.g. name-only) channels
@@ -102,10 +77,11 @@ namespace CogitoSharp
 		/// <param name="_name">The channel's name</param>
 		public Channel(string _name){
 			this.CID = Core.channels.Count;
-			this.key = null;
-			this.name = _name;
+			this.Key = null;
+			this.Name = _name;
 			this.chanTab = new ChatTab(this);
-			this.chanTab.Name = this.name;
+			//this.chanTab.Name = this.Name;
+			this.chanTab.Text = this.Name;
 			Core.channels.Add(this);
 		}
 
@@ -114,32 +90,43 @@ namespace CogitoSharp
 		/// </summary>
 		/// <param name="_key">The channel's UUID, used to join it</param>
 		/// <param name="_name">The channel's name</param>
-		public Channel(string _key, string _name = "[Private Channel]") : this(_name){ this.key = _key; }
+		public Channel(string _key, string _name = "[Private Channel]") : this(_name){ this.Key = _key; }
 
 		internal void MessageReceived(CogitoSharp.IO.Message m){
 			string _m = m.ToString();
 			this.ChannelLog.LogRaw(_m);
+			int lastfullmessage = Array.FindIndex<string>(this.chanTab.messageBuffer, n => n == null);
+			if (lastfullmessage == Config.AppSettings.MessageBufferSize - 1) { Array.Copy(this.chanTab.messageBuffer, 1, this.chanTab.messageBuffer, 0, this.chanTab.messageBuffer.Length - 1); }
+			this.chanTab.messageBuffer[lastfullmessage + 1] = m.ToString();
+			CogitoUI.chatUI.chatTabs.ensureVisible(this.chanTab);
+			//this.chanTab.Flash(); //TODO: Flash tab			
+		}
+
+		internal void MessageReceived(string s){
+			string _s = String.Format("<{0}> -- {1}{2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), s, Environment.NewLine);
+			this.ChannelLog.LogRaw(_s);
 			if (this.chanTab.messageBuffer.Length == Config.AppSettings.MessageBufferSize) { Array.Copy(this.chanTab.messageBuffer, 1, this.chanTab.messageBuffer, 0, this.chanTab.messageBuffer.Length - 1); }
-			this.chanTab.messageBuffer[this.chanTab.messageBuffer.Length + 1] = m.ToString();
-			if (!CogitoUI.chatUI.chatTabs.TabPages.Contains(this.chanTab)) { CogitoUI.chatUI.chatTabs.TabPages.Add(this.chanTab); }
+			this.chanTab.messageBuffer[this.chanTab.messageBuffer.Length + 1] = _s;
+			CogitoUI.chatUI.chatTabs.ensureVisible(this.chanTab);
 			//this.chanTab.Flash(); //TODO: Flash tab			
 		}
 
 		/// <summary>Generic destrutor, closes associated TabPage</summary>
 		~Channel()
 		{
+			CogitoUI.chatUI.chatTabs.ensureNotVisible(this.chanTab);
 			Dispose();
 		}
 
 		//TODO Is this really how you want it?
 		public override string ToString(){
-			return this._key == null ? String.Format("Public Channel '{0}'", this.name) : String.Format("Private Channel '{0}' ({1})", this.name, this.key);
+			return this._key == null ? String.Format("Public Channel '{0}'", this.Name) : String.Format("Private Channel '{0}' ({1})", this.Name, this.Key);
 		}
 
 		public override bool Equals(object obj){
 			if (obj == null) { return false; }
 			Channel c = obj as Channel;
-			if (this.key == c.key) { return true; }
+			if (this.Key == c.Key) { return true; }
 			//Two channels can have the same name, but never the same key.
 			else { return false; }
 		}
@@ -147,14 +134,14 @@ namespace CogitoSharp
 		public override int GetHashCode(){ return this.CID; }
 
 		public bool Equals(Channel channel){
-			if (this.name == channel.name) { return true; }
+			if (this.Name == channel.Name) { return true; }
 			else { return false; }
 		}
 
 		public int CompareTo(object obj){
 			if (obj == null) { return 1; }
 			Channel c = obj as Channel;
-			if (c != null) { return this.key.CompareTo(c.key); }
+			if (c != null) { return this.Key.CompareTo(c.Key); }
 			else { throw new ArgumentException("Object cannot be made into Channel. Cannot CompareTo()."); }
 
 		}

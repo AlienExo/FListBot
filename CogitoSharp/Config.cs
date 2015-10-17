@@ -47,15 +47,18 @@ namespace CogitoSharp
 			internal const string TriggerPrefix = ".";
 			internal static string DefaultAvatarFile = DataPath + "DefaultAvatar.bmp";
 			internal const int MessageBufferSize = 256;
-			internal static string[] AutoJoin = {"Gay Human(oids)", "Fantastic Gay Beasts And Where To Find Them", "Manly Males of Extra Manly Manliness", "!<<Marvel-Verse>>!"};
+			internal static string[] AutoJoin = {"Development"};
+			internal static string[] RootOps = {"Exo", "Kalikrates", "Hank Thompson"};
+			internal static string[] IgnoreCommands = {"LIS", "NLN", "STA", "ORS", "FLN", "CHA"};
 		}
 
-		internal static Dictionary<string, Delegate> AITriggers = new Dictionary<string, Delegate>();
+		//internal static Dictionary<string, Delegate> AITriggers = new Dictionary<string, Delegate>();
+		internal static Dictionary<string, Plugins.CogitoPlugin> AITriggers = new Dictionary<string, Plugins.CogitoPlugin>();
 
-		internal static void RegisterPluginTrigger(string Trigger, Delegate OnTrigger){
+		internal static void RegisterPluginTrigger(string Trigger, Plugins.CogitoPlugin Plugin){
 			if (!Trigger.StartsWith(AppSettings.TriggerPrefix)) { Trigger.Insert(0, AppSettings.TriggerPrefix); }
-			AITriggers.Add(Trigger, OnTrigger);
-			Core.SystemLog.Log(String.Format("Added trigger {0} for Delegate {1}", Trigger, OnTrigger));
+			AITriggers.Add(Trigger, Plugin);
+			Core.SystemLog.Log(String.Format("Added trigger {0} for Delegate {1}", Trigger, Plugin.Name));
 		}
 	}
 }

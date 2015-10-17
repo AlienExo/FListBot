@@ -10,8 +10,7 @@ namespace CogitoSharp.Utils
 	/// <summary>
 	/// Mathematical utility functions
 	/// </summary>
-	public static class Math
-	{
+	public static class Math{
 		private static string[] ones				= {"", "one ", "two ", "three ", "four ", "five ", "six ", "seven ", "eight ", "nine ", "ten ", "eleven ", "twelve ", "thirteen ", "fourteen ", "fifteen ", "sixteen ", "seventeen ", "eighteen ", "nineteen "};
 		private static string[] _ones				= {"zero ", "one ", "two ", "three ", "four ", "five ", "six ", "seven ", "eight ", "nine "};
 		private static string[] tens				= {"", "teen ", "twenty ", "thirty ", "fourty ", "fifty ", "sixty ", "seventy ", "eighty ", "ninety "};
@@ -62,7 +61,7 @@ namespace CogitoSharp.Utils
 		/// <typeparam name="T">The type of number suppled</typeparam>
 		/// <param name="number">The number</param>
 		/// <returns>A string with the number in spoken form.</returns>
-		public static string numberToSentence<T>(T number) where T : IFormattable {
+		public static string numberToSentence<T>(T number) where T : struct, IComparable, IComparable<T>, IConvertible, IEquatable<T>, IFormattable {
 			if (float.Parse(number.ToString()) == 0f) {return "zero";}
 			string[] _numStr = number.ToString().Split('.');
 			string output = "";
@@ -96,8 +95,7 @@ namespace CogitoSharp.Utils
 				output += "point ";
 				foreach (char c in _numStr[1]){ output += _ones[int.Parse(c.ToString())]; }
 			}
-			
-			return output.TrimEnd(" ".ToCharArray());
+			return output.TrimEnd(new char[]{' '});
 		}
 		
 		//public static string numberToSentence<T>(string numberStr) where T : IFormattable{
@@ -131,21 +129,76 @@ namespace CogitoSharp.Utils
 		/// <summary>
 		/// 
 		/// </summary>
-		public enum MeasurementUnit : byte {Unknown = 0, ImperialLength = 1, ImperialWeight = 2, ImperialVolume = 4, MetricLength = 8, MetricWeight = 16, MetricVolume = 32}
+		public enum MeasurementUnit : byte { Unknown = 0, ImperialLength = 1, ImperialWeight = 2, ImperialVolume = 4, MetricLength = 8, MetricWeight = 16, MetricVolume = 32 }
 
 		/// <summary>
 		/// Simple numeric struct to keep a measurement and its unit.
 		/// </summary>
 		/// <typeparam name="T">Numeric type of the measurement</typeparam>
-		public struct Measurement<T>{
+		public class Measurement<T> where T : struct, IComparable, IConvertible, IComparable<T>, IEquatable<T>, IFormattable{
 			T value;
-			string UnitName;
 			MeasurementUnit UnitType;
+
+			public Measurement(T amount, string UnitName){
+				this.value = amount;
+				try{ Enum.TryParse<MeasurementUnit>(UnitName, out this.UnitType); }
+				catch (ArgumentException){
+					UnitName = UnitName.ToLowerInvariant();
+					switch (UnitName){
+						case "liter":
+						case "liters":
+						case "litre":
+						case "litres":
+							break;
+
+						case "millilitre":
+						case "milliliter":
+							break;
+
+						case "kilo":
+						case "kilos":
+							break;
+
+						case "centimeter":
+							break;
+
+						case "meter":
+							break;
+// -------------------------------------------------------------------------------------
+						case "inch":
+						case "inches":
+							break;
+
+						case "feet":
+						case "foot":
+							break;
+
+						case "gallon":
+						case "gallons":
+							break;
+
+						case "ounce":
+						case "ounces":
+							break;
+
+						case "pound":
+						case "pounds":
+							break;
+					}
+				}
+			}
 		}
 
-		public static T parseNumberFromWords<T>(string numberSentence){
+		/// <summary>
+		/// Attempts to parse numbers from a sentence into regular english. Only works with english-language and correctly spelled senteces, sadly.
+		/// </summary>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="numberSentence"></param>
+		/// <returns></returns>
+		public static T parseNumberFromWords<T>(string numberSentence) where T : struct, IComparable, IComparable<T>, IConvertible, IEquatable<T>, IFormattable{
 			Regex Number = new Regex(@"\d{0,9}\.{0,1}\d{0,9}");
 			string numberMatch = Number.Match(numberSentence).Groups[0].Value;
+			
 			try { double.Parse(numberMatch); }
 			catch (Exception){
 				throw;
@@ -168,9 +221,9 @@ namespace CogitoSharp.Utils
 		/// <param name="TextToAnalyze">The text string from which data is supposed to be parsed</param>
 		/// <param name="MeasureToParseAs">If known, the type of measurement to be parsed.</param>
 		/// <returns> A Measurement<!--<T>--> instance with the result as type T and the unit in a string"/> A Measurement with numeric type T</returns>
-		public static Measurement<T> parseNumberFromDescription<T>(string TextToAnalyze, MeasurementUnit MeasureToParseAs = MeasurementUnit.Unknown){
+		public static Measurement<T> parseMeasurementFromDescription<T>(string TextToAnalyze, MeasurementUnit MeasureToParseAs = MeasurementUnit.Unknown) where T : struct, IComparable, IComparable<T>, IConvertible, IEquatable<T>, IFormattable{
 			throw new NotImplementedException("METHOD ISN'T DONE YET");
-			Measurement<T> Result = new Measurement<T>();
+//			Measurement<T> Result = new Measurement<T>();
 			string[] RangeIndicators = { "-", "/", " to ", " and " };
 			string[] MetricIndicators = { "cm", "m", "km" };
 			string[] ImperialIndicators = { "in", "inches", "inch", "feet", "foot", "\"", "'"};
@@ -207,7 +260,7 @@ namespace CogitoSharp.Utils
 
 			//TODO: If regex doesn't find anything, try Parse Number From Words
 
-			return Result;
+			//return Result;
 			//Imperial Length - inches, in, feet, f, ' "
 			//Imperial Weight - 
 			//Imperial Volume - gallon, quart, fl oz
@@ -237,15 +290,14 @@ namespace CogitoSharp.Utils
 			return new string(arr);
 		} //ReverseString
 
-		/// <summary> Devides a string str into an IEnumerable with chunkSize elements in it</summary>
+		/// <summary> Divides a string str into an IEnumerable with chunkSize elements in it</summary>
 		/// <param name="str">The string to chunk</param>
 		/// <param name="chunkSize">The number of chunks to divide into</param>
 		/// <param name="forward">Determines if chunking is forward or reverse, e.g. XXXXXXXX into chunks of 3 can be "XXX XXX XX"(fwd) or "XX XXX XXX"(rev). Default is true.</param>
 		/// <returns>An IEnumerable containing the chunks</returns>
 		public static string[] Chunk(string str, int chunkSize, bool fwd = true){
 			if (str == null){ return new string[0]; }
-			float _chunks = ((float)str.Length/chunkSize);
-			int chunks = (int)System.Math.Ceiling(_chunks);
+			int chunks = (int)System.Math.Ceiling((double)str.Length/chunkSize);
 			if (fwd == true) { 
 				string[] result = Enumerable.Range(0, chunks)
 					.Select(i => str.Substring(i * chunkSize, (i * chunkSize + chunkSize <= str.Length) ? chunkSize : str.Length - i * chunkSize)).ToArray<string>(); 

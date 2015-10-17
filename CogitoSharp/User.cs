@@ -32,6 +32,9 @@ namespace CogitoSharp
 
 		/// <summary> xXxSEPHIROTHxXx </summary>
 		public readonly string Name = null;
+		public string fileName{
+			get { return Path.GetInvalidFileNameChars().Aggregate(this.Name, (current, c) => current.Replace(c.ToString(), string.Empty)); }
+		}
 
 		/// <summary> 2 shota 4 u </summary>
 		public int Age
@@ -47,7 +50,8 @@ namespace CogitoSharp
 		public int Weight;
 
 		internal string Gender = "None";
-		internal Status status = Status.online;
+		internal Status Status = Status.online;
+		internal string StatusMessage;
 		/// <summary> Sexual orientation; can't be made an enum due to hyphens not working and that fucking up parsing, iirc</summary>
 		internal string Orientation;
 
@@ -69,9 +73,9 @@ namespace CogitoSharp
 
 		internal DateTime avatarTakenOn = new DateTime(1, 1, 1);
 
-		public User(string nName) { 
+		public User(string nName) {
 			this.Name = nName;
-			try{ this.Avatar = (Bitmap)Bitmap.FromFile(Config.AppSettings.AvatarPath + this.Name.ToLowerInvariant() + ".bmp"); }
+			try{ this.Avatar = (Bitmap)Bitmap.FromFile(Config.AppSettings.AvatarPath + this.fileName.ToLowerInvariant() + ".bmp"); }
 			catch (FileNotFoundException){ this.Avatar = Core.DefaultAvatar; }
 
 			catch (DirectoryNotFoundException){
@@ -115,8 +119,8 @@ namespace CogitoSharp
 		/// <summary> Retriedves the users's avatar (100 * 100 px Bitmap image) from F-Lists' server, and saves it. If it's less than a week old, it won't bother fetching it.
 		/// Background worker code blatantly inspired by slimCat, do not steal.</summary>
 		public void GetAvatar(){
-			if (Name == null || ((DateTime.Now - this.avatarTakenOn) <= Config.AppSettings.userProfileRefreshPeriod) ) { return; }
-			try{ this.Avatar = (Bitmap)Bitmap.FromFile(Config.AppSettings.AvatarPath + this.Name.ToLowerInvariant() + ".bmp"); }
+			if (Name == null || ((DateTime.Now - this.avatarTakenOn) <= Config.AppSettings.userProfileRefreshPeriod && Avatar != null )) { return; }
+			try{ this.Avatar = (Bitmap)Bitmap.FromFile(Config.AppSettings.AvatarPath + this.fileName.ToLowerInvariant() + ".bmp"); }
 			catch (FileNotFoundException){
 				var worker = new BackgroundWorker();
 				worker.DoWork += (s, e) =>
@@ -140,7 +144,7 @@ namespace CogitoSharp
 							Bitmap image = new Bitmap(imageStream);
 
 							//if (!Directory.Exists(Config.AppSettings.AvatarPath)){ Directory.CreateDirectory(Config.AppSettings.AvatarPath); }
-							image.Save(CogitoSharp.Config.AppSettings.AvatarPath + this.Name.ToLowerInvariant() + ".bmp", System.Drawing.Imaging.ImageFormat.Bmp); //let us never web-load this again
+							image.Save(CogitoSharp.Config.AppSettings.AvatarPath + this.fileName.ToLowerInvariant() + ".bmp", System.Drawing.Imaging.ImageFormat.Bmp); //let us never web-load this again
 							imageStream.Close();
 							imageStream.Dispose();
 
@@ -217,7 +221,6 @@ namespace CogitoSharp
 		internal void MessageReceived(IO.Message m){
 			if (this.userLog == null) { this.userLog = new IO.Logging.LogFile(this.Name); }
 			if (this.userTab == null) { this.userTab = new ChatTab(this); }
-			if (!CogitoUI.chatUI.chatTabs.TabPages.Contains(this.userTab)) { CogitoUI.chatUI.chatTabs.TabPages.Add(this.userTab); }
 			this.userTab.MessageReceived(m, this.userLog);
 		}
 

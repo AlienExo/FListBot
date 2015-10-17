@@ -17,16 +17,49 @@ namespace CogitoSharp
 			RegenerateChannelList();
 		}
 
-		private void ChannelList_Enter(object sender, EventArgs e){ RegenerateChannelList(); }
+		private void ChannelList_Enter(object sender, EventArgs e){ 
+			Core.SystemLog.Log("Entering channel list; attempting regeneration...");
+			RegenerateChannelList(); 
+		}
 
 		private void RegenerateChannelList(){
-			this.listViewChannels.Groups[0].Items.Clear();
-			this.listViewChannels.Groups[1].Items.Clear();
+			this.SuspendLayout();
+			//this.listViewChannels.Groups.Clear();
+			this.listViewChannels.Items.Clear();
+			ListViewGroup JoinedChannels = new ListViewGroup("Joined Channels");
+			ListViewGroup FavChannels = new ListViewGroup("Favorite Channels");
+			ListViewGroup PrivateChannels = new ListViewGroup("Private Channels");
+			ListViewGroup PublicChannels = new ListViewGroup("Public Channels");
+			this.listViewChannels.Groups.Add(JoinedChannels);
+			this.listViewChannels.Groups.Add(FavChannels);
+			this.listViewChannels.Groups.Add(PublicChannels);
+			this.listViewChannels.Groups.Add(PrivateChannels);
+			if (Core.channels.Count < 1) { return; }
 			foreach (Channel c in Core.channels){
-				if (c._key == null) { this.listViewChannels.Groups[0].Items.Add(new ListViewItem(c.name)); }
-				else { this.listViewChannels.Groups[1].Items.Add(new ListViewItem(c.name)); }
+				ListViewItem lvi = new ListViewItem(c.Name + " (" + c.Users.Count + ")");
+				if (c.isJoined == true) { lvi.Group = JoinedChannels; lvi.Checked = true; lvi.Selected = true; }
+				else if (c.isFavorite == true) { lvi.Group = FavChannels; }
+				else if (c._key == null) { lvi.Group = PublicChannels; }
+				else { lvi.Group = PrivateChannels; }
+				lvi.Text = c.Name;
+				if (this.listViewChannels.View == View.Details) {
+					lvi.SubItems.Add(c.Users.Count.ToString());
+					lvi.SubItems.Add(c.mode.ToString());
+				}
+				this.listViewChannels.Items.Add(lvi);
 			}
-		this.Invalidate();
+			PrivateChannels.Header += " (" + PrivateChannels.Items.Count + ")";
+			PublicChannels.Header  += " (" + PublicChannels.Items.Count  + ")";
+			JoinedChannels.Header += " (" + JoinedChannels.Items.Count + ")";
+			FavChannels.Header += " (" + FavChannels.Items.Count + ")";
+			this.listViewChannels.Invalidate();
+			this.ResumeLayout();
+		}
+
+		private void listViewChannels_ItemChecked(object sender, ItemCheckedEventArgs e){
+			Channel ch = Core.getChannel(e.Item.Name);
+			if (e.Item.Checked == true && ch.isJoined) { ch.Leave(); } 
+			else { ch.Join(); }
 		}
 	}
 }

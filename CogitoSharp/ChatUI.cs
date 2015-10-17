@@ -18,8 +18,7 @@ namespace CogitoSharp
 {
 	public partial class ChatUI : Form
 	{
-		internal delegate void AddChatTabCallback(ChatTab tab);
-		internal delegate void RemoveChatTabCallback(ChatTab tab);
+		internal delegate void ChatTabsManipulationDelegate(ChatTab c);
 
 		ChatTab chatConsole = null;
 
@@ -74,7 +73,7 @@ namespace CogitoSharp
 					{	//It's a channel with anywhere between 1 and 1000 users.
 						Channel c = ((ChatTab)this.chatTabs.SelectedTab).parent as Channel; //create actual object to avoid a billion casts
 						object SearchObject;
-						if (c.name == "Console") { SearchObject = Core.allGlobalUsers; }
+						if (c.Name == "Console") { SearchObject = Core.allGlobalUsers; }
 						else { SearchObject = c.Users; }
 						string searchParam;	//instantiate a string 
 						if (c.lastSearchFragment.Length > 0)
@@ -118,20 +117,65 @@ namespace CogitoSharp
 	/// Collection of chat tabs, with a method to avoid killing the console.
 	/// </summary>
 	public class ChatTabControl : TabControl{
+
+		internal object TabLock = new object();
+
 		protected override void OnControlRemoved(ControlEventArgs e){
 			ChatTab tp = e.Control as ChatTab;
 			if (e.Control.Text != "Console") { base.OnControlRemoved(e); }
 		}
 
-		//ChatTabControl() : base() { }
+		public ChatTabControl() : base() { }
 
 		//public Channel getParentChannel(int tabIndex) { return this.TabPages[tabIndex].parentChannel; }
+
+		internal void channelJoined(Channel c){
+				c.ChannelLog = new IO.Logging.LogFile(c.Name);
+				IO.SystemCommand JoinCmd = new IO.SystemCommand();
+				JoinCmd.OpCode = "JCH";
+				JoinCmd.Data["channel"] = c.Key;
+				JoinCmd.Send();
+				c.isJoined = true;
+				ensureVisible(c.chanTab);
+		}
+
+		internal void ensureVisible(ChatTab c){
+			if (this.InvokeRequired){
+				ChatUI.ChatTabsManipulationDelegate ctmd = new ChatUI.ChatTabsManipulationDelegate(ensureVisible);
+				this.Invoke(ctmd, c);
+			}
+			else{
+				//lock (this.TabLock){
+					if (!this.TabPages.Contains(c)) { this.TabPages.Add(c); }
+					this.Refresh();
+				//}
+			}
+		}
+
+		internal void ensureNotVisible(ChatTab c)
+		{
+			if (this.InvokeRequired){
+				ChatUI.ChatTabsManipulationDelegate ctmd = new ChatUI.ChatTabsManipulationDelegate(ensureNotVisible);
+				this.Invoke(ctmd, c);
+			}
+			else{
+				//lock (this.TabLock){
+					if (this.TabPages.Contains(c)) { this.TabPages.Remove(c); }
+					this.Refresh();
+				//}
+			}
+		}
+
+		internal void channelLeft(Channel c){
+			IO.SystemCommand LeaveCmd = new IO.SystemCommand();
+			LeaveCmd.OpCode = "LCH";
+			LeaveCmd.Data["channel"] = c.Key;
+			LeaveCmd.Send();
+			c.ChannelLog.Dispose();
+			c.isJoined = false;
+			ensureNotVisible(c.chanTab);
+		}
 	}
-
-	//public class ChatTabCollection : TabControl.TabPageCollection{
-	//	
-	//}
-
 
 	class ChatRichTextBox : RichTextBox{
 		delegate void AppendTextCallback(string text);
@@ -168,33 +212,18 @@ namespace CogitoSharp
 		private void Flash(){ 
 			//TODO: implement e.g. via simple, shitty timer. Since you'll have many tabs, maybe have a central list rather than a hundred individual timers 
 		}
-
-		public ChatTab() {
-			//this.ChatTabTextInput.AcceptsReturn = true;
-			//this.ChannelMessages.ReadOnly = true;
-			//this.ChannelMessages.Multiline = true;
-			this.SuspendLayout();
-			//this.Controls.Add(ChatTabTextInput);
-			//
-			//ChannelMessages.Parent = this;
-			//ChannelMessages.Dock = DockStyle.Fill;
-			//ChannelMessages.Anchor = AnchorStyles.None;
-			//
-			//ChatTabTextInput.Parent = this;
-			//ChatTabTextInput.Dock = DockStyle.Bottom;
-			//ChatTabTextInput.Anchor = AnchorStyles.Bottom;
-			this.ResumeLayout();
-			//ChatTabTextInput.BringToFront();
-
-			this.UserList.Items.Add(Core.OwnUser);
+		public ChatTab() :base(){
+			this.Name = "<System>";
+			this.Text = "<System>";
 		}
 
-		public ChatTab(Channel parent) : this(){
-			this.Name = parent.name;
-			this.Text = parent.name;
+		public ChatTab(Channel parent){
+			this.Name = parent.Name;
+			this.Text = parent.Name;
 			this.parent = parent;
-			this.UserList = new ChatUserList();
 			this.SuspendLayout();
+			this.UserList = new ChatUserList();
+			this.UserList.Items.Add(Core.OwnUser);
 			this.Controls.Add(this.UserList);
 			this.UserList.Dock = DockStyle.Right;
 			this.UserList.Parent = this;
@@ -202,7 +231,7 @@ namespace CogitoSharp
 			this.ResumeLayout();
 		}
 
-		public ChatTab(User parent) : this(){
+		public ChatTab(User parent){
 			this.Name = parent.Name;
 			this.Text = parent.Name;
 			this.parent = parent;
@@ -214,7 +243,7 @@ namespace CogitoSharp
 			targetLog.LogRaw(_m);
 			if (this.messageBuffer.Length == Config.AppSettings.MessageBufferSize) { Array.Copy(this.messageBuffer, 1, this.messageBuffer, 0, this.messageBuffer.Length - 1); }
 			this.messageBuffer[this.messageBuffer.Length + 1] = _m;
-			if (!CogitoUI.chatUI.chatTabs.TabPages.Contains(this)) { CogitoUI.chatUI.chatTabs.TabPages.Add(this); }
+			CogitoUI.chatUI.chatTabs.ensureVisible(this);
 			//this.chanTab.Flash(); //TODO: Flash tab			
 		}
 

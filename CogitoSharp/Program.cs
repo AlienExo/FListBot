@@ -351,34 +351,25 @@ namespace CogitoSharp
 
 	/// <summary>Websocket handling, server connection, threading, all that goodness</summary>
     internal static class Core{
-
 		internal static WebSocket websocket = null;
 		internal static volatile ConcurrentSet<User> allGlobalUsers = new ConcurrentSet<User>();
 		internal static volatile ConcurrentSet<Channel> channels = new ConcurrentSet<Channel>();
 		internal static List<User> globalOps = new List<User>();
 		internal static Bitmap DefaultAvatar = null;
 
-
 		internal static Queue<IO.SystemCommand> IncomingMessageQueue = new Queue<IO.SystemCommand>();
 		internal static Queue<IO.SystemCommand> OutgoingMessageQueue = new Queue<IO.SystemCommand>();
 				
 		//internal static void SendMessageFromQueue(object sender, EventArgs e){ 
 		internal static void SendMessageFromQueue(object stateobject){ 
-			try{
-				//Console.WriteLine("SendMessageFromQueue called");
-				if (OutgoingMessageQueue.Count > 0) { //&& websocket.IsAlive){
+			if (OutgoingMessageQueue.Count > 0){
+				try{
 					string _message = OutgoingMessageQueue.Dequeue().ToServerString();
-					//#if DEBUG
-						Core.RawData.Log(">> " + _message);
-						Console.WriteLine("Sending message " + _message);
-					//#endif
-						websocket.Send(_message);
-				} 
+					Core.RawData.Log(">> " + _message);
+					websocket.Send(_message);
+				}
+				catch (Exception ex) { Core.ErrorLog.Log(String.Format("Sending message failed:\n\t{0}\n\t{1}\t{2}", ex.Message, ex.InnerException, ex.StackTrace)); }
 			}
-			catch (Exception ex){
-				Core.ErrorLog.Log(String.Format("Sending message failed:\n\t{0}\n\t{1}\t{2}", ex.Message, ex.InnerException, ex.StackTrace));
-			}
-
 		}
 
 		//private static TimerCallback sendTimerCallback = SendMessageFromQueue;
@@ -431,7 +422,6 @@ namespace CogitoSharp
 				Properties.Settings.Default.userAutoComplete = new AutoCompleteStringCollection();
 				Properties.Settings.Default.Save();
 			}
-			Utils.StringManipulation.Chunk("1234567890", 3, false);
 			Application.Run(cogitoUI);
         }
 
@@ -439,11 +429,9 @@ namespace CogitoSharp
 		/// Function to Deserialize a ConcurrentSet T instance from BinarySerializer-produced files.
 		/// </summary>
 		/// <typeparam name="T">The inner type for the ConcurrentSet to deserialize, e.g. ConcurrentSet User</typeparam>
-		/// <param name="TargetObject">The object into which the deserialized data is transmitted.</param>
 		/// <param name="DataBaseFileName">The name of the BinaryFormatted database file to be deserialized. Expects a List T.</param>
 		/// <param name="ContainingFolder">Leave optional (null) to load from Config.AppSettings.DataPath (/data/); else, supply full path to containing folder</param>
 		/// <exception cref="System.ArgumentException">Thrown when the TargetObject's type and the data inside the file do not match.</exception>
-		/// <exception cref=""></exception>
 		private static ConcurrentSet<T> DeserializeDatabase<T>(string DataBaseFileName, string ContainingFolder = null)
 		{
 			SystemLog.Log("Loading " + typeof(T).Name + " Database...");
@@ -498,9 +486,9 @@ namespace CogitoSharp
 		}
 
 		internal static void OnWebsocketMessage(Object sender, WebSocketSharp.MessageEventArgs e){
-			SystemCommand c = new SystemCommand(e.Data);
+			SystemCommand c = new SystemCommand(e.Data.ToString());
 			//#if DEBUG
-			if (!new string[]{"LIS", "NLN", "STA", "ORS"}.Contains(c.OpCode)){ RawData.Log(c.ToServerString()); }
+			if (!Config.AppSettings.IgnoreCommands.Contains(c.OpCode)){ RawData.Log(c.ToServerString()); }
 			//#endif
 			IncomingMessageQueue.Enqueue(c);
 		}
@@ -531,7 +519,10 @@ namespace CogitoSharp
 		/// <param name="channel"></param>
 		/// <returns>Channel Instance</returns>
 		public static Channel getChannel(string channel){
-			return Core.channels.Count(x => x.key == channel) > 0 ? Core.channels.First<Channel>(n => n.key == channel) : new Channel(channel);
+			Channel c = Core.channels.Values.Select(n => n.Key).Contains<string>(channel) ? Core.channels.First(o => o.Key == channel) : new Channel(channel);
+			Console.WriteLine(c.Key);
+			return c;
+			//return Core.channels.Count(x => x.Key == channel) > 0 ? Core.channels.First<Channel>(n => n.Key == channel) : new Channel(channel);
 		}
 	}
 }

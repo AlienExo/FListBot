@@ -26,6 +26,7 @@ namespace CogitoSharp
 		public CogitoUI()
         {
             InitializeComponent();
+			//this.Size = new Size(Screen.FromControl(this).Bounds.Width, Screen.FromControl(this).Bounds.Height);
 			this.IsMdiContainer = true;
 			//#if DEBUG
 				CogitoUI.console = new CogitoSharp.Debug.CogitoConsole();
@@ -33,12 +34,12 @@ namespace CogitoSharp
 				CogitoUI.console.Show();
 			//#endif
 			EternalSender = new System.Threading.Timer(Core.SendMessageFromQueue, Core._sendForever, System.Threading.Timeout.Infinite, (long)IO.Message.chat_flood);
-			LaplacesDemon = new System.Threading.Timer(ProcessCommandFromQueue, Core._sendForever, 1000, 1000);
+			LaplacesDemon = new System.Threading.Timer(ProcessCommandFromQueue, Core._sendForever, 0, 100);
 			Processor = new FListProcessor();
+			
 		}
 		
-       	private void CogitoUI_Load(object sender, EventArgs e)
-		{
+       	private void CogitoUI_Load(object sender, EventArgs e){
 			loginForm.MdiParent = this;
 			this.Text = "Cogito v"+Application.ProductVersion;
 			loginForm.Show();
@@ -70,7 +71,7 @@ namespace CogitoSharp
 
 		private void tileVerticallyToolStripMenuItem_Click(object sender, EventArgs e) { this.LayoutMdi(MdiLayout.TileVertical); }
 
-		private void openWindow<T>() where T: new(){
+		internal void openWindow<T>() where T: new(){
 			IEnumerable<T> Windows = Application.OpenForms.OfType<T>();
 			if (Windows.Count<T>() > 0) { foreach (T w in Windows) { (w as Form).Show(); } }
 			else{
@@ -89,7 +90,8 @@ namespace CogitoSharp
 
 		private void cASIEToolStripMenuItem_Click(object sender, EventArgs e){ openWindow<Gimmicks.CASIE>(); }
 
-		
+		private void chatToolStripMenuItem_Click(object sender, EventArgs e) { openWindow<ChatUI>(); }
+
 	} // CogitoUI
 
 	/// <summary> Base Class for Boxes with images, yay </summary>

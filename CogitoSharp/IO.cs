@@ -13,11 +13,12 @@ using CogitoSharp;
 
 namespace CogitoSharp.IO
 {
-	class SystemCommand
-	{
-
+	class SystemCommand{
 		internal protected string OpCode { get; set; }
 		internal protected Dictionary<string, object> Data = new Dictionary<string, object>();
+
+		internal protected User sourceUser = null;
+		internal protected Channel sourceChannel = null;
 
 		/// <summary>
 		/// Sends the message by adding it to the OutgoingMessageQueue
@@ -35,7 +36,14 @@ namespace CogitoSharp.IO
 
 		public SystemCommand(string rawmessage){
 			this.OpCode = rawmessage.Substring(0, 3);
-			if (rawmessage.Length > 4) { this.Data = JsonConvert.DeserializeObject<Dictionary<string, object>>(HttpUtility.HtmlDecode(rawmessage.Substring(4))); }
+			if (rawmessage.Length > 4) { 
+				this.Data = JsonConvert.DeserializeObject<Dictionary<string, object>>(HttpUtility.HtmlDecode(rawmessage.Substring(4)));
+				try {
+					this.sourceChannel = this.Data.ContainsKey("channel") ? Core.getChannel((string)this.Data["channel"]) : null;
+					this.sourceUser = this.Data.ContainsKey("character") ? Core.getUser((string)this.Data["character"]) : null;
+				}
+				catch (Exception) { Core.SystemLog.Log(this.Data.ToString()); }
+			}
 			else { this.Data = null; }
 		}
 
@@ -45,12 +53,12 @@ namespace CogitoSharp.IO
 		}
 
 		public SystemCommand() { }
-	}
+	} //class SystemCommand
 
 	class Message : SystemCommand{
 		//TODO Finish Parsing
-		internal User sourceUser = null;
-		internal Channel sourceChannel = null;
+		internal new User sourceUser = null;
+		internal new Channel sourceChannel = null;
 
 		/// <summary> Maximum length (in bytes) of a channel message; longer and you gotta split it </summary>
 		internal static int chat_max = 4096;
@@ -61,21 +69,20 @@ namespace CogitoSharp.IO
 		
 		internal string Body{
 			get { return this.Data["message"].ToString(); }
-			set{ this.Data["message"] = (string)DNA.Text.TextEngine.BBCode(value); }
+			set{ this.Data["message"] = DNA.Text.TextEngine.BBCode(value).ToString(); }
 		}
 
 		internal string[] args { 
 			get { return this.Body.Split(' '); } 
 			set	{ this.args = value; this.Body = string.Join(" ", this.args); }
-			}
+		}
 
 		public Message(SystemCommand s){
 			this.OpCode = s.OpCode;
 			this.Data = s.Data;
-			this.sourceUser = this.Data.ContainsKey("character") ? Core.getUser((string)this.Data["character"]) : null;
-			this.sourceChannel = this.Data.ContainsKey("channel") ? Core.getChannel((string)this.Data["channel"]) : null;
-			this.Data = s.Data;
 			this.Body = this.Data["message"].ToString();
+			this.sourceChannel = s.sourceChannel;
+			this.sourceUser = s.sourceUser;
 		}
 
 		public Message(string messageBody, Message parentMessage) : base(parentMessage) { 
@@ -94,7 +101,7 @@ namespace CogitoSharp.IO
 			{
 				this.OpCode = this.sourceUser == null ? "MSG" : "PRI"; //sets Opcode to MSG (send to entire channel) if no user is specified, else to PRI (only to user)
 				if (this.sourceUser != null) { this.Data.Add("recipient", this.sourceUser.Name); }
-				else { this.Data.Add("channel", this.sourceChannel.key); }
+				else { this.Data.Add("channel", this.sourceChannel.Key); }
 			};
 
 			//This should, in theory, make sure we don't send any too-long messages.
@@ -122,7 +129,12 @@ namespace CogitoSharp.IO
 		/// Replies to the message by posting to the same user/channel where the Message originated
 		/// </summary>
 		/// <param name="replyText">Text to reply with.</param>
-		internal void Reply(string replyText){ new Message(replyText, this).Send(); }
+		/// <param name="forcePrivate">Should the message be sent as private regardless of parent message origin?</param>
+		internal void Reply(string replyText, bool forcePrivate = true){ 
+			Message reply = new Message(replyText, this);
+			if (forcePrivate) { reply.OpCode = "PRI"; }
+			reply.Send();
+		}
 
 		public override string ToString(){
 			string _message;
@@ -130,7 +142,8 @@ namespace CogitoSharp.IO
 			else {_message = this.sourceUser.Name + ": " + this.Data["message"].ToString();}
 			return String.Format("<{0}> -- {1}{2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), _message, Environment.NewLine);
 		}
-	}
+	} //class Message
+
 	internal class Logging{
 		internal class LogFile : IDisposable{
 			private System.Timers.Timer flushTimer = new System.Timers.Timer();
@@ -213,5 +226,5 @@ namespace CogitoSharp.IO
 
 		ConsoleLoggingDelegate WriteToConsole = CogitoUI.console.console.AppendText;
 
-	} // class Logging
-} // namespace IO
+	} //class Logging
+} //namespace IO

@@ -183,6 +183,7 @@
 			// 
 			this.chatToolStripMenuItem.Name = "chatToolStripMenuItem";
 			resources.ApplyResources(this.chatToolStripMenuItem, "chatToolStripMenuItem");
+			this.chatToolStripMenuItem.Click += new System.EventHandler(this.chatToolStripMenuItem_Click);
 			// 
 			// consoleToolStripMenuItem
 			// 
@@ -226,6 +227,7 @@
 			this.IsMdiContainer = true;
 			this.MainMenuStrip = this.MainUIMenuStrip;
 			this.Name = "CogitoUI";
+			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CogitoUI_FormClosing);
 			this.Load += new System.EventHandler(this.CogitoUI_Load);
 			this.MainUIMenuStrip.ResumeLayout(false);
